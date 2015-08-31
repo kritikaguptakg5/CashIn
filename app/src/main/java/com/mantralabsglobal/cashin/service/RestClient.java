@@ -39,6 +39,8 @@ public class RestClient  {
     private EMIService emiService;
     private EStatementService eStatementService;
     private NetBankingService netBankingService;
+    private TransUnionService transUnionService;
+
 
     private static RestClient instance;
 
@@ -93,8 +95,13 @@ public class RestClient  {
         emiService = restAdapter.create(EMIService.class);
         eStatementService = restAdapter.create(EStatementService.class);
         netBankingService = restAdapter.create(NetBankingService.class);
+        transUnionService = restAdapter.create(TransUnionService.class);
 
         instance = this;
+    }
+
+    public TransUnionService getTransUnionService() {
+        return transUnionService;
     }
 
     public static RestClient getInstance() {

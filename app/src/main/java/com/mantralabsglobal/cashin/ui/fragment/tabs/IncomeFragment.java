@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.service.IncomeService;
 import com.mantralabsglobal.cashin.ui.Application;
+import com.mantralabsglobal.cashin.ui.activity.app.MainActivity;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
 import com.mantralabsglobal.cashin.ui.view.MonthIncomeView;
 import com.mobsandgeeks.saripaar.annotation.Digits;
@@ -81,6 +82,7 @@ public class IncomeFragment extends BaseBindableListFragment<IncomeService.Incom
     @Override
     protected void onCreate(List<IncomeService.Income> updatedData, Callback<List<IncomeService.Income>> saveCallback) {
         incomeService.createIncome(updatedData, saveCallback);
+        incomeService.getNextDetail(saveCallback);
     }
 
     @Override
@@ -95,15 +97,18 @@ public class IncomeFragment extends BaseBindableListFragment<IncomeService.Incom
 
         monthIncomeViewOne.setMonth(cal.get(Calendar.MONTH));
         monthIncomeViewOne.setYear(cal.get(Calendar.YEAR));
+        monthIncomeViewOne.setAmount("");
 
         cal.add(Calendar.MONTH, -1);
         monthIncomeViewTwo.setMonth(cal.get(Calendar.MONTH));
         monthIncomeViewTwo.setYear(cal.get(Calendar.YEAR));
+        monthIncomeViewTwo.setAmount("");
 
         cal.add(Calendar.MONTH, -1);
 
         monthIncomeViewThree.setMonth(cal.get(Calendar.MONTH));
         monthIncomeViewThree.setYear(cal.get(Calendar.YEAR));
+        monthIncomeViewThree.setAmount("");
 
     }
 
@@ -124,6 +129,9 @@ public class IncomeFragment extends BaseBindableListFragment<IncomeService.Incom
         }
         if(value.size()>2)
         {
+            if(value.get(0).getIsDataComplete())
+                ((MainActivity)getActivity()).makeSubmitButtonVisible();
+
             monthIncomeViewThree.setYear(value.get(2).getYear());
             monthIncomeViewThree.setMonth(value.get(2).getMonth()-1);
             monthIncomeViewThree.setAmount(String.valueOf(value.get(2).getAmount()));
@@ -141,14 +149,17 @@ public class IncomeFragment extends BaseBindableListFragment<IncomeService.Incom
         }
         base.get(0).setYear(monthIncomeViewOne.getYear());
         base.get(0).setMonth(monthIncomeViewOne.getMonth() + 1);
+        if(monthIncomeViewOne.getAmount() != null && monthIncomeViewOne.getAmount().toString().trim().length()>0)
         base.get(0).setAmount( Double.parseDouble(monthIncomeViewOne.getAmount().toString()));
 
         base.get(1).setYear(monthIncomeViewTwo.getYear());
         base.get(1).setMonth(monthIncomeViewTwo.getMonth() + 1);
+        if(monthIncomeViewTwo.getAmount() != null && monthIncomeViewTwo.getAmount().toString().trim().length()>0)
         base.get(1).setAmount(Double.parseDouble(monthIncomeViewTwo.getAmount().toString()));
 
         base.get(2).setYear(monthIncomeViewThree.getYear());
         base.get(2).setMonth(monthIncomeViewThree.getMonth() + 1);
+        if(monthIncomeViewThree.getAmount() != null && monthIncomeViewThree.getAmount().toString().trim().length()>0)
         base.get(2).setAmount( Double.parseDouble(monthIncomeViewThree.getAmount().toString()));
 
         return base;

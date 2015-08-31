@@ -16,8 +16,17 @@ import retrofit.http.PUT;
  */
 public interface AddressService {
 
+    static boolean addressStatus = false;
+
+    public boolean getAddressStatus();
+
+    public void setAddressStatus(boolean addressStatus);
+
     @GET("/user/address/current")
     void getCurrentAddress(Callback<Address> callback);
+
+    @GET("/user/next?type=obj")
+    void getNextDetail( Callback<Address> callback);
 
     @POST("/user/address/current")
     void createCurrentAddress(@Body Address address ,Callback<Address> callback);
@@ -37,6 +46,8 @@ public interface AddressService {
 
     public static class Address{
 
+        private int status = -1;
+        private String addressId;
         private String street;
         private String city;
         private String state;
@@ -49,7 +60,16 @@ public interface AddressService {
         private Date createdAt;
         private Date updatedAt;
         @SerializedName("id")
-        private String addressId;
+        private String address;
+        private boolean isDataComplete;
+
+        public boolean getIsDataComplete() {
+            return isDataComplete;
+        }
+
+        public void setIsDataComplete(boolean isDataComplete) {
+            this.isDataComplete = isDataComplete;
+        }
 
         public String getStreet() {
             return street;
@@ -81,6 +101,22 @@ public interface AddressService {
 
         public void setPincode(String pincode) {
             this.pincode = pincode;
+        }
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
         }
 
         public boolean isHouseRented() {

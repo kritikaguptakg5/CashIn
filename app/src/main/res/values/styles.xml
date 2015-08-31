@@ -214,7 +214,7 @@
         <item name="android:paddingBottom">@dimen/text_padding_medium</item>
         <item name="android:paddingLeft">@dimen/text_padding_medium</item>
         <item name="android:paddingRight">@dimen/text_padding_medium</item>
-        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textSize">@dimen/text_big</item>
     </style>
 
     <style name="text_medium_white_gs" parent="text_medium_white_nl">

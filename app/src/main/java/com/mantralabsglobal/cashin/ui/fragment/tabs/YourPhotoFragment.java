@@ -17,6 +17,7 @@ import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.service.AvtarService;
 import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.activity.app.BaseActivity;
+import com.mantralabsglobal.cashin.ui.activity.app.MainActivity;
 import com.mantralabsglobal.cashin.ui.activity.camera.CwacCameraActivity;
 import com.soundcloud.android.crop.Crop;
 import com.squareup.picasso.Picasso;
@@ -66,7 +67,7 @@ public class YourPhotoFragment extends BaseBindableFragment<AvtarService.AvtarIm
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        avtarService = ((Application) getActivity().getApplication() ).getRestClient().getAvtarService();
+        avtarService = ((Application) getActivity().getApplication()).getRestClient().getAvtarService();
 
         registerChildView(imagePicker, View.VISIBLE);
         registerChildView(imageViewer, View.GONE);
@@ -78,6 +79,7 @@ public class YourPhotoFragment extends BaseBindableFragment<AvtarService.AvtarIm
         if(updatedData != null && updatedData.getFilePath() != null && updatedData.getFilePath().length()>0) {
             TypedFile typedFile = new TypedFile("multipart/form-data", new File(updatedData.getFilePath()));
             avtarService.uploadAvtarImage(typedFile, saveCallback);
+            avtarService.getNextDetail(saveCallback);
         }
     }
 
@@ -173,7 +175,7 @@ public class YourPhotoFragment extends BaseBindableFragment<AvtarService.AvtarIm
 
     @Override
     protected boolean beforeBindDataToForm(AvtarService.AvtarImage value, Response response) {
-        if(value.getAvatar() != null && value.getAvatar().length()>0) {
+        if(value != null && value.getAvatar() != null && value.getAvatar().length()>0) {
             Log.i(TAG, "deleting picasso cache " + value.getAvatar());
             Picasso.with(getActivity()).invalidate(value.getAvatar());
             dirtyImage = null;
@@ -197,6 +199,10 @@ public class YourPhotoFragment extends BaseBindableFragment<AvtarService.AvtarIm
 
         if(value != null && value.getFilePath() != null && value.getFilePath().length()>0) {
             try{
+
+                if(value.getIsDataComplete())
+                    ((MainActivity)getActivity()).makeSubmitButtonVisible();
+
                 final InputStream imageStream = getActivity().getContentResolver().openInputStream(value.getImageUri());
                 final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
                 photoViewer.setImageBitmap(selectedImage);

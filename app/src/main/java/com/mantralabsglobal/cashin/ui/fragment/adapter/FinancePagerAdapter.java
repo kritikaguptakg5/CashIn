@@ -18,13 +18,13 @@ import com.mantralabsglobal.cashin.ui.fragment.tabs.PermanentAddressFragment;
 public class FinancePagerAdapter extends FragmentPagerAdapter{
 
     private FragmentManager fragmentManager;
-    private String tabtitles[] = new String[] {"Bank",  "Income", "EMI", "History"};
+    private String tabtitles[] = new String[] {"Bank",  "Income"/*, "EMI"*/, "History"};
 
     private IncomeFragment ifragnent;
 
     private BankDetailFragment bankDetailFragment;
 
-    private EMIFragment emiFragment;
+    //private EMIFragment emiFragment;
 
     private HistoryFragment userHistoryFragment;
 
@@ -35,7 +35,7 @@ public class FinancePagerAdapter extends FragmentPagerAdapter{
         ifragnent = new IncomeFragment();
         bankDetailFragment = new BankDetailFragment();
         userHistoryFragment = new HistoryFragment();
-        emiFragment = new EMIFragment();
+       // emiFragment = new EMIFragment();
     }
 
     @Override
@@ -46,9 +46,9 @@ public class FinancePagerAdapter extends FragmentPagerAdapter{
                 return bankDetailFragment;
             case 1:
                 return ifragnent ;
+           /* case 2:
+                return emiFragment ;*/
             case 2:
-                return emiFragment ;
-            case 3:
                 return userHistoryFragment ;
             // Open FragmentTab4.java
         }

@@ -56,8 +56,6 @@
                     android:layout_height="wrap_content" android:text="@string/application_rejected" style="@style/text_medium_input_header_history" />
 
 
-
-
                 <RadioGroup android:id="@+id/rg_application_rejected"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:orientation="horizontal" android:paddingLeft="50dp" android:paddingRight="50dp">
@@ -95,7 +93,7 @@
 
             <View style="@style/AppTheme.Form.Fragment.Seperator.NoGradient"></View>
 
-            <LinearLayout android:layout_alignParentBottom="true" android:layout_marginBottom="20dp" android:visibility="gone"
+            <LinearLayout android:layout_alignParentBottom="true" android:layout_marginBottom="30dp" android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:gravity="center">
                 <Button

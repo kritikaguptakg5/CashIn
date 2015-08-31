@@ -22,6 +22,9 @@ public interface PrimaryBankService {
     @POST("/user/bank")
     void createPrimaryBankDetail(@Body List<BankDetail> bankDetail,  Callback<List<BankDetail>> callback);
 
+    @GET("/user/next?type=lis")
+    void getNextDetail( Callback<List<BankDetail>> callback);
+
     @POST("/user/netBankingperfios")
     void uploadPerfiosTransactionStatus(@Body PerfiosService.TransactionStatusResponse perfiosTransactionResponse,  Callback<PerfiosTransactionResponse> callback);
 
@@ -49,8 +52,26 @@ public interface PrimaryBankService {
         private String bankName;
         @SerializedName(value = "account_no")
         private String accountNumber;
-
+        private boolean isPrimarySelectedOnce;
         private boolean isPrimary;
+
+        private boolean isDataComplete;
+
+        public boolean isPrimarySelectedOnce() {
+            return isPrimarySelectedOnce;
+        }
+
+        public void setIsPrimarySelectedOnce(boolean isPrimarySelectedOnce) {
+            this.isPrimarySelectedOnce = isPrimarySelectedOnce;
+        }
+
+        public boolean getIsDataComplete() {
+            return isDataComplete;
+        }
+
+        public void setIsDataComplete(boolean isDataComplete) {
+            this.isDataComplete = isDataComplete;
+        }
 
         public String getBankName() {
             return bankName;

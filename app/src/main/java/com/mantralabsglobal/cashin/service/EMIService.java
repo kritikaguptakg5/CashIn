@@ -18,6 +18,9 @@ public interface EMIService {
     @GET("/user/emi")
     void getEMIDetail( Callback<List<EMI>> callback);
 
+    @GET("/user/next?type=lis")
+    void getNextDetail( Callback<List<EMI>> callback);
+
     @POST("/user/emi")
     void createEMI(@Body List<EMI> emiDetail, Callback<List<EMI>> callback);
 
@@ -25,7 +28,15 @@ public interface EMIService {
 
         int emiAmount ;
         String EMIDescription ;
+        private boolean isDataComplete;
 
+        public boolean getIsDataComplete() {
+            return isDataComplete;
+        }
+
+        public void setIsDataComplete(boolean isDataComplete) {
+            this.isDataComplete = isDataComplete;
+        }
         public EMI() {
         }
 

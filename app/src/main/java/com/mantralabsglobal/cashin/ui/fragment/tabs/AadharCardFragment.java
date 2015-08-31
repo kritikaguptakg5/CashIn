@@ -39,8 +39,7 @@ import retrofit.client.Response;
 /**
  * Created by pk on 13/06/2015.
  */
-public class AadharCardFragment extends BaseBindableFragment<AadharService.AadharDetail>
-{
+public class AadharCardFragment extends BaseBindableFragment<AadharService.AadharDetail> {
 
     @NotEmpty
     @InjectView(R.id.cc_name)
@@ -53,28 +52,28 @@ public class AadharCardFragment extends BaseBindableFragment<AadharService.Aadha
     CustomEditText aadharNumber;
 
     @InjectView(R.id.cs_gender)
-     CustomSpinner gender;
+    CustomSpinner gender;
 
     @InjectView(R.id.cc_father_name)
-     CustomEditText fatherName;
+    CustomEditText fatherName;
 
     @InjectView(R.id.cc_dob)
     BirthDayView birthDay;
 
     @InjectView(R.id.ib_launchScanner)
-     ImageButton btn_scanner;
+    ImageButton btn_scanner;
 
     @InjectView(R.id.bt_edit_aadhar_detail)
     Button btn_edit_aadhar_detail;
 
     @InjectView(R.id.fab_launchScanner)
-     FloatingActionButton fab_launchScanner;
+    FloatingActionButton fab_launchScanner;
 
     @InjectView(R.id.ll_aadhar_camera)
-     ViewGroup vg_camera;
+    ViewGroup vg_camera;
 
     @InjectView(R.id.rl_aadhar_detail)
-     ViewGroup vg_form;
+    ViewGroup vg_form;
 
     @InjectView(R.id.btn_next)
     BootstrapButton btnNext;
@@ -111,11 +110,13 @@ public class AadharCardFragment extends BaseBindableFragment<AadharService.Aadha
     @Override
     protected void onUpdate(AadharService.AadharDetail updatedData, Callback<AadharService.AadharDetail> saveCallback) {
         aadharService.updateAadharDetail(updatedData, saveCallback);
+        aadharService.getNextDetail(saveCallback);
     }
 
     @Override
     protected void onCreate(AadharService.AadharDetail updatedData, Callback<AadharService.AadharDetail> saveCallback) {
         aadharService.createAadharDetail(updatedData, saveCallback);
+        aadharService.getNextDetail(saveCallback);
     }
 
     @Override
@@ -135,12 +136,11 @@ public class AadharCardFragment extends BaseBindableFragment<AadharService.Aadha
 
 
     @OnClick(R.id.bt_edit_aadhar_detail)
-    public void loadAadharForm()
-    {
+    public void loadAadharForm() {
         bindDataToForm(null);
     }
 
-    @OnClick( {R.id.ib_launchScanner, R.id.fab_launchScanner})
+    @OnClick({R.id.ib_launchScanner, R.id.fab_launchScanner})
     public void loadAadharScanner() {
         ArrayList<String> formatList = new ArrayList<>();
         formatList.add(BarcodeFormat.QR_CODE.toString());
@@ -176,19 +176,27 @@ public class AadharCardFragment extends BaseBindableFragment<AadharService.Aadha
     public void bindDataToForm(AadharService.AadharDetail value) {
         setVisibleChildView(vg_form);
         //TODO: Replace with form binding
-        if(value!= null) {
-            name.setText(value.getName());
-            address.setText(value.getAddress());
-            aadharNumber.setText(value.getAadharNumber());
+        if (value != null) {
+            if (value.getIsDataComplete())
+                ((MainActivity) getActivity()).makeSubmitButtonVisible();
+
+            if (value.getName() != null)
+                name.setText(value.getName());
+            if (value.getAddress() != null)
+                address.setText(value.getAddress());
+            if (value.getAadharNumber() != null)
+                aadharNumber.setText(value.getAadharNumber());
             gender.setSelection(getGenderAdapter().getPosition(value.getGender()));
-            fatherName.setText(value.getSonOf());
-            birthDay.setText(value.getDob());
+            if (value.getSonOf() != null)
+                fatherName.setText(value.getSonOf());
+            if (value.getDob() != null)
+                birthDay.setText(value.getDob());
         }
     }
 
     @Override
     public AadharService.AadharDetail getDataFromForm(AadharService.AadharDetail detail) {
-        if(detail == null)
+        if (detail == null)
             detail = new AadharService.AadharDetail();
 
         detail.setAddress(address.getText().toString());

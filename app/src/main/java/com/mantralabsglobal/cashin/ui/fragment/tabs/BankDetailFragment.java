@@ -26,6 +26,7 @@ import com.mantralabsglobal.cashin.service.PerfiosService;
 import com.mantralabsglobal.cashin.service.PrimaryBankService;
 import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.activity.app.BaseActivity;
+import com.mantralabsglobal.cashin.ui.activity.app.MainActivity;
 import com.mantralabsglobal.cashin.ui.activity.app.PerfiosActivity;
 import com.mantralabsglobal.cashin.ui.fragment.utils.TabManager;
 import com.mantralabsglobal.cashin.ui.view.BankDetailView;
@@ -74,7 +75,7 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mTabManager = new TabManager(getActivity(),getChildFragmentManager(),android.R.id.tabcontent);
+        mTabManager = new TabManager(getActivity(), getChildFragmentManager(), android.R.id.tabcontent);
 
     }
 
@@ -85,11 +86,11 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
         // Get the view from fragmenttab1.xml
         View view = inflater.inflate(R.layout.fragment_bank_detail, container, false);
 
-        mainLayout = (LinearLayout)view.findViewById(R.id.bank_statement);
+        mainLayout = (LinearLayout) view.findViewById(R.id.bank_statement);
 
-        bank_detail_add_more = (LinearLayout)view.findViewById(R.id.bank_detail);
+        bank_detail_add_more = (LinearLayout) view.findViewById(R.id.bank_detail);
 
-        mTabHost  = mTabManager.handleCreateView(view);
+        mTabHost = mTabManager.handleCreateView(view);
 
         mTabManager.addTab(mTabHost.newTabSpec("blank").setIndicator("Blank Fragment"),
                 BlankFragment.class, null);
@@ -115,12 +116,14 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
         getActivity().startActivityForResult(intent, BaseActivity.PERFIOS_NET_BANKING);
     }
 
-    @OnClick( R.id.eStatement)
+    @OnClick(R.id.eStatement)
     public void eStatementClick() {
         mTabHost.setCurrentTab(2);
         netBanking.setSelected(false);
         eStatement.setSelected(true);
-    };
+    }
+
+    ;
 
     @Override
     protected View getFormView() {
@@ -130,15 +133,17 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        primaryBankService = ((Application)getActivity().getApplication()).getRestClient().getPrimaryBankService();
+        primaryBankService = ((Application) getActivity().getApplication()).getRestClient().getPrimaryBankService();
         reset(false);
     }
 
-/*    @Override
+    @Override
     public void onPause() {
         super.onPause();
         save();
-    }*/
+        netBanking.setSelected(false);
+        eStatement.setSelected(false);
+    }
 
     @Override
     protected void onCreate(List<PrimaryBankService.BankDetail> updatedData, Callback<List<PrimaryBankService.BankDetail>> saveCallback) {
@@ -151,18 +156,17 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
     }
 
     @OnClick(R.id.btn_add_more)
-    public void addMoreInBankStatement(){
-        if(bankDetailViewList == null || bankDetailViewList.size() == 0 || (bankDetailViewList.get(bankDetailViewList.size()-1).getBankDetail().getAccountNumber() != null
-                && bankDetailViewList.get(bankDetailViewList.size()-1).getBankDetail().getAccountNumber().trim().length() > 0)) {
+    public void addMoreInBankStatement() {
+        if (bankDetailViewList == null || bankDetailViewList.size() == 0 || (bankDetailViewList.get(bankDetailViewList.size() - 1).getBankDetail().getAccountNumber() != null
+                && bankDetailViewList.get(bankDetailViewList.size() - 1).getBankDetail().getAccountNumber().trim().length() > 0)) {
 
-            if(bankDetailViewList == null)
+            if (bankDetailViewList == null)
                 bankDetailViewList = new ArrayList<BankDetailView>();
 
             PrimaryBankService.BankDetail bankDetail = new PrimaryBankService.BankDetail();
             onCreateDialog(bankDetail);
-        }
-     else {
-            Toast.makeText(getActivity(), "Please enter account number in previous row!",Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getActivity(), "Please enter account number in previous row!", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -172,10 +176,8 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
         vgInfoBar.setVisibility(View.VISIBLE);
         mainLayout.setVisibility(View.GONE);
         edit_view.setVisibility(View.GONE);
-        for(BankDetailView bdView : bankDetailViewList)
-        {
-            if(!bdView.getBankDetail().isPrimary())
-            {
+        for (BankDetailView bdView : bankDetailViewList) {
+            if (!bdView.getBankDetail().isPrimary()) {
                 vg_bank_details.addView(bdView);
             }
             bdView.getBankDetail().setIsPrimary(false);
@@ -199,16 +201,15 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
         builder.show();
     }
 
-    private void addMoreBankDetail(final PrimaryBankService.BankDetail bankDetail){
+    private void addMoreBankDetail(final PrimaryBankService.BankDetail bankDetail) {
+
         final BankDetailView view = new BankDetailView(getActivity());
         view.setBankDetail(bankDetail);
         view.accountNumber.requestFocus();
         vg_bank_details.addView(view);
         bankDetailViewList.add(view);
         addMoreAccNumberListener(view);
-
     }
-
 
     @Override
     protected void handleDataNotPresentOnServer() {
@@ -218,28 +219,27 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
             public boolean apply(SMSProvider.SMSMessage smsMessage) {
                 return provider.isSenderBank(smsMessage) && provider.hasAccountInformation(smsMessage);
             }
-        }, provider){
+        }, provider) {
 
             @Override
             protected void onProgressUpdate(String... values) {
-                showProgressDialog2(values[0]);
+                /*showProgressDialog2(values[0]); */
             }
+
             @Override
-            protected void onPostExecute( List<PrimaryBankService.BankDetail> bankDetailList) {
+            protected void onPostExecute(List<PrimaryBankService.BankDetail> bankDetailList) {
                 dismissProgressDialog2();
                 bindDataToForm(bankDetailList);
             }
         };
-        showProgressDialog2("Scanning SMS");
+        // showProgressDialog2("Scanning SMS");
         task.execute(Long.MIN_VALUE);
-
     }
 
 /*
     private void sortBankDetailsList(List<PrimaryBankService.BankDetail> bankDetailList, final Map<String, Integer> bankCount) {
         if (bankDetailList.size() > 0) {
             Collections.sort(bankDetailList, new Comparator<PrimaryBankService.BankDetail>() {
-
                 @Override
                 public int compare(PrimaryBankService.BankDetail lhs, PrimaryBankService.BankDetail rhs) {
                     return bankCount.get(rhs.getAccountNumberLast4Digits()).compareTo(bankCount.get(lhs.getAccountNumberLast4Digits()));
@@ -259,20 +259,21 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
     @Override
     public void bindDataToForm(final List<PrimaryBankService.BankDetail> value) {
         if (value != null) {
+            if (value.size() > 1 && value.get(0).getIsDataComplete())
+                ((MainActivity) getActivity()).makeSubmitButtonVisible();
+
             bankDetailViewList = new ArrayList<>();
             for (final PrimaryBankService.BankDetail bankDetail : value) {
                 BankDetailView view = new BankDetailView(getActivity());
                 view.setBankDetail(bankDetail);
+
+                if (!bankDetail.isPrimarySelectedOnce() || ( bankDetail.isPrimarySelectedOnce() && bankDetail.isPrimary() ))
                 vg_bank_details.addView(view);
                 bankDetailViewList.add(view);
                 primaryBankChangeListener(view);
-
             }
         }
     }
-
-
-
 
     private void primaryBankChangeListener(BankDetailView view) {
         view.addPrimaryFlagChangeListener(new BankDetailView.PrimaryFlagChangedListener() {
@@ -286,12 +287,11 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
         });
     }
 
-
     private void addMoreAccNumberListener(final BankDetailView view) {
-        view.addAddMoreAccountNumberListener(new BankDetailView.AddMoreAccountNumberListener(){
+        view.addAddMoreAccountNumberListener(new BankDetailView.AddMoreAccountNumberListener() {
             @Override
             public void onAccountNumberChanged(BankDetailView bankDetailView) {
-                InputMethodManager imm = (InputMethodManager)(getActivity().getSystemService(Context.INPUT_METHOD_SERVICE));
+                InputMethodManager imm = (InputMethodManager) (getActivity().getSystemService(Context.INPUT_METHOD_SERVICE));
                 imm.hideSoftInputFromWindow(view.accountNumber.getWindowToken(), 0);
                 view.accountNumber.clearFocus();
                 primaryBankChangeListener(bankDetailView);
@@ -305,36 +305,35 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
         bank_detail_add_more.setVisibility(View.GONE);
         vgInfoBar.setVisibility(View.GONE);
         mainLayout.setVisibility(View.VISIBLE);
-        for(BankDetailView bdView : bankDetailViewList)
-        {
-            if(bdView != bankDetailView)
-            {
+        for (BankDetailView bdView : bankDetailViewList) {
+            if (bdView != bankDetailView) {
                 bdView.getBankDetail().setIsPrimary(false);
                 vg_bank_details.removeView(bdView);
             }
+            bdView.getBankDetail().setIsPrimarySelectedOnce(true);
             bdView.updateUI();
         }
+        save();
     }
-
 
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(mTabManager.getCurrentFragment() != null)
-            mTabManager.getCurrentFragment().onActivityResult(requestCode,resultCode,data);
+        if (mTabManager.getCurrentFragment() != null)
+            mTabManager.getCurrentFragment().onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode==BaseActivity.PERFIOS_NET_BANKING && resultCode == Activity.RESULT_OK)
-        {
-            PerfiosService.PerfiosStatusUploadTask task = new PerfiosService.PerfiosStatusUploadTask(getActivity()){
+        if (requestCode == BaseActivity.PERFIOS_NET_BANKING && resultCode == Activity.RESULT_OK) {
+            PerfiosService.PerfiosStatusUploadTask task = new PerfiosService.PerfiosStatusUploadTask(getActivity()) {
                 @Override
                 protected void onProgressUpdate(String... values) {
                     showProgressDialog2(values[0]);
                 }
+
                 @Override
                 protected void onPostExecute(PrimaryBankService.PerfiosTransactionResponse result) {
                     dismissProgressDialog2();
-                    if(exception != null)
+                    if (exception != null)
                         showToastOnUIThread("Error:" + exception.getMessage());
                     else
                         showToastOnUIThread("Success");
@@ -347,18 +346,28 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
 
     @Override
     public List<PrimaryBankService.BankDetail> getDataFromForm(List<PrimaryBankService.BankDetail> base) {
-      /*  if(base == null)
-        {
-            base = new PrimaryBankService.BankDetail();
+        if (base == null) {
+            base = getBankDetailList(bankDetailViewList);
+
         }
-        base.setBankName(bankName.getText().toString());
+        /*base.setBankName(bankName.getText().toString());
         base.setAccountNumber(accountNumber.getText().toString());*/
         return base;
     }
+
+    public List<PrimaryBankService.BankDetail> getBankDetailList(List<BankDetailView> bankDetailViewList) {
+        List<PrimaryBankService.BankDetail> bankDetailList = new ArrayList<PrimaryBankService.BankDetail>();
+        if(bankDetailViewList != null)
+        for(int i =0; i < bankDetailViewList.size(); i++)
+            bankDetailList.add(bankDetailViewList.get(i).getBankDetail());
+
+        return bankDetailList;
+    }
+
     @Override
     public void onViewStateRestored(Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
-        if(mTabManager != null)
+        if (mTabManager != null)
             mTabManager.handleViewStateRestored(savedInstanceState);
     }
 
@@ -374,4 +383,8 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
         mTabManager.handleSaveInstanceState(outState);
     }
 
+    @Override
+    public boolean isFormValid() {
+        return true;
+    }
 }

@@ -11,6 +11,7 @@ import android.widget.Switch;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.service.UserHistoryService;
 import com.mantralabsglobal.cashin.ui.Application;
+import com.mantralabsglobal.cashin.ui.activity.app.MainActivity;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
 import butterknife.InjectView;
@@ -58,11 +59,14 @@ public class HistoryFragment extends BaseBindableFragment<UserHistoryService.Use
     @Override
     protected void onUpdate(UserHistoryService.UserHistory updatedData, Callback<UserHistoryService.UserHistory> saveCallback) {
         userHistoryService.updateUserHistory(updatedData, saveCallback);
+        userHistoryService.getNextDetail(saveCallback);
+
     }
 
     @Override
     protected void onCreate(UserHistoryService.UserHistory updatedData, Callback<UserHistoryService.UserHistory> saveCallback) {
         userHistoryService.createUserHistory(updatedData, saveCallback);
+        userHistoryService.getNextDetail(saveCallback);
     }
 
     @Override
@@ -80,6 +84,9 @@ public class HistoryFragment extends BaseBindableFragment<UserHistoryService.Use
     public void bindDataToForm(UserHistoryService.UserHistory value) {
         if(value != null)
         {
+            if(value.getIsDataComplete())
+                ((MainActivity)getActivity()).makeSubmitButtonVisible();
+
             hasDefaulted.check(value.isHasDefaulted() ? R.id.rg_defaulted_yes : R.id.rg_defaulted_no);
             loanTaken.check(value.isLoanTaken() ? R.id.rg_loan_taken_yes : R.id.rg_loan_taken_no);
             chequeBounced.check(value.isChequeBounced() ? R.id.rg_cheque_bounced_yes : R.id.rg_cheque_bounced_no);

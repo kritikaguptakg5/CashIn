@@ -1,5 +1,6 @@
 package com.mantralabsglobal.cashin.ui.fragment.tabs;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -8,10 +9,12 @@ import android.support.design.widget.Snackbar;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import com.google.gson.Gson;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.service.OCRServiceProvider;
+import com.mantralabsglobal.cashin.ui.activity.app.SubmitActivity;
 import com.mantralabsglobal.cashin.ui.view.BirthDayView;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
 import com.mantralabsglobal.cashin.ui.view.CustomSpinner;
@@ -26,6 +29,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 import butterknife.ButterKnife;
+import butterknife.InjectView;
 import butterknife.OnClick;
 import butterknife.Optional;
 import retrofit.Callback;
@@ -41,6 +45,7 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
     private boolean isFormValid;
     private Validator validator;
     protected T serverCopy;
+
     protected boolean isDataPresentOnServer = true;
 
     @Override
@@ -48,18 +53,23 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.inject(this, view);
         validator = new Validator(this);
-
+        registerValidationAdapters(validator);
         validator.setValidationListener(new Validator.ValidationListener() {
             @Override
             public void onValidationSucceeded() {
-                if (getFormView() != null && getFormView().isShown() && getFormView().isEnabled())
+                if (getFormView() != null && getFormView().isShown() && getFormView().isEnabled()) {
+                    Log.d("Get form View1", getFormView() + " is shown " + getFormView().isShown() + " Enabled" + getFormView().isEnabled());
+
                     isFormValid = true;
-                else
+                } else {
+                    Log.d("Get form View2", getFormView() + " is shown " + getFormView().isShown() + " Enabled" + getFormView().isEnabled());
                     isFormValid = false;
+                }
             }
 
             @Override
             public void onValidationFailed(List<ValidationError> errors) {
+                Log.d("Error Get form View", getFormView() + " is shown " + getFormView().isShown() + " Enabled" + getFormView().isEnabled());
                 for (ValidationError ve : errors) {
                     if (ve.getView() instanceof CustomEditText) {
                         ((CustomEditText) ve.getView()).getEditText().setError(ve.getFailedRules().get(0).getMessage(getActivity()));
@@ -122,6 +132,7 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
         save(true);
     }
 
+
     public void save(boolean force) {
         if(isFormValid())
         {
@@ -140,9 +151,9 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
                     onUpdate(updatedData, saveCallback);
                 }
             }
-
         }
     }
+
 
 
 

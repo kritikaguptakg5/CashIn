@@ -2,6 +2,7 @@ package com.mantralabsglobal.cashin.ui.fragment.tabs;
 
 import android.accounts.AccountManager;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -26,6 +27,7 @@ import com.mantralabsglobal.cashin.service.PrimaryBankService;
 import com.mantralabsglobal.cashin.social.GoogleTokenRetrieverTask;
 import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.activity.app.BaseActivity;
+import com.mantralabsglobal.cashin.ui.activity.app.MainActivity;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -46,14 +48,23 @@ public class EStatementFragment extends BaseBindableFragment<EStatementService.E
    /* @InjectView(R.id.btn_scan_gmail)
     BootstrapButton btnScanGmail;*/
 
-    @InjectView(R.id.e_statement_text)
-    TextView eStatementText;
+   /* @InjectView(R.id.e_statement_text)
+    TextView eStatementText;*/
+
+    static int status = -1;
 
     final private List<String> SCOPES = Arrays.asList(new String[]{
             "https://www.googleapis.com/auth/plus.login",
             "https://www.googleapis.com/auth/gmail.readonly"
     });
 
+    public void createDialog(String message){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+        alertDialogBuilder.setMessage(message);
+        alertDialogBuilder.setTitle("E-Statement information");
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
 
     @InjectView(R.id.e_statement_view)
     ViewGroup eStatementView;
@@ -81,6 +92,15 @@ public class EStatementFragment extends BaseBindableFragment<EStatementService.E
         super.onViewCreated(view,savedInstanceState);
         eStatementService = ((Application)getActivity().getApplication()).getRestClient().geteStatementService();
         /*scanGmailForBankStatements();*/
+
+        /*if (status == 1) {
+            createDialog("We already have your last 3 months bank statement");
+                *//*Toast.makeText(getActivity(), "Information already retrieved", Toast.LENGTH_SHORT).show();*//*
+        }
+        else {*/
+           // scanGmailForBankStatements();
+       // }
+
         reset(false);
     }
 
@@ -93,26 +113,33 @@ public class EStatementFragment extends BaseBindableFragment<EStatementService.E
     @Override
     public void bindDataToForm(final EStatementService.EStatement value) {
         if (value != null) {
-            if(value.getStatus() == 1)
-                eStatementText.setText("Information already retrieved");
-                /*Toast.makeText(getActivity(), "Information already retrieved", Toast.LENGTH_SHORT).show();*/
-            else if(value.getStatus() == 0){
+
+            if(value.getIsDataComplete())
+                ((MainActivity)getActivity()).makeSubmitButtonVisible();
+
+            /*if(value.getStatus() == 1)
+                *//*eStatementText.setText("Information already retrieved");*//*
+            createDialog("Information already retrieved");
+                *//*Toast.makeText(getActivity(), "Information already retrieved", Toast.LENGTH_SHORT).show();*//*
+            else if(value.getStatus() == 0){*/
                 scanGmailForBankStatements();
-            }
+           /* }
         }
-        else {
-            save();
+        else {*/
+           // save();
         }
     }
 
     @Override
     protected void onUpdate(EStatementService.EStatement updatedData, Callback<EStatementService.EStatement> saveCallback) {
         eStatementService.createEStatement(updatedData, saveCallback);
+        eStatementService.getNextDetail(saveCallback);
     }
 
     @Override
     protected void onCreate(EStatementService.EStatement updatedData, Callback<EStatementService.EStatement> saveCallback) {
         eStatementService.createEStatement(updatedData, saveCallback);
+        eStatementService.getNextDetail(saveCallback);
     }
 
     @Override
@@ -149,10 +176,9 @@ public class EStatementFragment extends BaseBindableFragment<EStatementService.E
             getActivity().startActivityForResult(googlePicker, BaseActivity.PICK_ACCOUNT_REQUEST);
 
         }
-       /* else
+        /*else
         {
-            btnScanGmail.setText(R.string.change_gmail_account);
-            requestForGmailToken(gmailAccount);
+            createDialog("We already have your last 3 months bank statement");
         }*/
     }
 
@@ -179,13 +205,13 @@ public class EStatementFragment extends BaseBindableFragment<EStatementService.E
             @Override
             public void onException(IOException e) {
                 super.onException(e);
-                showToastOnUIThread(e.getMessage());
+                // showToastOnUIThread(e.getMessage());
             }
 
             @Override
             public void onException(GoogleAuthException e) {
                 super.onException(e);
-                showToastOnUIThread(e.getMessage());
+                 // showToastOnUIThread(e.getMessage());
             }
 
             @Override
@@ -193,6 +219,7 @@ public class EStatementFragment extends BaseBindableFragment<EStatementService.E
                 AuthenticationService.UserGoogleAuthCode authCode = new AuthenticationService.UserGoogleAuthCode();
                 authCode.setAuthCode(token);
                 authCode.setEmail(email);
+                showToastOnUIThread("Successfully Retrieved!");
                 getCashInApplication().getRestClient().getAuthenticationService().sendGoogleAuthCode(authCode, new Callback<Void>() {
                     @Override
                     public void success(Void aVoid, Response response) {
@@ -201,7 +228,7 @@ public class EStatementFragment extends BaseBindableFragment<EStatementService.E
 
                     @Override
                     public void failure(RetrofitError error) {
-                        showToastOnUIThread(error.getMessage());
+                       // showToastOnUIThread(error.getMessage());
                     }
                 });
                 Log.d(TAG, token);

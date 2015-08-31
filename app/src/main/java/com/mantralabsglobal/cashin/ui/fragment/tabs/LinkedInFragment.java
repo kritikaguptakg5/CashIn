@@ -19,6 +19,7 @@ import com.mantralabsglobal.cashin.social.SocialBase;
 import com.mantralabsglobal.cashin.social.SocialFactory;
 import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.activity.app.BaseActivity;
+import com.mantralabsglobal.cashin.ui.activity.app.MainActivity;
 import com.mantralabsglobal.cashin.ui.activity.social.OAuthActivity;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
@@ -99,11 +100,13 @@ public class LinkedInFragment extends BaseBindableFragment<LinkedInService.Linke
     @Override
     protected void onUpdate(LinkedInService.LinkedInDetail updatedData, Callback<LinkedInService.LinkedInDetail> saveCallback) {
         linkedInService.updateLinkedInDetail(updatedData, saveCallback);
+        linkedInService.getNextDetail(saveCallback);
     }
 
     @Override
     protected void onCreate(LinkedInService.LinkedInDetail updatedData, Callback<LinkedInService.LinkedInDetail> saveCallback) {
         linkedInService.createLinkedInDetail(updatedData, saveCallback);
+        linkedInService.getNextDetail(saveCallback);
     }
 
     @Override
@@ -194,6 +197,10 @@ public class LinkedInFragment extends BaseBindableFragment<LinkedInService.Linke
     public void bindDataToForm(LinkedInService.LinkedInDetail value) {
         setVisibleChildView(vg_linkedInProfile);
         if(value != null) {
+
+            if(value.getIsDataComplete())
+                ((MainActivity)getActivity()).makeSubmitButtonVisible();
+
             this.connectedAs.setText(value.getConnectedAs());
             if(value.getWorkExperience() != null) {
                 this.jobTitle.setText(value.getWorkExperience().getJobTitle());

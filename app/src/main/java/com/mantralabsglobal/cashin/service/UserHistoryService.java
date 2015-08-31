@@ -16,6 +16,9 @@ public interface UserHistoryService {
     @GET("/user/history")
     void getUserHistory( Callback<UserHistory> callback);
 
+    @GET("/user/next?type=obj")
+    void getNextDetail( Callback<UserHistory> callback);
+
     @POST("/user/history")
     void createUserHistory(@Body UserHistory userHistory, Callback<UserHistory> callback);
 
@@ -30,7 +33,15 @@ public interface UserHistoryService {
         private boolean applicationRejected;
         @SerializedName("isDefaulted")
         private boolean hasDefaulted;
+        private boolean isDataComplete;
 
+        public boolean getIsDataComplete() {
+            return isDataComplete;
+        }
+
+        public void setIsDataComplete(boolean isDataComplete) {
+            this.isDataComplete = isDataComplete;
+        }
         public boolean isLoanTaken() {
             return loanTaken;
         }

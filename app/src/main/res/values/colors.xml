@@ -24,4 +24,7 @@
     <color name="gray_background">#d3d3d3</color>
     <color name="bank_statement_clicked">#d3d3d3</color>
     <color name="bank_statement">#bbb</color>
+    <color name="submit_button">#3adf00</color>
+    <color name="submit_button_clicked">#64fe2e</color>
+
 </resources>

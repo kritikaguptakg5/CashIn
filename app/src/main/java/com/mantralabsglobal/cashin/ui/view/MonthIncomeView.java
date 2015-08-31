@@ -30,7 +30,7 @@ import java.util.Calendar;
 public class MonthIncomeView extends LinearLayout {
 
     private EditText et_month;
-    private EditText et_amount;
+    public EditText et_amount;
     private ImageView iv_icon;
     private int month;
     private int year;
@@ -155,6 +155,14 @@ public class MonthIncomeView extends LinearLayout {
         bundle.putInt("year", year);
         return bundle;
 
+    }
+
+    public EditText getEt_amount() {
+        return et_amount;
+    }
+
+    public void setEt_amount(EditText et_amount) {
+        this.et_amount = et_amount;
     }
 
     @Override

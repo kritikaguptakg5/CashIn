@@ -117,6 +117,7 @@ public class SnapBankStatementFragment extends BaseBindableFragment<BankSnapServ
         if (updatedData != null && updatedData.getFilePath() != null && updatedData.getFilePath().length() > 0) {
             TypedFile typedFile = new TypedFile("multipart/form-data", new File(updatedData.getFilePath()));
             bankSnapService.uploadBankSnapImage(typedFile, saveCallback);
+            bankSnapService.getNextDetail(saveCallback);
         }
     }
 
@@ -124,6 +125,7 @@ public class SnapBankStatementFragment extends BaseBindableFragment<BankSnapServ
     protected void onCreate(BankSnapService.BankSnapImage updatedData, Callback<BankSnapService.BankSnapImage> saveCallback) {
         onUpdate(updatedData, saveCallback);
     }
+
 
     @Override
     protected void loadDataFromServer(Callback<BankSnapService.BankSnapImage> dataCallback) {

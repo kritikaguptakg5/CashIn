@@ -1,132 +1,239 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent" android:id="@+id/currentLocationLayout" android:layout_height="match_parent" android:orientation="vertical">
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/currentLocationLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <FrameLayout android:id="@+id/vg_address_form" android:visibility="visible"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <ScrollView
+        <ScrollView
+            style="@style/AppTheme.Form.ScrollView"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" style="@style/AppTheme.Form.ScrollView">
-        <LinearLayout
-             android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
-
-            <TextView android:id="@+id/adressTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:text="Address"  android:layout_alignParentTop="true" />
-
-            <com.mantralabsglobal.cashin.ui.view.CustomEditText
-                android:id="@+id/cc_street"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" app:field_label="@string/street" app:field_icon="@drawable/ic_identity"/>
-
-            <com.mantralabsglobal.cashin.ui.view.CustomEditText
-                android:id="@+id/cc_city"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" app:field_label="@string/city" app:field_icon="@drawable/ic_identity"/>
-
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:orientation="horizontal">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <com.mantralabsglobal.cashin.ui.view.CustomEditText
-                    android:id="@+id/cc_state"
-                    android:layout_width="0dp"
-                    android:layout_weight="2"
-                    android:layout_height="match_parent" app:field_label="@string/state" app:field_icon="@drawable/ic_identity"/>
-
-                <com.mantralabsglobal.cashin.ui.view.CustomEditText
-                    android:id="@+id/cc_pincode"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content" app:field_label="@string/pincode"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:orientation="vertical">
-
-                <TextView android:layout_below="@+id/seperatorView" android:id="@+id/ownOrRentedTextView"
-                    android:layout_marginTop="@dimen/form_input_margin_top"
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"  android:text="@string/house_own_or_rented"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp">
 
-                <RadioGroup  android:id="@+id/ownOrRentedRadioGroup"
-                    android:layout_marginTop="@dimen/form_input_margin_top"
+                    <CheckBox
+                        android:id="@+id/chkAadhar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:checked="false"
+                        android:text="@string/same_as_aadhaar_address" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/aadhaar_address_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:orientation="horizontal"  >
-                    <RadioButton
-                        android:id="@+id/rb_rent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:text="@string/rent" />
-                    <RadioButton
-                        android:id="@+id/rb_own"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:text="@string/owned"/>
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
-                </RadioGroup>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/ac_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:scaleType="center"
+                            android:src="@drawable/ic_home_address" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:text="@string/address" />
+
+                        <EditText
+                            android:id="@+id/aadhar_address_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="2" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/vg_address_form"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/adressTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:text="Address" />
+
+                    <com.mantralabsglobal.cashin.ui.view.CustomEditText
+                        android:id="@+id/cc_street"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:field_icon="@drawable/ic_identity"
+                        app:field_label="@string/street" />
+
+                    <com.mantralabsglobal.cashin.ui.view.CustomEditText
+                        android:id="@+id/cc_city"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:field_icon="@drawable/ic_identity"
+                        app:field_label="@string/city" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.mantralabsglobal.cashin.ui.view.CustomEditText
+                            android:id="@+id/cc_state"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="2"
+                            app:field_icon="@drawable/ic_identity"
+                            app:field_label="@string/state" />
+
+                        <com.mantralabsglobal.cashin.ui.view.CustomEditText
+                            android:id="@+id/cc_pincode"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:field_label="@string/pincode" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/ownOrRentedTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/seperatorView"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/house_own_or_rented" />
+
+                        <RadioGroup
+                            android:id="@+id/ownOrRentedRadioGroup"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/rb_rent"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/rent" />
+
+                            <RadioButton
+                                android:id="@+id/rb_own"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/owned" />
+
+                        </RadioGroup>
+                    </LinearLayout>
+                    <!--<com.mantralabsglobal.cashin.ui.view.CustomSpinner
+                        android:id="@+id/cs_owned_by"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" app:field_label="@string/owned_by" app:field_icon="@drawable/ic_identity"/>-->
+
+                </LinearLayout>
             </LinearLayout>
-            <com.mantralabsglobal.cashin.ui.view.CustomSpinner
-                android:id="@+id/cs_owned_by"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" app:field_label="@string/owned_by" app:field_icon="@drawable/ic_identity"/>
-
-        </LinearLayout>
         </ScrollView>
 
-        <include layout="@layout/back_next_view" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_gravity="bottom"/>
+        <include
+            layout="@layout/back_next_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom" />
 
-        <android.support.design.widget.FloatingActionButton
+        <!--<android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_get_loc_from_gps"
             android:src="@drawable/gps_layer"
             app:fabSize="normal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/AppTheme.Form.FAB"
-            app:borderWidth="0dp"/>
+            app:borderWidth="0dp"/>-->
 
     </FrameLayout>
-        <LinearLayout
-            android:visibility="gone"
-            android:id="@+id/vg_gps_launcher"
-            android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
 
-            <FrameLayout style="@style/AppTheme.Form.Fragment.Top">
+    <LinearLayout
+        android:id="@+id/vg_gps_launcher"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
 
-                <TextView
-                    android:text="Get location from GPS"
-                    style="@style/AppTheme.Form.Fragment.Top.Header"  />
+        <FrameLayout style="@style/AppTheme.Form.Fragment.Top">
 
-                <ImageButton
-                    android:id="@+id/ib_get_gps_location"
-                    style="@style/AppTheme.Form.Fragment.Top.Image"  android:src="@drawable/ic_gps_track"/>
+            <TextView
+                style="@style/AppTheme.Form.Fragment.Top.Header"
+                android:text="Get location from GPS" />
 
-            </FrameLayout>
+            <ImageButton
+                android:id="@+id/ib_get_gps_location"
+                style="@style/AppTheme.Form.Fragment.Top.Image"
+                android:src="@drawable/ic_gps_track" />
 
-
-            <View style="@style/AppTheme.Form.Fragment.Seperator"></View>
-
-            <FrameLayout style="@style/AppTheme.Form.Fragment.Bottom">
-
-                <Button
-                    android:id="@+id/btn_edit_address"
-                    style="@style/AppTheme.Form.Fragment.Bottom.Button" android:text="Edit your current address  >"
-                    />
-            </FrameLayout>
-
-        </LinearLayout>
+        </FrameLayout>
 
 
+        <View style="@style/AppTheme.Form.Fragment.Seperator"></View>
+
+        <FrameLayout style="@style/AppTheme.Form.Fragment.Bottom">
+
+            <Button
+                android:id="@+id/btn_edit_address"
+                style="@style/AppTheme.Form.Fragment.Bottom.Button"
+                android:text="Edit your current address  >" />
+        </FrameLayout>
+
+    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/progres_bar"
+        style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:visibility="gone" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -18,6 +18,9 @@ public interface ReferenceService {
     @GET("/user/referenceDetail")
     void getReferences(Callback<List<Reference>> callback);
 
+    @GET("/user/next?type=lis")
+    void getNextDetail( Callback<List<Reference>> callback);
+
     @POST("/user/addReference")
     void addReferences(@Body List<Reference> bankDetail, Callback<List<Reference>> callback);
 
@@ -34,7 +37,15 @@ public interface ReferenceService {
         private String relationship;
         @SerializedName("refEmail")
         private String email;
+        private boolean isDataComplete;
 
+        public boolean getIsDataComplete() {
+            return isDataComplete;
+        }
+
+        public void setIsDataComplete(boolean isDataComplete) {
+            this.isDataComplete = isDataComplete;
+        }
         public String getName() {
             return name;
         }

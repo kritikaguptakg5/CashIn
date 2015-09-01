@@ -1,6 +1,7 @@
 package com.mantralabsglobal.cashin.ui.activity.app;
 
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -12,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.mantralabsglobal.cashin.R;
+import com.mantralabsglobal.cashin.ui.fragment.adapter.MainFragmentAdapter;
+import com.mantralabsglobal.cashin.ui.fragment.adapter.SubmitAdapter;
 import com.mantralabsglobal.cashin.ui.fragment.tabs.TransUnionFragment;
 
 import butterknife.ButterKnife;
@@ -20,9 +23,11 @@ import butterknife.OnClick;
 
 public class SubmitActivity extends BaseActivity {
 
-    @InjectView(R.id.ask_user_amount)
-    ViewGroup askUserView;
     private Toolbar toolbar;
+    private SubmitAdapter submitAdapter;
+
+    @InjectView(R.id.container_id)
+    public ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +38,9 @@ public class SubmitActivity extends BaseActivity {
         setSupportActionBar(toolbar);
 
         ButterKnife.inject(this);
-        Button loanApply = (Button)findViewById(R.id.apply_loan_button);
-        loanApply.setOnClickListener(new View.OnClickListener() {
+        submitAdapter = new SubmitAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(submitAdapter);
+      /*  loanApply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 TransUnionFragment transUnion = new TransUnionFragment();
@@ -43,7 +49,7 @@ public class SubmitActivity extends BaseActivity {
                 askUserView.setVisibility(View.GONE);
                 transact.commit();
             }
-        });
+        });*/
     }
 
 

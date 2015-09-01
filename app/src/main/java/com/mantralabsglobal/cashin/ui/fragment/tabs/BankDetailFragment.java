@@ -140,7 +140,6 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
     @Override
     public void onPause() {
         super.onPause();
-        save();
         netBanking.setSelected(false);
         eStatement.setSelected(false);
     }
@@ -176,12 +175,14 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
         vgInfoBar.setVisibility(View.VISIBLE);
         mainLayout.setVisibility(View.GONE);
         edit_view.setVisibility(View.GONE);
+        vg_bank_details.removeAllViews();
         for (BankDetailView bdView : bankDetailViewList) {
-            if (!bdView.getBankDetail().isPrimary()) {
-                vg_bank_details.addView(bdView);
+            if (bdView.getBankDetail().isPrimary()) {
+                bdView.getBankDetail().setIsPrimary(false);
+                bdView.updateUI();
+             //   vg_bank_details.removeView(bdView);
             }
-            bdView.getBankDetail().setIsPrimary(false);
-            bdView.updateUI();
+                vg_bank_details.addView(bdView);
         }
     }
 
@@ -208,7 +209,9 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
         view.accountNumber.requestFocus();
         vg_bank_details.addView(view);
         bankDetailViewList.add(view);
+        //save();
         addMoreAccNumberListener(view);
+
     }
 
     @Override
@@ -266,11 +269,21 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
             for (final PrimaryBankService.BankDetail bankDetail : value) {
                 BankDetailView view = new BankDetailView(getActivity());
                 view.setBankDetail(bankDetail);
-
-                if (!bankDetail.isPrimarySelectedOnce() || ( bankDetail.isPrimarySelectedOnce() && bankDetail.isPrimary() ))
-                vg_bank_details.addView(view);
                 bankDetailViewList.add(view);
                 primaryBankChangeListener(view);
+
+                if (!bankDetail.isPrimarySelectedOnce()  ) {
+                    vg_bank_details.addView(view);
+                }
+                 else if( bankDetail.isPrimarySelectedOnce() && bankDetail.isPrimary()) {
+                    vg_bank_details.removeAllViews();
+                    vg_bank_details.addView(view);
+                    edit_view.setVisibility(View.VISIBLE);
+                    bank_detail_add_more.setVisibility(View.GONE);
+                    vgInfoBar.setVisibility(View.GONE);
+                    mainLayout.setVisibility(View.VISIBLE);
+                }
+
             }
         }
     }
@@ -280,7 +293,6 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
             @Override
             public void onPrimaryChanged(BankDetailView bankDetailView) {
                 bankDetailView.getBankDetail().setIsPrimary(true);
-                edit_view.setVisibility(View.VISIBLE);
                 bankDetailView.updateUI();
                 handlePrimaryBankSelected(bankDetailView);
             }
@@ -295,24 +307,21 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
                 imm.hideSoftInputFromWindow(view.accountNumber.getWindowToken(), 0);
                 view.accountNumber.clearFocus();
                 primaryBankChangeListener(bankDetailView);
-
             }
         });
     }
 
     private void handlePrimaryBankSelected(BankDetailView bankDetailView) {
 
+        edit_view.setVisibility(View.VISIBLE);
         bank_detail_add_more.setVisibility(View.GONE);
         vgInfoBar.setVisibility(View.GONE);
         mainLayout.setVisibility(View.VISIBLE);
+        vg_bank_details.removeAllViews();
         for (BankDetailView bdView : bankDetailViewList) {
-            if (bdView != bankDetailView) {
-                bdView.getBankDetail().setIsPrimary(false);
-                vg_bank_details.removeView(bdView);
-            }
             bdView.getBankDetail().setIsPrimarySelectedOnce(true);
-            bdView.updateUI();
         }
+        vg_bank_details.addView(bankDetailView);
         save();
     }
 

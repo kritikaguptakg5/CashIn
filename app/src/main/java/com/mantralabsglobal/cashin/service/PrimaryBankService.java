@@ -53,7 +53,7 @@ public interface PrimaryBankService {
         @SerializedName(value = "account_no")
         private String accountNumber;
         private boolean isPrimarySelectedOnce;
-        private boolean isPrimary;
+        private boolean isPrimary = false;
 
         private boolean isDataComplete;
 

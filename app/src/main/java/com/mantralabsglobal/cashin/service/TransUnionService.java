@@ -16,7 +16,7 @@ import retrofit.http.PUT;
  */
 public interface TransUnionService {
 
-    @POST("/user/alldetail")
+    @POST("/user/tuscorecard")
     void createTransUnionsService(@Body TransUnion address, Callback<TransUnion> callback);
 
     @PUT("/user/alldetail")

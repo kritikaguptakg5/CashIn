@@ -1,4 +1,5 @@
 package com.mantralabsglobal.cashin.ui.fragment.tabs;
+import android.support.v4.app.FragmentTransaction;
 
 import android.app.Activity;
 import android.content.Intent;

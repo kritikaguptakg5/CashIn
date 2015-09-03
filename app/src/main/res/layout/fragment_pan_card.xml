@@ -93,7 +93,7 @@
                         style="@style/AppTheme.Form.Fragment.Top.Image" android:src="@drawable/ic_camera_click"
                         />
 
-                    <LinearLayout
+                    <!--<LinearLayout
                         android:layout_width="match_parent"
                         android:id="@+id/success_capture"
                         android:visibility="gone"
@@ -118,7 +118,22 @@
                             android:src="@drawable/edit_logo"
                             />
 
-                    </LinearLayout>
+                    </LinearLayout>-->
+
+                    <FrameLayout android:layout_width="match_parent"
+                        android:id="@+id/success_capture"
+                        android:visibility="gone"
+                        android:layout_marginTop="20dp"
+                        android:layout_height="wrap_content" android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" android:id="@+id/photo_viewer"  />
+
+                        <ImageButton android:id="@+id/edit_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:src="@drawable/ic_profile_edit_icon" android:layout_gravity="bottom|end" android:background="@drawable/round_button_translucent" android:layout_margin="20dp" />
+                    </FrameLayout>
 
                 </LinearLayout>
 

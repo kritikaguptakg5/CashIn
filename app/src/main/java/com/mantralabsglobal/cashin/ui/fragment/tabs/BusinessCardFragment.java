@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 
 import com.mantralabsglobal.cashin.BuildConfig;
@@ -80,6 +81,9 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
 
     @InjectView(R.id.total_work_experience)
     public CustomEditText total_work_experience;
+
+    @InjectView(R.id.photo_viewer)
+    ImageView photoViewer;
 
     @InjectView(R.id.joining_date)
     public BirthDayView joining_date;
@@ -206,7 +210,7 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
     }
 
     /*@OnClick( {R.id.ib_launch_camera, R.id.fab_launch_camera})*/
-    @OnClick( {R.id.ib_launch_camera, R.id.edit_icon })
+    @OnClick( {R.id.ib_launch_camera, R.id.edit_button })
     public void launchCamera() {
         Intent intent = new Intent(getActivity(), CwacCameraActivity.class);
         intent.putExtra(CwacCameraActivity.SHOW_CAMERA_SWITCH, false);
@@ -231,7 +235,7 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
 
                 Uri destination = Uri.fromFile(new File(getActivity().getExternalFilesDir(null), "business-card-cropped.jpg"));
                 Crop.of(Uri.fromFile(new File(data.getStringExtra("file_path")))
-                        , destination).asSquare().withAspect(3,2).start(getActivity(), BaseActivity.IMAGE_CROP_BUSINESS_CARD);
+                        , destination).asSquare().withAspect(2, 1).withMaxSize(600, 300).start(getActivity(), BaseActivity.IMAGE_CROP_BUSINESS_CARD);
 
                 Log.d(TAG, "onActivityResult, resultCode " + resultCode + " filepath = " +data.getStringExtra("file_path"));
             }
@@ -247,12 +251,14 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
     private void handleCrop(int resultCode, Intent result) {
         if (resultCode == Activity.RESULT_OK) {
             showProgressDialog(getString(R.string.processing_image));
-            Bitmap binary = new ImageUtils().binarize( BitmapFactory.decodeFile(Crop.getOutput(result).getPath()));
+            Bitmap colouredBinary = BitmapFactory.decodeFile(Crop.getOutput(result).getPath());
+            Bitmap binary = new ImageUtils().binarize(colouredBinary);
             uploadImageToServerForOCR(binary, BusinessCardFragment.this);
 
             imageButtonClicked = true;
             camera_capture.setVisibility(View.GONE);
             success_capture.setVisibility(View.VISIBLE);
+            photoViewer.setImageBitmap(colouredBinary);
 
         } else if (resultCode == Crop.RESULT_ERROR) {
             hideProgressDialog();

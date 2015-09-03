@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.mantralabsglobal.cashin.BuildConfig;
 import com.mantralabsglobal.cashin.R;
@@ -52,6 +53,9 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
 
     /*@InjectView(R.id.cc_name)
     public CustomEditText name;*/
+
+    @InjectView(R.id.photo_viewer)
+    ImageView photoViewer;
 
     @InjectView(R.id.cc_pan)
     public CustomEditText panNumber;
@@ -134,7 +138,7 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
 
     /*@OnClick( {R.id.ib_launch_camera, R.id.fab_launch_camera}
     )*/
-    @OnClick( {R.id.ib_launch_camera, R.id.edit_icon})
+    @OnClick( {R.id.ib_launch_camera, R.id.edit_button})
     public void launchCamera() {
         Intent intent = new Intent(getActivity(), CwacCameraActivity.class);
         intent.putExtra(CwacCameraActivity.SHOW_CAMERA_SWITCH, false);
@@ -177,7 +181,7 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
 
     private void beginCrop(Uri source) {
         Uri destination = Uri.fromFile(new File(getActivity().getExternalFilesDir(null), "pan-card-cropped.jpg"));
-        Crop.of(source, destination).asSquare().withAspect(3,2).start(getActivity(), BaseActivity.IMAGE_CROP_PAN_CARD);
+        Crop.of(source, destination).asSquare().withAspect(2,1).withMaxSize(600,300).start(getActivity(), BaseActivity.IMAGE_CROP_PAN_CARD);
     }
 
     @Override
@@ -193,7 +197,8 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
     private void handleCrop(int resultCode, Intent result) {
         if (resultCode == Activity.RESULT_OK) {
             showProgressDialog(getString(R.string.processing_image));
-            Bitmap binary = new ImageUtils().binarize( BitmapFactory.decodeFile(Crop.getOutput(result).getPath()));
+            Bitmap colouredBinary = BitmapFactory.decodeFile(Crop.getOutput(result).getPath());
+            Bitmap binary = new ImageUtils().binarize( colouredBinary );
             uploadImageToServerForOCR(binary, PANCardFragment.this);
            /* if (BuildConfig.DEBUG) {
                 showImageDialog(binary);
@@ -202,7 +207,7 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
             cameraClicked = true;
             camera_capture.setVisibility(View.GONE);
             success_capture.setVisibility(View.VISIBLE);
-
+            photoViewer.setImageBitmap(colouredBinary);
            /* if(panName != null)
                 name.setText(panName);*/
             if(dateOfBirth != null)

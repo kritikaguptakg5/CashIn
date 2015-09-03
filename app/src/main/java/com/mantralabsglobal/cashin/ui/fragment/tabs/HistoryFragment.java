@@ -58,7 +58,7 @@ public class HistoryFragment extends BaseBindableFragment<UserHistoryService.Use
 
     @Override
     protected void onUpdate(UserHistoryService.UserHistory updatedData, Callback<UserHistoryService.UserHistory> saveCallback) {
-        userHistoryService.updateUserHistory(updatedData, saveCallback);
+        userHistoryService.createUserHistory(updatedData, saveCallback);
         userHistoryService.getNextDetail(saveCallback);
 
     }

@@ -211,7 +211,7 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
             if(beforeBindDataToForm(value, response))
                 bindDataToForm(value);
             //showToastOnUIThread(getString(R.string.save_sucess));
-            hideProgressDialog();
+           // hideProgressDialog();
         }
 
         @Override

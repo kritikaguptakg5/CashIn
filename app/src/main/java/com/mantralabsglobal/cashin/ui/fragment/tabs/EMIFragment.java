@@ -16,6 +16,7 @@ import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.service.EMIService;
 import com.mantralabsglobal.cashin.service.IncomeService;
 import com.mantralabsglobal.cashin.ui.Application;
+import com.mantralabsglobal.cashin.ui.activity.app.MainActivity;
 import com.mantralabsglobal.cashin.ui.fragment.adapter.EMIAdapter;
 
 import java.util.ArrayList;
@@ -84,6 +85,7 @@ public class EMIFragment extends BaseBindableListFragment<EMIService.EMI> {
     @Override
     protected void onCreate(List<EMIService.EMI> updatedData, Callback<List<EMIService.EMI>> saveCallback) {
         emiService.createEMI(updatedData, saveCallback);
+        emiService.getEMIDetail(saveCallback);
     }
 
     @Override
@@ -100,6 +102,9 @@ public class EMIFragment extends BaseBindableListFragment<EMIService.EMI> {
 
     @Override
     public void bindDataToForm(List<EMIService.EMI> value) {
+
+        if(value != null && value.size()>1 && value.get(0).getIsDataComplete())
+            ((MainActivity)getActivity()).makeSubmitButtonVisible();
 
     }
 

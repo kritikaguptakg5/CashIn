@@ -13,7 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RadioGroup;
 
 import com.mantralabsglobal.cashin.BuildConfig;
 import com.mantralabsglobal.cashin.R;
@@ -24,7 +27,9 @@ import com.mantralabsglobal.cashin.ui.activity.app.BaseActivity;
 import com.mantralabsglobal.cashin.ui.activity.app.MainActivity;
 import com.mantralabsglobal.cashin.ui.activity.camera.CwacCameraActivity;
 import com.mantralabsglobal.cashin.ui.fragment.camera.CwacCameraFragment;
+import com.mantralabsglobal.cashin.ui.view.BirthDayView;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
+import com.mantralabsglobal.cashin.ui.view.MonthIncomeView;
 import com.mantralabsglobal.cashin.utils.BusinessCardUtils;
 import com.mantralabsglobal.cashin.utils.CameraUtils;
 import com.mantralabsglobal.cashin.utils.ImageUtils;
@@ -50,11 +55,17 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
     private static final String TAG = "BusinessCardFragment";
     @InjectView(R.id.ll_business_card_snap)
     public ViewGroup vg_snap;
+
+    static boolean imageButtonClicked;
+
     @InjectView(R.id.ll_business_card_detail)
     public ViewGroup vg_form;
 
     @InjectView(R.id.success_capture)
     public ViewGroup success_capture;
+
+    @InjectView(R.id.type_of_employement)
+    RadioGroup employement_type;
 
     @InjectView(R.id.enterWorkDetailsButton)
     public Button btn_enter_details;
@@ -62,14 +73,22 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
     @InjectView(R.id.ib_launch_camera)
     public ImageButton camera_capture;
 
-    @NotEmpty
     @InjectView(R.id.cc_employer_name)
     public CustomEditText employerName;
 
-    @NotEmpty
-    @Email
     @InjectView(R.id.cc_work_email_id)
     public CustomEditText emailId;
+
+    @InjectView(R.id.total_work_experience)
+    public CustomEditText total_work_experience;
+
+    @InjectView(R.id.photo_viewer)
+    ImageView photoViewer;
+
+    @InjectView(R.id.joining_date)
+    public BirthDayView joining_date;
+
+    String experience,employer, emailID, joiningDate;
 
   /*  @InjectView(R.id.fab_launch_camera)
     public FloatingActionButton fab_launchCamera;*/
@@ -99,6 +118,12 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
         registerChildView(vg_snap, View.GONE);
         registerChildView(vg_form, View.VISIBLE);
        // registerFloatingActionButton(fab_launchCamera, vg_form);
+        //joining_date.et_amount.setVisibility(View.GONE);
+        employement_type.check( R.id.full_time );
+
+        if(imageButtonClicked) {
+        camera_capture.setVisibility(View.GONE);
+        success_capture.setVisibility(View.VISIBLE); }
 
         reset(false);
     }
@@ -109,11 +134,13 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
     @Override
     protected void onUpdate(BusinessCardService.BusinessCardDetail updatedData, Callback<BusinessCardService.BusinessCardDetail> saveCallback) {
         businessCardService.updateBusinessCardDetail(updatedData, saveCallback);
+        businessCardService.getNextDetail(saveCallback);
     }
 
     @Override
     protected void onCreate(BusinessCardService.BusinessCardDetail updatedData, Callback<BusinessCardService.BusinessCardDetail> saveCallback) {
         businessCardService.createBusinessCardDetail(updatedData, saveCallback);
+        businessCardService.getNextDetail(saveCallback);
     }
 
     @Override
@@ -136,12 +163,27 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
     @Override
     public void bindDataToForm(BusinessCardService.BusinessCardDetail value) {
         setVisibleChildView(vg_form);
-        if(value != null)
+        if(value != null && experience == null && employer == null && emailID == null && joiningDate == null )
         {
+
+            if(value.getIsDataComplete())
+                ((MainActivity)getActivity()).makeSubmitButtonVisible();
+
+            if(value.getEmployerName() != null)
             employerName.setText(value.getEmployerName());
             String concatAddress = StringUtils.join(value.getaddressLines(), ",");
           //  workAddress.setText(concatAddress);
+            if(value.getEmail() != null)
             emailId.setText(value.getEmail());
+            if(value.getWorkExperience() != null)
+            total_work_experience.setText(value.getWorkExperience());
+         //   joining_date.setText(value.getMonth());
+          //  joining_date.setYear(value.getYear());
+
+            if(value.getJoiningDate() != null)
+                joining_date.setText(value.getJoiningDate());
+
+            employement_type.check(value.isEmployementType() ? R.id.contract_basis : R.id.full_time);
         }
     }
 
@@ -151,14 +193,24 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
             base = new BusinessCardService.BusinessCardDetail();
 
         base.setEmployerName(employerName.getText().toString());
-      //  base.setAddress(Arrays.asList(workAddress.getText().toString()));
+      // base.setAddress(Arrays.asList(workAddress.getText().toString()));
         base.setEmail(emailId.getText().toString());
+        base.setEmployementType(employement_type.getCheckedRadioButtonId() == R.id.contract_basis);
+       // base.setYear(joining_date.getYear());
+        //base.setMonth(joining_date.getMonth());
+        base.setWorkExperience(total_work_experience.getText().toString());
+        base.setJoiningDate(joining_date.getText().toString());
+
+        experience = total_work_experience.getText().toString();
+        employer =  employerName.getText().toString();
+        emailID = emailId.getText().toString();
+        joiningDate = joining_date.getText().toString();
 
         return base;
     }
 
     /*@OnClick( {R.id.ib_launch_camera, R.id.fab_launch_camera})*/
-    @OnClick( {R.id.ib_launch_camera, R.id.edit_icon })
+    @OnClick( {R.id.ib_launch_camera, R.id.edit_button })
     public void launchCamera() {
         Intent intent = new Intent(getActivity(), CwacCameraActivity.class);
         intent.putExtra(CwacCameraActivity.SHOW_CAMERA_SWITCH, false);
@@ -183,7 +235,7 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
 
                 Uri destination = Uri.fromFile(new File(getActivity().getExternalFilesDir(null), "business-card-cropped.jpg"));
                 Crop.of(Uri.fromFile(new File(data.getStringExtra("file_path")))
-                        , destination).asSquare().withAspect(3,2).start(getActivity(), BaseActivity.IMAGE_CROP_BUSINESS_CARD);
+                        , destination).asSquare().withAspect(2, 1).withMaxSize(600, 300).start(getActivity(), BaseActivity.IMAGE_CROP_BUSINESS_CARD);
 
                 Log.d(TAG, "onActivityResult, resultCode " + resultCode + " filepath = " +data.getStringExtra("file_path"));
             }
@@ -192,7 +244,6 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
                 reset(false);
             }
         }  else if (requestCode == BaseActivity.IMAGE_CROP_BUSINESS_CARD) {
-
             handleCrop(resultCode, data);
         }
     }
@@ -200,14 +251,14 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
     private void handleCrop(int resultCode, Intent result) {
         if (resultCode == Activity.RESULT_OK) {
             showProgressDialog(getString(R.string.processing_image));
-            Bitmap binary = new ImageUtils().binarize( BitmapFactory.decodeFile(Crop.getOutput(result).getPath()));
+            Bitmap colouredBinary = BitmapFactory.decodeFile(Crop.getOutput(result).getPath());
+            Bitmap binary = new ImageUtils().binarize(colouredBinary);
             uploadImageToServerForOCR(binary, BusinessCardFragment.this);
-            if (BuildConfig.DEBUG) {
-                showImageDialog(binary);
-            }
 
+            imageButtonClicked = true;
             camera_capture.setVisibility(View.GONE);
             success_capture.setVisibility(View.VISIBLE);
+            photoViewer.setImageBitmap(colouredBinary);
 
         } else if (resultCode == Crop.RESULT_ERROR) {
             hideProgressDialog();
@@ -225,7 +276,11 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
     @Override
     public void getDetailFromImage(CardImage image, Callback<BusinessCardService.BusinessCardDetail> callback) {
         businessCardService.getBusinessCardDetailFromImage(image, callback);
+    }
 
+    @Override
+    public boolean isFormValid() {
+        return true;
     }
 
 }

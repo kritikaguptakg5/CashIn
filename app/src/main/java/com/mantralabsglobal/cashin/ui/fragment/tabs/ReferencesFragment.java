@@ -17,6 +17,7 @@ import com.mantralabsglobal.cashin.service.ReferenceService;
 import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.activity.app.BaseActivity;
 import com.mantralabsglobal.cashin.ui.activity.app.ContactPickerActivity;
+import com.mantralabsglobal.cashin.ui.activity.app.MainActivity;
 import com.mantralabsglobal.cashin.ui.activity.app.SendReferralMessageActivity;
 import com.mantralabsglobal.cashin.ui.fragment.adapter.ReferenceListAdapter;
 
@@ -72,11 +73,13 @@ public class ReferencesFragment extends BaseBindableListFragment<ReferenceServic
     @Override
     protected void onUpdate(List<ReferenceService.Reference> updatedData, Callback<List<ReferenceService.Reference>> saveCallback) {
         referenceService.updateReferences(updatedData, saveCallback);
+        referenceService.getNextDetail(saveCallback);
     }
 
     @Override
     protected void onCreate(List<ReferenceService.Reference> updatedData, Callback<List<ReferenceService.Reference>> saveCallback) {
         referenceService.addReferences(updatedData,saveCallback);
+        referenceService.getNextDetail(saveCallback);
     }
 
     @Override
@@ -147,6 +150,10 @@ public class ReferencesFragment extends BaseBindableListFragment<ReferenceServic
     public void bindDataToForm(List<ReferenceService.Reference> value) {
         setVisibleChildView(vgReferenceDetail);
         if(value!= null) {
+
+            if(value.get(0).getIsDataComplete())
+                ((MainActivity)getActivity()).makeSubmitButtonVisible();
+
             ExpandableListView expandableListView = (ExpandableListView) getCurrentView().findViewById(R.id.elv_reference_list);
             expandableListView.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
             if(referenceListAdapter == null)

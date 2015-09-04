@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.mantralabsglobal.cashin.BuildConfig;
 import com.mantralabsglobal.cashin.R;
@@ -20,8 +21,10 @@ import com.mantralabsglobal.cashin.service.OCRServiceProvider;
 import com.mantralabsglobal.cashin.service.PanCardService;
 import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.activity.app.BaseActivity;
+import com.mantralabsglobal.cashin.ui.activity.app.MainActivity;
 import com.mantralabsglobal.cashin.ui.activity.camera.CwacCameraActivity;
 import com.mantralabsglobal.cashin.ui.fragment.camera.CwacCameraFragment;
+import com.mantralabsglobal.cashin.ui.view.BirthDayView;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
 import com.mantralabsglobal.cashin.utils.ImageUtils;
 import com.mantralabsglobal.cashin.utils.PANUtils;
@@ -44,30 +47,36 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
 
     @InjectView(R.id.vg_pan_card_scan)
     public ViewGroup vg_scan;
+
     @InjectView(R.id.vg_pan_card_form)
     public ViewGroup vg_form;
 
-    @NotEmpty
-    @InjectView(R.id.cc_name)
-    public CustomEditText name;
+    /*@InjectView(R.id.cc_name)
+    public CustomEditText name;*/
 
-    @NotEmpty
+    @InjectView(R.id.photo_viewer)
+    ImageView photoViewer;
+
     @InjectView(R.id.cc_pan)
     public CustomEditText panNumber;
 
+    static boolean cameraClicked;
+
     @InjectView(R.id.success_capture)
     public ViewGroup success_capture;
+
+    String panName, panNo, dateOfBirth;
 
     @InjectView(R.id.ib_launch_camera)
     public ImageButton camera_capture;
 
    /* @NotEmpty
     @InjectView(R.id.cc_father_name)
-    public CustomEditText fatherName;
+    public CustomEditText fatherName;*/
 
     @NotEmpty
     @InjectView(R.id.cc_dob)
-    public BirthDayView dob;*/
+    public BirthDayView dob;
 
     PanCardService panCardService;
     PanCardService panCardServiceOCR;
@@ -92,6 +101,11 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
         registerChildView(vg_scan, View.GONE);
 //        registerFloatingActionButton((FloatingActionButton) getCurrentView().findViewById(R.id.fab_launch_camera), getCurrentView().findViewById(R.id.vg_pan_card_form));
 
+        if(cameraClicked) {
+            camera_capture.setVisibility(View.GONE);
+            success_capture.setVisibility(View.VISIBLE);
+        }
+
         reset(false);
     }
 
@@ -103,11 +117,13 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
     @Override
     protected void onUpdate(PanCardService.PanCardDetail updatedData, Callback<PanCardService.PanCardDetail> saveCallback) {
         panCardService.updatePanCardDetail(updatedData, saveCallback);
+        panCardService.getNextDetail(saveCallback);
     }
 
     @Override
     protected void onCreate(PanCardService.PanCardDetail updatedData, Callback<PanCardService.PanCardDetail> saveCallback) {
         panCardService.createPanCardDetail(updatedData, saveCallback);
+        panCardService.getNextDetail(saveCallback);
     }
 
     @Override
@@ -122,7 +138,7 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
 
     /*@OnClick( {R.id.ib_launch_camera, R.id.fab_launch_camera}
     )*/
-    @OnClick( {R.id.ib_launch_camera, R.id.edit_icon})
+    @OnClick( {R.id.ib_launch_camera, R.id.edit_button})
     public void launchCamera() {
         Intent intent = new Intent(getActivity(), CwacCameraActivity.class);
         intent.putExtra(CwacCameraActivity.SHOW_CAMERA_SWITCH, false);
@@ -165,30 +181,40 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
 
     private void beginCrop(Uri source) {
         Uri destination = Uri.fromFile(new File(getActivity().getExternalFilesDir(null), "pan-card-cropped.jpg"));
-        Crop.of(source, destination).asSquare().withAspect(3,2).start(getActivity(), BaseActivity.IMAGE_CROP_PAN_CARD);
+        Crop.of(source, destination).asSquare().withAspect(2,1).withMaxSize(600,300).start(getActivity(), BaseActivity.IMAGE_CROP_PAN_CARD);
     }
 
     @Override
     protected void preProcessOCRData(PanCardService.PanCardDetail detail) {
         String newName = PANUtils.getName(detail.getContentarr(), 5);
         String newPAN = PANUtils.getPANNumber(detail.getContentarr(), 5);
-        if(StringUtils.isNotEmpty(newName))
+        if(panName == null &&  StringUtils.isNotEmpty(newName))
             detail.setName(newName);
-        if(StringUtils.isNoneEmpty(newPAN))
+        if(panNo == null && StringUtils.isNoneEmpty(newPAN))
             detail.setPanNumber(newPAN);
     }
 
     private void handleCrop(int resultCode, Intent result) {
         if (resultCode == Activity.RESULT_OK) {
             showProgressDialog(getString(R.string.processing_image));
-            Bitmap binary = new ImageUtils().binarize( BitmapFactory.decodeFile(Crop.getOutput(result).getPath()));
+            Bitmap colouredBinary = BitmapFactory.decodeFile(Crop.getOutput(result).getPath());
+            Bitmap binary = new ImageUtils().binarize( colouredBinary );
             uploadImageToServerForOCR(binary, PANCardFragment.this);
            /* if (BuildConfig.DEBUG) {
                 showImageDialog(binary);
             }*/
 
+            cameraClicked = true;
             camera_capture.setVisibility(View.GONE);
             success_capture.setVisibility(View.VISIBLE);
+            photoViewer.setImageBitmap(colouredBinary);
+           /* if(panName != null)
+                name.setText(panName);*/
+            if(dateOfBirth != null)
+                dob.setText(dateOfBirth);
+
+            if(panNo != null)
+                panNumber.setText(panNo);
 
         } else if (resultCode == Crop.RESULT_ERROR) {
             hideProgressDialog();
@@ -200,12 +226,21 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
     @Override
     public void bindDataToForm(PanCardService.PanCardDetail value) {
         setVisibleChildView(vg_form);
-        if(value != null)
+        if(value != null && panNo == null && panName == null)
         {
-            name.setText(value.getName());
+
+            if(value.getIsDataComplete())
+                ((MainActivity)getActivity()).makeSubmitButtonVisible();
+
+           /* if(value.getName() != null)
+            name.setText(value.getName());*/
+
             //fatherName.setText(value.getSonOf());
+            if(value.getPanNumber() != null)
             panNumber.setText(value.getPanNumber());
-            //dob.setText(value.getDob());
+
+            if(value.getDob() != null)
+            dob.setText(value.getDob());
         }
     }
 
@@ -213,9 +248,12 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
     public PanCardService.PanCardDetail getDataFromForm(PanCardService.PanCardDetail base) {
         if(base == null)
             base = new PanCardService.PanCardDetail();
-        base.setName(name.getText().toString());
-        //base.setDob(dob.getText().toString());
+       // base.setName(name.getText().toString());
+       // panName = name.getText().toString();
+        base.setDob(dob.getText().toString());
+        dateOfBirth = dob.getText().toString();
         base.setPanNumber(panNumber.getText().toString());
+        panNo = panNumber.getText().toString();
         return base;
     }
 
@@ -224,4 +262,8 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
         panCardServiceOCR.getPanCardDetailFromImage(image, callback);
     }
 
+    @Override
+    public boolean isFormValid() {
+        return true;
+    }
 }

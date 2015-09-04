@@ -18,6 +18,9 @@ public interface BusinessCardService {
     @GET("/user/businessCard")
     void getBusinessCardDetail(Callback<BusinessCardDetail> callback);
 
+    @GET("/user/next?type=obj")
+    void getNextDetail( Callback<BusinessCardDetail> callback);
+
     @POST("/user/businessCard")
     void createBusinessCardDetail(@Body BusinessCardDetail businessCardDetail, Callback<BusinessCardDetail> callback);
 
@@ -43,6 +46,68 @@ public interface BusinessCardService {
 
         @SerializedName("Name")
         private String name;
+
+        @SerializedName("TotalExperience")
+        private String workExperience;
+
+        @SerializedName("TypeofEmployement")
+        private boolean employementType;
+
+        @SerializedName("Year")
+        private int year;
+        @SerializedName("Month")
+        private int month;
+        private boolean isDataComplete;
+
+        String joiningDate;
+
+        public String getJoiningDate() {
+            return joiningDate;
+        }
+
+        public void setJoiningDate(String joiningDate) {
+            this.joiningDate = joiningDate;
+        }
+
+        public boolean getIsDataComplete() {
+            return isDataComplete;
+        }
+
+        public void setIsDataComplete(boolean isDataComplete) {
+            this.isDataComplete = isDataComplete;
+        }
+        public int getMonth() {
+            return month;
+        }
+
+        public void setMonth(int month) {
+            this.month = month;
+        }
+
+        public boolean isEmployementType() {
+
+            return employementType;
+        }
+
+        public void setEmployementType(boolean employementType) {
+            this.employementType = employementType;
+        }
+
+        public String getWorkExperience() {
+            return workExperience;
+        }
+
+        public void setWorkExperience(String workExperience) {
+            this.workExperience = workExperience;
+        }
+
+        public int getYear() {
+            return year;
+        }
+
+        public void setYear(int year) {
+            this.year = year;
+        }
 
         public List<String> getaddressLines() {
             return addressLines;

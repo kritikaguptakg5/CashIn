@@ -17,6 +17,7 @@ import com.mantralabsglobal.cashin.social.Facebook;
 import com.mantralabsglobal.cashin.social.SocialFactory;
 import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.activity.app.BaseActivity;
+import com.mantralabsglobal.cashin.ui.activity.app.MainActivity;
 import com.mantralabsglobal.cashin.ui.activity.social.OAuthActivity;
 import com.mantralabsglobal.cashin.ui.view.BirthDayView;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
@@ -117,11 +118,13 @@ public class FacebookFragment extends BaseBindableFragment<FacebookService.Faceb
     @Override
     protected void onUpdate(FacebookService.FacebookProfile updatedData, Callback<FacebookService.FacebookProfile> saveCallback) {
         facebookService.updateFacebokProfile(updatedData, saveCallback);
+        facebookService.getNextDetail(saveCallback);
     }
 
     @Override
     protected void onCreate(FacebookService.FacebookProfile updatedData, Callback<FacebookService.FacebookProfile> saveCallback) {
         facebookService.createFacebokProfile(updatedData, saveCallback);
+        facebookService.getNextDetail(saveCallback);
     }
 
     @Override
@@ -214,6 +217,10 @@ public class FacebookFragment extends BaseBindableFragment<FacebookService.Faceb
         setVisibleChildView(vg_facebookForm);
         if(value != null)
         {
+
+            if(value.getIsDataComplete())
+                ((MainActivity)getActivity()).makeSubmitButtonVisible();
+
             workplace.setText(value.getWorkspace());
             city.setText(value.getCity());
             dob.setText(value.getDob());

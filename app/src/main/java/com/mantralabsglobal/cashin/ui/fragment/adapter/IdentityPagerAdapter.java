@@ -15,13 +15,13 @@ import com.mantralabsglobal.cashin.ui.fragment.tabs.PermanentAddressFragment;
  */
 public class IdentityPagerAdapter extends FragmentPagerAdapter{
 
-    private String tabtitles[] = new String[] { "Aadhar", "PAN", "Current Address" , "Permanent Address"};
+    private String tabtitles[] = new String[] { "Aadhar", "PAN", "Residence Address"/* , "Permanent Address"*/};
 
     AadharCardFragment aadharCardFragment;
     PANCardFragment panCardFragment;
     FragmentManager fragmentManager;
     private CurrentAddressFragment currentAddressFragment;
-    private PermanentAddressFragment permanentAddressFragment;
+   // private PermanentAddressFragment permanentAddressFragment;
 
     public IdentityPagerAdapter(FragmentManager fm) {
         super(fm);
@@ -29,7 +29,7 @@ public class IdentityPagerAdapter extends FragmentPagerAdapter{
         aadharCardFragment = new AadharCardFragment();
         panCardFragment = new PANCardFragment();
         currentAddressFragment = new CurrentAddressFragment();
-        permanentAddressFragment = new PermanentAddressFragment();
+     //   permanentAddressFragment = new PermanentAddressFragment();
     }
 
     @Override
@@ -42,8 +42,8 @@ public class IdentityPagerAdapter extends FragmentPagerAdapter{
                 return panCardFragment;
             case 2:
                 return currentAddressFragment ;
-            case 3:
-                return permanentAddressFragment ;
+           /* case 3:
+                return permanentAddressFragment ;*/
             // Open FragmentTab4.java
         }
         return new BlankFragment();

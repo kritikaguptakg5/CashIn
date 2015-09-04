@@ -14,15 +14,15 @@ import com.mantralabsglobal.cashin.ui.fragment.tabs.LinkedInFragment;
 public class WorkPagerAdapter extends FragmentPagerAdapter{
 
     private final FragmentManager fragmentManager;
-    private String tabtitles[] = new String[] { "Business Card", "Linked In"};
+    private String tabtitles[] = new String[] { "Business Card"/*, "Linked In"*/};
     private BusinessCardFragment businessCardFragment;
-    private LinkedInFragment linkedInFragment;
+    //private LinkedInFragment linkedInFragment;
 
     public WorkPagerAdapter(FragmentManager fm) {
         super(fm);
         this.fragmentManager = fm;
         businessCardFragment = new BusinessCardFragment();
-        linkedInFragment = new LinkedInFragment();
+       // linkedInFragment = new LinkedInFragment();
     }
 
     @Override
@@ -31,8 +31,8 @@ public class WorkPagerAdapter extends FragmentPagerAdapter{
 
             case 0:
                 return businessCardFragment ;
-            case 1:
-                return linkedInFragment;
+//            case 1:
+//                return linkedInFragment;
             // Open FragmentTab3.java
         }
         return new BlankFragment();

@@ -16,6 +16,9 @@ public interface PanCardService {
     @GET("/user/pancard")
     void getPanCardDetail(Callback<PanCardDetail> callback);
 
+    @GET("/user/next?type=obj")
+    void getNextDetail( Callback<PanCardDetail> callback);
+
     @POST("/user/pancard")
     void createPanCardDetail(@Body PanCardDetail panCardDetail, Callback<PanCardDetail> callback);
 
@@ -37,6 +40,15 @@ public interface PanCardService {
         private String sonOf;
         private String dob;
         private String[] contentarr;
+        private boolean isDataComplete;
+
+        public boolean getIsDataComplete() {
+            return isDataComplete;
+        }
+
+        public void setIsDataComplete(boolean isDataComplete) {
+            this.isDataComplete = isDataComplete;
+        }
 
         public String getName() {
             return name;

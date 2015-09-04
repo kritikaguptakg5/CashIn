@@ -31,6 +31,9 @@ public interface BankSnapService {
     @POST("/user/attachment")
     public void uploadBankSnapImage(@Part("bank_statement") TypedFile file, Callback<BankSnapImage> callback);
 
+    @GET("/user/next?type=obj")
+    void getNextDetail( Callback<BankSnapImage> callback);
+
     @GET("/user/attachment")
     public void getBankStmtSnapImage(Callback<BankSnapImage> callback);
 
@@ -92,7 +95,15 @@ public interface BankSnapService {
         private String bankImage;
 
         private String filePath;
+        private boolean isDataComplete;
 
+        public boolean getIsDataComplete() {
+            return isDataComplete;
+        }
+
+        public void setIsDataComplete(boolean isDataComplete) {
+            this.isDataComplete = isDataComplete;
+        }
 
         public String getFilePath() {
             return filePath;

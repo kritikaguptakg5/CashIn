@@ -130,6 +130,7 @@ public class BankDetailView extends LinearLayout  {
                 boolean handled = false;
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     BankDetailView.this.getBankDetail().setAccountNumber(v.getText().toString());
+                    if(accountNumListener != null)
                     accountNumListener.onAccountNumberChanged(BankDetailView.this);
                     handled = true;
 

@@ -4,14 +4,29 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="?attr/actionBarSize"
+    android:orientation="vertical"
     style="@style/Widget.CashIn.ActionBar"
     >
-    <com.github.lzyzsd.circleprogress.DonutProgress
+
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:visibility="gone"
+        android:id="@+id/submit_button"
+        android:text="@string/submit"
+        android:layout_gravity="right"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="4dp"
+        android:background="@drawable/bank_detail_statements"
+        android:textColor="@color/white"
+        />
+
+   <!-- <com.github.lzyzsd.circleprogress.DonutProgress
         android:layout_alignParentEnd="true"
         android:layout_gravity="end"
         android:id="@+id/donut_progress"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        app:donut_progress="30"/>
+        app:donut_progress="30"/>-->
 
 </android.support.v7.widget.Toolbar>

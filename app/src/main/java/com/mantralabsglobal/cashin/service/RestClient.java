@@ -39,8 +39,15 @@ public class RestClient  {
     private EMIService emiService;
     private EStatementService eStatementService;
     private NetBankingService netBankingService;
+    private TransUnionService transUnionService;
+    private GetUserLoanService getUserLoanService;
+
 
     private static RestClient instance;
+
+    public GetUserLoanService getGetUserLoanService() {
+        return getUserLoanService;
+    }
 
     public RestClient(Context context)
     {
@@ -91,10 +98,17 @@ public class RestClient  {
         referenceService = restAdapter.create(ReferenceService.class);
         bankSnapService = restAdapter.create(BankSnapService.class);
         emiService = restAdapter.create(EMIService.class);
+
         eStatementService = restAdapter.create(EStatementService.class);
         netBankingService = restAdapter.create(NetBankingService.class);
+        transUnionService = restAdapter.create(TransUnionService.class);
+        getUserLoanService = restAdapter.create(GetUserLoanService.class);
 
         instance = this;
+    }
+
+    public TransUnionService getTransUnionService() {
+        return transUnionService;
     }
 
     public static RestClient getInstance() {

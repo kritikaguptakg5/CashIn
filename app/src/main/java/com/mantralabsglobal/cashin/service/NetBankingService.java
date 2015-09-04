@@ -12,6 +12,9 @@ public interface NetBankingService {
     @GET("/user/netBankingperfios")
     void getNetBankingDetail(Callback<NetBanking> callback);
 
+    @GET("/user/next?type=obj")
+    void getNextDetail( Callback<NetBanking> callback);
+
     @POST("/user/netBankingperfios")
     void createNetBankingService(@Body NetBanking emiDetail, Callback<NetBanking> callback);
 
@@ -19,7 +22,15 @@ public interface NetBankingService {
 
         int status = -1;
         String message ;
+        private boolean isDataComplete;
 
+        public boolean getIsDataComplete() {
+            return isDataComplete;
+        }
+
+        public void setIsDataComplete(boolean isDataComplete) {
+            this.isDataComplete = isDataComplete;
+        }
         public NetBanking() {
         }
 

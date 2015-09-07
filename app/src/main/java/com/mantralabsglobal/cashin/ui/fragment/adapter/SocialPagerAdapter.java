@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.mantralabsglobal.cashin.ui.fragment.tabs.BlankFragment;
 import com.mantralabsglobal.cashin.ui.fragment.tabs.FacebookFragment;
+import com.mantralabsglobal.cashin.ui.fragment.tabs.LinkedInFragment;
 import com.mantralabsglobal.cashin.ui.fragment.tabs.ReferencesFragment;
 
 /**
@@ -14,15 +15,19 @@ import com.mantralabsglobal.cashin.ui.fragment.tabs.ReferencesFragment;
 public class SocialPagerAdapter extends FragmentPagerAdapter{
 
     private final FragmentManager fragmentManager;
-    private String tabtitles[] = new String[] { "Facebook", "References"};
+    //private String tabtitles[] = new String[] { "Facebook", "References"};
+    private String tabtitles[] = new String[] { "Facebook", "LinkedIn"};
+
     private FacebookFragment facebookFragment;
-    private ReferencesFragment referencesFragment;
+    //private ReferencesFragment referencesFragment;
+    private LinkedInFragment linkedInFragment;
 
     public SocialPagerAdapter(FragmentManager fm) {
         super(fm);
         this.fragmentManager = fm;
         facebookFragment = new FacebookFragment();
-        referencesFragment = new ReferencesFragment();
+        //referencesFragment = new ReferencesFragment();
+        linkedInFragment = new LinkedInFragment();
     }
 
     @Override
@@ -32,7 +37,7 @@ public class SocialPagerAdapter extends FragmentPagerAdapter{
             case 0:
                 return facebookFragment ;
             case 1:
-                return referencesFragment;
+                return linkedInFragment;
             // Open FragmentTab3.java
         }
         return new BlankFragment();

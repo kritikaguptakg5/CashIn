@@ -73,7 +73,7 @@ public class MainFragmentAdapter extends FragmentPagerAdapter {
         }
     };
 
-   /* public Fragment socialPager = new AbstractPager(){
+   public Fragment socialPager = new AbstractPager(){
 
         SocialPagerAdapter adapter;
         @Override
@@ -87,7 +87,7 @@ public class MainFragmentAdapter extends FragmentPagerAdapter {
         {
             return context;
         }
-    };*/
+    };
 
     public Fragment photoPager = new AbstractPager(){
 
@@ -121,14 +121,14 @@ public class MainFragmentAdapter extends FragmentPagerAdapter {
                 return workPager ;
             case 3:
                 return financePager ;
-            /*case 4:
-                return socialPager ;*/
+            case 4:
+                return socialPager ;
         }
         return null;
     }
 
     @Override
     public int getCount() {
-        return 4;
+        return 5;
     }
 }

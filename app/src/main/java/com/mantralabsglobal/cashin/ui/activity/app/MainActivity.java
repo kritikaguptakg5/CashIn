@@ -41,8 +41,8 @@ public class MainActivity extends BaseActivity  {
     Button submitButton;
     @InjectView(R.id.financialButton)
     public Button financialButton;
-   /* @InjectView(R.id.socialButton)
-    public Button socialButton;*/
+    @InjectView(R.id.socialButton)
+    public Button socialButton;
     @InjectView(R.id.main_frame)
     public ViewPager viewPager;
 
@@ -67,7 +67,7 @@ public class MainActivity extends BaseActivity  {
         buttonList.add(yourIdentityButton);
         buttonList.add(workButton);
         buttonList.add(financialButton);
-        //buttonList.add(socialButton);
+        buttonList.add(socialButton);
 
         checkUserName();
 
@@ -124,10 +124,10 @@ public class MainActivity extends BaseActivity  {
             else
                 financialButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_financial, 0, 0);
 
-            /*if (v == socialButton)
+            if (v == socialButton)
                 socialButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_socialselected, 0, 0);
             else
-                socialButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_social, 0, 0);*/
+                socialButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_social, 0, 0);
 
         }
 
@@ -168,7 +168,7 @@ public class MainActivity extends BaseActivity  {
         }
     }
 
-    @OnClick({R.id.yourPhotoButton, R.id.yourIdentityButton, R.id.workButton, R.id.financialButton/*, R.id.socialButton*/})
+    @OnClick({R.id.yourPhotoButton, R.id.yourIdentityButton, R.id.workButton, R.id.financialButton, R.id.socialButton})
     public void onClick(final View v) {
 
         final ViewPager viewPager = ((ViewPager)findViewById(R.id.main_frame));

@@ -66,18 +66,15 @@
                 android:layout_height="wrap_content" android:text="@string/facebook_profile_details" style="@android:style/TextAppearance.DeviceDefault.Large"
                 />
             <com.mantralabsglobal.cashin.ui.view.CustomEditText
-                xmlns:custom="http://schemas.android.com/apk/res/com.mantralabsglobal.cashin"
                 android:id="@+id/cet_workplace"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" custom:field_label="@string/workplace" custom:field_icon="@drawable/ic_work_address"/>
 
             <com.mantralabsglobal.cashin.ui.view.CustomEditText
-                xmlns:custom="http://schemas.android.com/apk/res/com.mantralabsglobal.cashin"
                 android:id="@+id/cet_city"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" custom:field_label="@string/current_city" custom:field_icon="@drawable/ic_work_address"/>
             <com.mantralabsglobal.cashin.ui.view.CustomEditText
-                xmlns:custom="http://schemas.android.com/apk/res/com.mantralabsglobal.cashin"
                 android:id="@+id/cet_hometown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" custom:field_label="@string/hometown" custom:field_icon="@drawable/ic_work_address"/>

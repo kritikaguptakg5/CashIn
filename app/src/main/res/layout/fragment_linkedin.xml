@@ -75,18 +75,15 @@
                 android:layout_height="wrap_content" android:text="@string/work_experience"  style="@android:style/TextAppearance.DeviceDefault.Large"
                 />
             <com.mantralabsglobal.cashin.ui.view.CustomEditText
-                xmlns:custom="http://schemas.android.com/apk/res/com.mantralabsglobal.cashin"
                 android:id="@+id/cs_job_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" custom:field_label="@string/job_title" custom:field_icon="@drawable/ic_work_address"/>
 
             <com.mantralabsglobal.cashin.ui.view.CustomEditText
-                xmlns:custom="http://schemas.android.com/apk/res/com.mantralabsglobal.cashin"
                 android:id="@+id/cs_company"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" custom:field_label="@string/company" custom:field_icon="@drawable/ic_work_address"/>
             <com.mantralabsglobal.cashin.ui.view.CustomEditText
-                xmlns:custom="http://schemas.android.com/apk/res/com.mantralabsglobal.cashin"
                 android:id="@+id/cs_time_period"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" custom:field_label="@string/time_period" custom:field_icon="@drawable/ic_work_address"/>
@@ -99,7 +96,8 @@
 
             <com.mantralabsglobal.cashin.ui.view.CustomEditText android:id="@+id/cs_school"
     android:layout_width="match_parent"
-                android:layout_height="wrap_content" custom:field_label="@string/school" custom:field_icon="@drawable/ic_work_address"/>
+                android:layout_height="wrap_content" custom:field_label="@string/school"
+                custom:field_icon="@drawable/ic_work_address"/>
 
             <com.mantralabsglobal.cashin.ui.view.CustomEditText android:id="@+id/cs_degree"
                 android:layout_width="match_parent"

@@ -41,17 +41,15 @@
         >
 
         <com.mantralabsglobal.cashin.ui.view.CustomEditText
-            xmlns:custom="http://schemas.android.com/apk/res/com.mantralabsglobal.cashin"
             android:id="@+id/cet_email"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" custom:field_label="@string/email"/>
+            android:layout_height="wrap_content" app:field_label="@string/email"/>
 
 
         <com.mantralabsglobal.cashin.ui.view.CustomEditText
-            xmlns:custom="http://schemas.android.com/apk/res/com.mantralabsglobal.cashin"
             android:id="@+id/cet_password"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" custom:field_label="@string/password" custom:password="true"/>
+            android:layout_height="wrap_content" app:field_label="@string/password" app:password="true"/>
 
         <Button android:layout_marginTop="@dimen/form_input_margin_top"
             android:layout_width="match_parent"

@@ -49,7 +49,7 @@ public abstract class GoogleTokenRetrieverTask extends AsyncTask<Context, Void, 
 
     protected String getScope()
     {
-        return "oauth2:" + Scopes.PROFILE + " " + Scopes.PLUS_LOGIN;
+        return "oauth2:" + Scopes.PROFILE + " " + Scopes.PLUS_LOGIN + " email";
     }
 
     protected abstract String getEmail();

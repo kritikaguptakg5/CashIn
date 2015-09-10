@@ -103,7 +103,7 @@ public class BirthDayView extends LinearLayout {
                         Calendar cal = new GregorianCalendar(year, monthOfYear, dayOfMonth);
                         DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getContext());
 
-                        et_dob.setText(dateFormat.format(cal.getTime()));
+                        et_dob.setText(android.text.format.DateFormat.format("dd-MMM-yyyy",cal.getTime()) );
                         tv_age.setText(DateUtils.getYearsPassed(year, monthOfYear, dayOfMonth) + " Years");
                     }
                 }, defaultDate);

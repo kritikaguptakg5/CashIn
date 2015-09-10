@@ -11,9 +11,9 @@
     <Button
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:visibility="gone"
         android:id="@+id/submit_button"
         android:text="@string/submit"
+        android:visibility="gone"
         android:layout_gravity="right"
         android:layout_marginRight="5dp"
         android:layout_marginLeft="4dp"

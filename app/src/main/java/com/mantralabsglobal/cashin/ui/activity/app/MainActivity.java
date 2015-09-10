@@ -83,7 +83,7 @@ public class MainActivity extends BaseActivity  {
 
     @OnClick(R.id.submit_button)
     public void submitButton(){
-        Intent intent = new Intent(MainActivity.this ,SubmitActivity.class);
+        Intent intent = new Intent(MainActivity.this ,SubmitDetailsActivity.class);
         startActivity(intent);
     }
 

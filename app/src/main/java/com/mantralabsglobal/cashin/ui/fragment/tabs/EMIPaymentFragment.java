@@ -2,8 +2,8 @@ package com.mantralabsglobal.cashin.ui.fragment.tabs;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -27,7 +27,7 @@ import retrofit.Callback;
 /**
  * Created by kritika on 31/08/2015.
  */
-public class GetUserLoanWantedFragment extends BaseBindableFragment<GetUserLoanService.GetUserLoan> {
+public class EMIPaymentFragment extends BaseBindableFragment<GetUserLoanService.GetUserLoan> {
 
     GetUserLoanService getUserLoanService;
     int totalAmountAsked;
@@ -46,7 +46,7 @@ public class GetUserLoanWantedFragment extends BaseBindableFragment<GetUserLoanS
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-       final View view = inflater.inflate(R.layout.fragment_get_user_loan_wanted, container, false);
+       final View view = inflater.inflate(R.layout.fragment_emi_payment, container, false);
 
         userSelectedAmount = (CustomEditText)view.findViewById(R.id.cc_loan_amount_user);
         loanApplyButton = (Button)view.findViewById(R.id.apply_loan_button);
@@ -59,7 +59,7 @@ public class GetUserLoanWantedFragment extends BaseBindableFragment<GetUserLoanS
                     boolean handled = false;
                     if (actionId == EditorInfo.IME_ACTION_DONE) {
                         save();
-                         loanAmount = v.getText().toString();
+                        loanAmount = v.getText().toString();
                         InputMethodManager imm = (InputMethodManager) (getActivity().getSystemService(Context.INPUT_METHOD_SERVICE));
                         imm.hideSoftInputFromWindow(userSelectedAmount.getWindowToken(), 0);
                         handled = true;

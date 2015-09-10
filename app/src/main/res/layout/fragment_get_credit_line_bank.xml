@@ -1,0 +1,267 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:weightSum="5">
+
+            <LinearLayout
+                android:id="@+id/get_credit_line_view"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="4"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:gravity="center"
+                    android:text="@string/congratulations"
+                    android:textColor="@color/accent"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/loan_amount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:gravity="center"
+                    android:text=""
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="10dp"
+                    android:gravity="center"
+                    android:text="@string/please_decide"
+                    android:textSize="16sp" />
+
+                <SeekBar
+                    android:id="@+id/seekBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:indeterminate="false" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/user_min_amount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_weight="1"
+                        android:gravity="left|center"
+                        android:text="0" />
+
+                    <TextView
+                        android:id="@+id/user_selected_amount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="" />
+
+                    <TextView
+                        android:id="@+id/user_approved_limit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/loan_terms"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:gravity="center"
+                    android:text="@string/loan_terms" />
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="20dp">
+
+                    <TableRow>
+
+                        <TextView
+                            android:layout_column="1"
+                            android:layout_weight="1"
+                            android:padding="3dip"
+                            android:text="Rate of Interest" />
+
+                        <TextView
+                            android:layout_column="2"
+                            android:layout_weight="1"
+                            android:padding="3dip"
+                            android:text="12 months" />
+
+                        <TextView
+                            android:layout_column="3"
+                            android:layout_weight="1"
+                            android:padding="3dip"
+                            android:text="24 months" />
+
+                        <TextView
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:padding="3dip"
+                            android:text="36 months" />
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            android:id="@+id/first_amount"
+                            android:layout_column="1"
+                            android:layout_weight="1"
+                            android:padding="3dip"
+                            android:text="" />
+
+                        <TextView
+                            android:id="@+id/first_interest_one"
+                            android:layout_column="1"
+                            android:layout_weight="1"
+                            android:padding="3dip"
+                            android:text="" />
+
+                        <TextView
+                            android:id="@+id/first_interest_two"
+                            android:layout_column="2"
+                            android:layout_weight="1"
+                            android:padding="3dip"
+                            android:text="" />
+
+                        <TextView
+                            android:id="@+id/first_interest_three"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:padding="3dip"
+                            android:text="" />
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            android:id="@+id/second_amount"
+                            android:layout_column="1"
+                            android:layout_weight="1"
+                            android:padding="3dip"
+                            android:text="" />
+
+                        <TextView
+                            android:id="@+id/second_interest_one"
+                            android:layout_column="1"
+                            android:layout_weight="1"
+                            android:padding="3dip"
+                            android:text="" />
+
+                        <TextView
+                            android:id="@+id/second_interest_two"
+                            android:layout_column="1"
+                            android:layout_weight="1"
+                            android:padding="3dip"
+                            android:text="" />
+
+                        <TextView
+                            android:id="@+id/second_interest_three"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:padding="3dip"
+                            android:text="" />
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            android:id="@+id/three_amount"
+                            android:layout_column="1"
+                            android:layout_weight="1"
+                            android:padding="3dip"
+                            android:text="" />
+
+                        <TextView
+                            android:id="@+id/three_interest_one"
+                            android:layout_column="2"
+                            android:layout_weight="1"
+                            android:padding="3dip"
+                            android:text="" />
+
+                        <TextView
+                            android:id="@+id/three_interest_two"
+                            android:layout_column="3"
+                            android:layout_weight="1"
+                            android:padding="3dip"
+                            android:text="" />
+
+                        <TextView
+                            android:id="@+id/three_interest_three"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:padding="3dip"
+                            android:text="" />
+                    </TableRow>
+
+                </TableLayout>
+
+                <TextView
+                    android:id="@+id/terms_n_conditions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:gravity="center"
+                    android:text="@string/terms_n_conditions"
+                    android:textSize="@dimen/text_small" />
+
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/get_loan"
+                    android:id="@+id/get_loan_button"
+                    android:background="@drawable/bank_detail_statements"
+                    android:textColor="@color/white"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/loan_rejected_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/loan_rejected_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/loan_not_approved" />
+
+            </LinearLayout>
+<!--
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_education" />-->
+
+
+</LinearLayout>

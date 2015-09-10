@@ -1,42 +1,47 @@
 package com.mantralabsglobal.cashin.service;
 
-import com.google.gson.annotations.SerializedName;
-
-import java.util.Date;
 import java.util.List;
 
 import retrofit.Callback;
 import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.POST;
-import retrofit.http.PUT;
 
 /**
  * Created by pk on 6/25/2015.
  */
-public interface TransUnionService {
+public interface GetCreditLineBankService {
 
-    @POST("/user/tuscorecard")
-    void createTransUnionsService(@Body TransUnion address, Callback<TransUnion> callback);
+    @POST("/user/want")
+    void createGetCreditLineBankService(@Body GetCreditLineBank getCreditLineBank, Callback<GetCreditLineBank> callback);
 
-    @PUT("/user/alldetail")
+   /* @PUT("/user/alldetail")
     void updateTrnasUnionService(@Body TransUnion address, Callback<TransUnion> callback);
-
+*/
     @GET("/user/tuscorecard")
-    void getTransUnionService(Callback<TransUnion> callback);
+    void getGetCreditLineBankService(Callback<GetCreditLineBank> callback);
 
-    public static class TransUnion {
+    public static class GetCreditLineBank {
 
         int LoanApproves;
         int status = -1;
         List<InterestSlabs> InterestSlabs;
         String message;
+        int loanAmountActuallyAsked;
 
-        public List<TransUnionService.InterestSlabs> getInterestSlabs() {
+        public int getLoanAmountActuallyAsked() {
+            return loanAmountActuallyAsked;
+        }
+
+        public void setLoanAmountActuallyAsked(int loanAmountActuallyAsked) {
+            this.loanAmountActuallyAsked = loanAmountActuallyAsked;
+        }
+
+        public List<GetCreditLineBankService.InterestSlabs> getInterestSlabs() {
             return InterestSlabs;
         }
 
-        public void setInterestSlabs(List<TransUnionService.InterestSlabs> interestSlabs) {
+        public void setInterestSlabs(List<GetCreditLineBankService.InterestSlabs> interestSlabs) {
             InterestSlabs = interestSlabs;
         }
 

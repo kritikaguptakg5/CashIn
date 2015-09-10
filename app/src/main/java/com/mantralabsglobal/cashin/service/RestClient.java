@@ -14,7 +14,6 @@ import java.util.concurrent.TimeUnit;
 
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
-import retrofit.client.Response;
 import retrofit.converter.GsonConverter;
 
 /**
@@ -39,8 +38,11 @@ public class RestClient  {
     private EMIService emiService;
     private EStatementService eStatementService;
     private NetBankingService netBankingService;
-    private TransUnionService transUnionService;
+    private GetCreditLineBankService transUnionService;
     private GetUserLoanService getUserLoanService;
+    private TransactionsService transactionsService;
+    private LoanDetailService loanDetailService;
+
 
 
     private static RestClient instance;
@@ -101,13 +103,22 @@ public class RestClient  {
 
         eStatementService = restAdapter.create(EStatementService.class);
         netBankingService = restAdapter.create(NetBankingService.class);
-        transUnionService = restAdapter.create(TransUnionService.class);
+        transUnionService = restAdapter.create(GetCreditLineBankService.class);
         getUserLoanService = restAdapter.create(GetUserLoanService.class);
-
+        loanDetailService = restAdapter.create(LoanDetailService.class);
+        transactionsService = restAdapter.create(TransactionsService.class);
         instance = this;
     }
 
-    public TransUnionService getTransUnionService() {
+    public TransactionsService getTransactionsService() {
+        return transactionsService;
+    }
+
+    public LoanDetailService getLoanDetailService() {
+        return loanDetailService;
+    }
+
+    public GetCreditLineBankService getTransUnionService() {
         return transUnionService;
     }
 

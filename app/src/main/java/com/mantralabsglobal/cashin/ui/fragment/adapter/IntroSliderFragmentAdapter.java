@@ -30,8 +30,8 @@ public class IntroSliderFragmentAdapter extends FragmentPagerAdapter {
                 return new DocumentPhotosFragment();
             case 2:
                 return new PreApprovalFragment();
-            case 3:
-                return new MoneyCardFragment();
+           /* case 3:
+                return new MoneyCardFragment();*/
 
         }
         return null;
@@ -39,6 +39,6 @@ public class IntroSliderFragmentAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 4;
+        return 3;
     }
 }

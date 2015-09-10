@@ -1,38 +1,21 @@
 package com.mantralabsglobal.cashin.ui.fragment.tabs;
-import android.support.v4.app.FragmentTransaction;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.beardedhen.androidbootstrap.BootstrapButton;
-import com.google.zxing.BarcodeFormat;
 import com.mantralabsglobal.cashin.R;
-import com.mantralabsglobal.cashin.service.AadharService;
-import com.mantralabsglobal.cashin.service.TransUnionService;
+import com.mantralabsglobal.cashin.service.GetCreditLineBankService;
 import com.mantralabsglobal.cashin.ui.Application;
-import com.mantralabsglobal.cashin.ui.activity.scanner.ScannerActivity;
-import com.mantralabsglobal.cashin.ui.view.BirthDayView;
-import com.mantralabsglobal.cashin.ui.view.CustomEditText;
-import com.mantralabsglobal.cashin.ui.view.CustomSpinner;
-import com.mantralabsglobal.cashin.utils.AadharDAO;
-import com.mobsandgeeks.saripaar.annotation.NotEmpty;
+import com.mantralabsglobal.cashin.ui.activity.app.PostLoanApprovedActivity;
 
-import java.util.ArrayList;
-
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.OnClick;
 import retrofit.Callback;
 
 //import eu.livotov.zxscan.ScannerView;
@@ -40,9 +23,9 @@ import retrofit.Callback;
 /**
  * Created by pk on 13/06/2015.
  */
-public class TransUnionFragment extends BaseBindableFragment<TransUnionService.TransUnion> {
+public class GetCreditLineBankFragment extends BaseBindableFragment<GetCreditLineBankService.GetCreditLineBank> {
 
-    TransUnionService transUnionService;
+    GetCreditLineBankService getCreditLineBankService;
     int totalApprovedAmount;
     int loanStatus = -1;
     final int LOAN_STATUS_APPROVED = 1;
@@ -54,6 +37,7 @@ public class TransUnionFragment extends BaseBindableFragment<TransUnionService.T
     TextView first_amount,first_interest_one, first_interest_two , first_interest_three,second_amount,second_interest_one, second_interest_two , second_interest_three,
             three_amount,three_interest_one, three_interest_two , three_interest_three, loan_amount;
     TextView userSelectedAmount, user_approved_limit;
+    Button askForLoan;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,12 +46,45 @@ public class TransUnionFragment extends BaseBindableFragment<TransUnionService.T
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_transunion, container, false);
+        View view = inflater.inflate(R.layout.fragment_get_credit_line_bank, container, false);
          loan_rejected_view = (ViewGroup)view.findViewById(R.id.loan_rejected_view);
 
-         transunion_view = (ViewGroup)view.findViewById(R.id.transunion_view);
+         transunion_view = (ViewGroup)view.findViewById(R.id.get_credit_line_view);
+        askForLoan = (Button)view.findViewById(R.id.get_loan_button);
+         userSelectedAmount= (TextView)view.findViewById(R.id.user_selected_amount);
+         user_approved_limit = (TextView)view.findViewById(R.id.user_approved_limit);
 
          seekBar = (SeekBar)view.findViewById(R.id.seekBar);
+
+         seekBar.setOnSeekBarChangeListener(
+                new SeekBar.OnSeekBarChangeListener() {
+                    int progress = 0;
+
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar,
+                                                  int progresValue, boolean fromUser) {
+                        progress = progresValue;
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+                        Log.d("seek bar",String.valueOf(progress));
+                        userSelectedAmount.setText("" + progress);
+                        save();
+                    }
+                });
+
+        askForLoan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),PostLoanApprovedActivity.class);
+                startActivity(intent);
+            }
+        });
 
          first_amount= (TextView)view.findViewById(R.id.first_amount);
 
@@ -93,10 +110,6 @@ public class TransUnionFragment extends BaseBindableFragment<TransUnionService.T
 
          three_interest_three= (TextView)view.findViewById(R.id.three_interest_three);
 
-         userSelectedAmount= (TextView)view.findViewById(R.id.user_approved_limit);
-
-         user_approved_limit = (TextView)view.findViewById(R.id.user_approved_limit);
-
          loan_amount = (TextView)view.findViewById(R.id.loan_amount);
 
         return view;
@@ -104,14 +117,15 @@ public class TransUnionFragment extends BaseBindableFragment<TransUnionService.T
 
 
     @Override
-    public void bindDataToForm(final TransUnionService.TransUnion value) {
+    public void bindDataToForm(final GetCreditLineBankService.GetCreditLineBank value) {
+
         if (value != null && value.getStatus() == LOAN_STATUS_APPROVED) {
             transunion_view.setVisibility(View.VISIBLE);
             loan_rejected_view.setVisibility(View.GONE);
             loanStatus = LOAN_STATUS_APPROVED;
             totalApprovedAmount = value.getLoanApproves();
-
             user_approved_limit.setText(String.valueOf(totalApprovedAmount));
+
             first_amount.setText(value.getInterestSlabs().get(0).getAmount());
             first_interest_one.setText(String.valueOf(value.getInterestSlabs().get(0).getTwelve_month_interest()));
             first_interest_two.setText(String.valueOf(value.getInterestSlabs().get(0).getTwentyfour_month_interest()));
@@ -127,7 +141,8 @@ public class TransUnionFragment extends BaseBindableFragment<TransUnionService.T
             three_interest_two.setText(String.valueOf(value.getInterestSlabs().get(2).getTwentyfour_month_interest()));
             three_interest_three.setText(String.valueOf(value.getInterestSlabs().get(2).getThirtysix_month_interest()));
 
-            loan_amount.setText("A credit line of up to Rs" + totalApprovedAmount + " has been preapproved to you by RBL Bank");
+            loan_amount.setText("A credit line of up to Rs " + totalApprovedAmount + " has been preapproved to you by RBL Bank");
+            seekBar.setMax(totalApprovedAmount);
 
         } else if (loanStatus == LOAN_STATUS_REJECTED) {
             loan_rejected_view.setVisibility(View.VISIBLE);
@@ -136,24 +151,30 @@ public class TransUnionFragment extends BaseBindableFragment<TransUnionService.T
     }
 
     @Override
-    protected void onUpdate(TransUnionService.TransUnion updatedData, Callback<TransUnionService.TransUnion> saveCallback) {
-        //transUnionService.createTransUnionsService(updatedData, saveCallback);
+    protected void onUpdate(GetCreditLineBankService.GetCreditLineBank updatedData, Callback<GetCreditLineBankService.GetCreditLineBank> saveCallback) {
+        getCreditLineBankService.createGetCreditLineBankService(updatedData, saveCallback);
     }
 
     @Override
-    protected void onCreate(TransUnionService.TransUnion updatedData, Callback<TransUnionService.TransUnion> saveCallback) {
-        //transUnionService.updateTrnasUnionService(updatedData, saveCallback);
+    protected void onCreate(GetCreditLineBankService.GetCreditLineBank updatedData, Callback<GetCreditLineBankService.GetCreditLineBank> saveCallback) {
+        getCreditLineBankService.createGetCreditLineBankService(updatedData, saveCallback);
     }
 
     @Override
-    public TransUnionService.TransUnion getDataFromForm(TransUnionService.TransUnion base) {
+    public GetCreditLineBankService.GetCreditLineBank getDataFromForm(GetCreditLineBankService.GetCreditLineBank base) {
+
+        if(base == null)
+            base = new GetCreditLineBankService.GetCreditLineBank();
+
+        if(userSelectedAmount.getText() != null)
+            base.setLoanAmountActuallyAsked(Integer.parseInt(userSelectedAmount.getText().toString()));
+
         return base;
     }
 
     @Override
-    protected void loadDataFromServer(Callback<TransUnionService.TransUnion> dataCallback) {
-        Log.d("TransUnion", "Reached trans union");
-        transUnionService.getTransUnionService(dataCallback);
+    protected void loadDataFromServer(Callback<GetCreditLineBankService.GetCreditLineBank> dataCallback) {
+        getCreditLineBankService.getGetCreditLineBankService(dataCallback);
     }
 
 
@@ -170,31 +191,7 @@ public class TransUnionFragment extends BaseBindableFragment<TransUnionService.T
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        transUnionService = ((Application) getActivity().getApplication()).getRestClient().getTransUnionService();
-
-        if (loanStatus == LOAN_STATUS_APPROVED) {
-
-            seekBar.setMax(totalApprovedAmount);
-            seekBar.setOnSeekBarChangeListener(
-                    new SeekBar.OnSeekBarChangeListener() {
-                        int progress = 0;
-
-                        @Override
-                        public void onProgressChanged(SeekBar seekBar,
-                                                      int progresValue, boolean fromUser) {
-                            progress = progresValue;
-                        }
-
-                        @Override
-                        public void onStartTrackingTouch(SeekBar seekBar) {
-                        }
-
-                        @Override
-                        public void onStopTrackingTouch(SeekBar seekBar) {
-                            userSelectedAmount.setText(progress);
-                        }
-                    });
-        }
+        getCreditLineBankService = ((Application) getActivity().getApplication()).getRestClient().getTransUnionService();
         reset(false);
     }
 

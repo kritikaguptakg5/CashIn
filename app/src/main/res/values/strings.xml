@@ -141,10 +141,12 @@ s
     <string name="father_name">Father\'s Name/Spouse Name</string>
     <string name="logout">Logout</string>
     <string name="product_tour">Product tour</string>
-    <string name="sign_in_with_google">Sign in</string>
+    <string name="sign_in_with_google">Sign in with Gmail</string>
     <string name="signing_in">Signing in</string>
     <string name="contract_basis">Contract Basis</string>
+    <string name="credit_line_text">Your Approved Credit Line is</string>
     <string name="full_time">Full time employement</string>
+    <string name="remaining_funds_text">Remaining Funds</string>
     <string name="type_of_employement">Type of Employement</string>
     <string name="read_transactional_sms">Read transactional SMS</string>
     <string name="ever_taken_a_loan">Have you ever taken a loan?</string>
@@ -253,6 +255,16 @@ s
     <string name="message">Message</string>
     <string name="default_message">Default Message</string>
     <string name="send_message">Send Message</string>
+    <string name="select_amount_to_be_transferred">Please decide the amount you want now(IMPS)</string>
+    <string name="please_pick_one_of_the_below">Pick one of the below terms</string>
+    <string name="money_tranferred_account_number">Money will be tranferred to A/C No. ending</string>
+    <string name="convert_to_emi">Convert to EMI</string>
+    <string name="access_funds">Access Funds</string>
+
+
+    <string name="tranfer_to_my_account">Transfer to my account</string>
+
+
     <string name="default_referral_message_content">
         <![CDATA[
             <p>Hello Friends,</p>
@@ -267,6 +279,7 @@ s
         ]]>
     </string>
     <string name="existing_emis">Existing EMIs</string>
+    <string name="profile">Profile</string>
     <string name="last_three_month_cc_bill">Last 3 months credit card bill</string>
     <string name="select_gmail_acccount">Select gmail Account</string>
     <string name="change_gmail_account">Change gmail account</string>
@@ -279,6 +292,7 @@ s
     <string name="loan_not_approved">Unfortunately your loan could not be approved. We will get back to you once we get suitable plan for you.</string>
     <string name="please_decide">Please decide the loan amount you would like to borrow</string>
     <string name="terms_n_conditions">*Interest applicable only on the amount you access on next screen</string>
+    <string name="get_loan">Get the loan</string>
     <string name="residence">Residence</string>
 
 </resources>

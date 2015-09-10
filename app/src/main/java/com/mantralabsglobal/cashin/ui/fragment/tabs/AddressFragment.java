@@ -17,7 +17,9 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.mantralabsglobal.cashin.R;
+import com.mantralabsglobal.cashin.service.AadharService;
 import com.mantralabsglobal.cashin.service.AddressService;
+import com.mantralabsglobal.cashin.service.RestClient;
 import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.activity.app.MainActivity;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
@@ -28,6 +30,9 @@ import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Created by pk on 6/30/2015.
@@ -75,7 +80,7 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
 //    @InjectView(R.id.vg_gps_launcher)
 //    ViewGroup vg_gpsLauncher;
 
-   static int addressAadhaarStatus = 0;
+    CheckBox addrSameAsAadhaar;
 
     private AddressService mAddressService;
 
@@ -86,18 +91,26 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_address, container, false);
 
-        CheckBox addrSameAsAadhaar = (CheckBox)view.findViewById(R.id.chkAadhar);
+        addrSameAsAadhaar = (CheckBox)view.findViewById(R.id.chkAadhar);
         addrSameAsAadhaar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if (((CheckBox) v).isChecked()) {
-                    addressAadhaarStatus = 1;
-                    save();
-                    reset(false);
-                    save();
+                    setVisibleChildView(vg_aadhaar_address_layout);
+                    RestClient.getInstance().getAadharService().getAadharDetail(new Callback<AadharService.AadharDetail>() {
+                        @Override
+                        public void success(AadharService.AadharDetail aadharDetail, Response response) {
+                            aadhar_address_text.setText(aadharDetail.getAddress());
+
+                        }
+
+                        @Override
+                        public void failure(RetrofitError error) {
+                            showToastOnUIThread("Please first enter your aadhaar detail");
+                        }
+                    });
                 } else {
-                    addressAadhaarStatus = 0;
                     setVisibleChildView(vg_addressForm);
                 }
             }
@@ -214,17 +227,19 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
         if(address != null && address.getIsDataComplete())
             ((MainActivity)getActivity()).makeSubmitButtonVisible();
 
-        if(addressAadhaarStatus == 0)
-            setVisibleChildView(vg_addressForm);
-        else
-            setVisibleChildView(vg_aadhaar_address_layout);
-
         if(address != null) {
+
+            if(address.isSameAsAadhaar()){
+                setVisibleChildView(vg_aadhaar_address_layout);
+            } else {
+            setVisibleChildView(vg_addressForm);
+            }
+
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
 
-                    if(addressAadhaarStatus == 0) {
+                    if(!address.isSameAsAadhaar()) {
                         cc_city.setText(address.getCity());
                         cc_state.setText(address.getState());
                         cc_pincode.setText(address.getPincode());
@@ -233,8 +248,6 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
                         rb_own.setChecked(!address.isHouseRented());
                         // cs_own.getSpinner().setSelection(((ArrayAdapter<String>) cs_own.getAdapter()).getPosition(address.getOwn()));
                     }
-                    else if(addressAadhaarStatus == 1)
-                        aadhar_address_text.setText(address.getAddress());
                 }
             });
         }
@@ -245,8 +258,8 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
         if(address == null)
             address = new AddressService.Address();
 
-        if(addressAadhaarStatus == 0){
-            address.setStatus(addressAadhaarStatus);
+        if(!addrSameAsAadhaar.isChecked()){
+            address.setSameAsAadhaar(false);
             address.setStreet(cc_street.getText().toString());
             address.setPincode(cc_pincode.getText().toString());
             address.setCity(cc_city.getText().toString());
@@ -254,9 +267,10 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
             address.setIsHouseRented(rb_rented.isChecked());
             //address.setOwn(cs_own.getSpinner().getSelectedItem().toString());
         }
-        else if(addressAadhaarStatus == 1)
-            address.setStatus(addressAadhaarStatus);
+        else {
+            address.setSameAsAadhaar(true);
             address.setAddress(aadhar_address_text.getText().toString());
+        }
         return address;
     }
 

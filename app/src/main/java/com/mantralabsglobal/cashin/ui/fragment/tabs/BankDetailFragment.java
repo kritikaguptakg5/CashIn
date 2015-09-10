@@ -123,8 +123,6 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
         eStatement.setSelected(true);
     }
 
-    ;
-
     @Override
     protected View getFormView() {
         return vg_bank_details;
@@ -180,7 +178,6 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
             if (bdView.getBankDetail().isPrimary()) {
                 bdView.getBankDetail().setIsPrimary(false);
                 bdView.updateUI();
-             //   vg_bank_details.removeView(bdView);
             }
                 vg_bank_details.addView(bdView);
         }

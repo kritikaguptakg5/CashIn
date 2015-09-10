@@ -66,7 +66,12 @@
             android:theme="@style/loginTheme" >
         </activity>
         <activity
-            android:name=".ui.activity.app.SubmitActivity"
+            android:name=".ui.activity.app.SubmitDetailsActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".ui.activity.app.PostLoanApprovedActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>

@@ -13,14 +13,14 @@ import retrofit.http.PUT;
  */
 public interface GetUserLoanService {
 
+    /*  @PUT("/user/alldetail")
+    void updateUserAmountWantedService(@Body GetUserLoan address, Callback<GetUserLoan> callback); */
+
     @POST("/user/alldetail")
-    void updateUserAmountWantedService(@Body GetUserLoan address, Callback<GetUserLoan> callback);
+    void createUserAmountWantedService(@Body GetUserLoan getUserLoan, Callback<GetUserLoan> callback);
 
-    @PUT("/user/alldetail")
-    void createUserAmountWantedService(@Body GetUserLoan address, Callback<GetUserLoan> callback);
-
-    @GET("/user/alldetail")
-    void getUserAmountWantedService(Callback<GetUserLoan> callback);
+   /*   @GET("/user/alldetail")
+    void getUserAmountWantedService(Callback<GetUserLoan> callback);*/
 
     public static class GetUserLoan {
 

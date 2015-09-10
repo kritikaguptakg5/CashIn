@@ -16,12 +16,6 @@ import retrofit.http.PUT;
  */
 public interface AddressService {
 
-    static boolean addressStatus = false;
-
-    public boolean getAddressStatus();
-
-    public void setAddressStatus(boolean addressStatus);
-
     @GET("/user/address/current")
     void getCurrentAddress(Callback<Address> callback);
 
@@ -46,7 +40,7 @@ public interface AddressService {
 
     public static class Address{
 
-        private int status = -1;
+        private boolean sameAsAadhaar;
         private String addressId;
         private String street;
         private String city;
@@ -101,14 +95,6 @@ public interface AddressService {
 
         public void setPincode(String pincode) {
             this.pincode = pincode;
-        }
-
-        public int getStatus() {
-            return status;
-        }
-
-        public void setStatus(int status) {
-            this.status = status;
         }
 
         public String getAddress() {
@@ -169,6 +155,14 @@ public interface AddressService {
 
         public String getAddressId() {
             return addressId;
+        }
+
+        public boolean isSameAsAadhaar() {
+            return sameAsAadhaar;
+        }
+
+        public void setSameAsAadhaar(boolean sameAsAadhaar) {
+            this.sameAsAadhaar = sameAsAadhaar;
         }
     }
 

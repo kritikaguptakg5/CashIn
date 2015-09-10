@@ -1,6 +1,5 @@
 package com.mantralabsglobal.cashin.ui.fragment.tabs;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,12 +8,10 @@ import android.support.design.widget.Snackbar;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 
 import com.google.gson.Gson;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.service.OCRServiceProvider;
-import com.mantralabsglobal.cashin.ui.activity.app.SubmitActivity;
 import com.mantralabsglobal.cashin.ui.view.BirthDayView;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
 import com.mantralabsglobal.cashin.ui.view.CustomSpinner;
@@ -29,7 +26,6 @@ import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import butterknife.Optional;
 import retrofit.Callback;
@@ -187,6 +183,7 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
         {
             showProgressDialog(getString(R.string.waiting_for_server));
             loadDataFromServer(dataCallback);
+            hideProgressDialog();
         }
         else
         {
@@ -211,7 +208,7 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
             if(beforeBindDataToForm(value, response))
                 bindDataToForm(value);
             //showToastOnUIThread(getString(R.string.save_sucess));
-           // hideProgressDialog();
+            hideProgressDialog();
         }
 
         @Override
@@ -232,7 +229,7 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
         }
     };
 
-    protected boolean beforeBindDataToForm(T value, Response response) {
+        protected boolean beforeBindDataToForm(T value, Response response) {
         return true;
     }
 

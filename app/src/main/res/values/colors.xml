@@ -4,14 +4,15 @@
     <color name="accent">#82C4F2</color>
     <color name="primary">#0288D1</color>
     <color name="light">#ffffff</color>
+    <color name="circle_page_indicator">#224777</color>
     <color name="transparent">#00000000</color>
     <color name="translucent">#55000000</color>
     <color name="translucentBlue">#550BAEDF</color>
-    <color name="intro_slider_one">#82B8D5</color>
+    <color name="intro_slider_one">#1A7DB2</color>
     <color name="info_bar_background">#DBEEF9</color>
     <color name="info_bar_text">#0582C6</color>
     <color name="white_max">#ffffffff</color>
-    <color name="sign_up_button_component_background">#ff447ca1</color>
+    <color name="sign_up_button_component_background">#224777</color>
     <color name="sign_up_button_component_background_clicked">#ff4a8cb9</color>
     <color name="get_started_button_component_background">#fff</color>
     <color name="get_started_button_component_background_clicked">#ddd</color>

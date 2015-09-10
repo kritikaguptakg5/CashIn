@@ -31,7 +31,7 @@ public class IntroSliderActivity extends BaseActivity {
     @InjectView(R.id.view_pager)
     ViewPager viewPager;
 
-    @InjectViews({R.id.view_one, R.id.view_two, R.id.view_three, R.id.view_four})
+    @InjectViews({R.id.view_one, R.id.view_two, R.id.view_three/*, R.id.view_four*/})
     List<ImageView> pageIndicators;
 
     GooglePlus googlePlus;

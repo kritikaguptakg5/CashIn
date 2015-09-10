@@ -28,7 +28,7 @@
                     android:layout_width="0dp" android:layout_weight="1"
                     android:layout_height="wrap_content" android:text="@string/no" />
             </RadioGroup>
-                    <View style="@style/AppTheme.Form.Fragment.Seperator.NoGradient"></View>
+                    <View style="@style/AppTheme.Form.Fragment.Seperator.NoGradient.History"></View>
 
             <TextView
                     android:layout_width="match_parent"
@@ -49,7 +49,7 @@
                             android:layout_height="wrap_content" android:text="@string/no" />
                     </RadioGroup>
 
-                    <View style="@style/AppTheme.Form.Fragment.Seperator.NoGradient"></View>
+                    <View style="@style/AppTheme.Form.Fragment.Seperator.NoGradient.History"></View>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -70,7 +70,7 @@
                         android:layout_height="wrap_content" android:text="@string/no" />
                 </RadioGroup>
 
-            <View style="@style/AppTheme.Form.Fragment.Seperator.NoGradient"></View>
+            <View style="@style/AppTheme.Form.Fragment.Seperator.NoGradient.History"></View>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -91,7 +91,7 @@
                         android:layout_height="wrap_content" android:text="@string/no" />
                 </RadioGroup>
 
-            <View style="@style/AppTheme.Form.Fragment.Seperator.NoGradient"></View>
+            <View style="@style/AppTheme.Form.Fragment.Seperator.NoGradient.History"></View>
 
             <LinearLayout android:layout_alignParentBottom="true" android:layout_marginBottom="30dp" android:visibility="gone"
                 android:layout_width="match_parent"

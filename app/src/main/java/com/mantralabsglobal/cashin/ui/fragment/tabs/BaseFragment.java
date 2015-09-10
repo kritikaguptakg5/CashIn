@@ -87,28 +87,30 @@ public abstract class BaseFragment extends Fragment {
 
     protected Application getCashInApplication()
     {
-       return ((Application)getActivity().getApplication());
+       return Application.getInstance();
     }
 
     protected void showToastOnUIThread(final String message)
     {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
-            }
-        });
+        if(getActivity() != null)
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+                }
+            });
     }
 
     protected void hideProgressDialog()
     {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if(progressBar != null)
-                    progressBar.setVisibility(View.GONE);
-            }
-        });
+        if(getActivity() != null)
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if(progressBar != null)
+                        progressBar.setVisibility(View.GONE);
+                }
+            });
 
     }
 

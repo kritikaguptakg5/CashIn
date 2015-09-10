@@ -228,7 +228,7 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
     @Override
     public void bindDataToForm(PanCardService.PanCardDetail value) {
         setVisibleChildView(vg_form);
-        if(value != null && panNo == null && panName == null)
+        if(value != null)
         {
 
             if(value.getIsDataComplete())

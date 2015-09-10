@@ -165,7 +165,7 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
     @Override
     public void bindDataToForm(BusinessCardService.BusinessCardDetail value) {
         setVisibleChildView(vg_form);
-        if(value != null && experience == null && employer == null && emailID == null && joiningDate == null )
+        if(value != null)
         {
 
             if(value.getIsDataComplete())

@@ -38,6 +38,11 @@ public class Application extends MultiDexApplication{
     private RestClient restClient;
     private PerfiosClient perfiosClient;
     private SharedPreferences appPreference = null;
+    private static Application instance;
+
+    public static Application getInstance() {
+        return instance;
+    }
 
    /* static{ System.loadLibrary("opencv_java3");}*/
 
@@ -52,6 +57,7 @@ public class Application extends MultiDexApplication{
         perfiosClient = new PerfiosClient(this);
         new BankProvider().init(this);
         getKeyHash();
+        instance = this;
 
     }
 

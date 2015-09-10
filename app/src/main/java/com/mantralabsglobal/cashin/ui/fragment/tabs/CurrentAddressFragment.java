@@ -27,4 +27,8 @@ public class CurrentAddressFragment extends AddressFragment{
         getAddressService().getCurrentAddress(dataCallback);
     }
 
+    @Override
+    protected String getAddressLabel() {
+        return getString(R.string.residence);
+    }
 }

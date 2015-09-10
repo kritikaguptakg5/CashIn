@@ -7,7 +7,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
-import com.mantralabsglobal.cashin.BuildConfig;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.service.OCRServiceProvider;
 import com.mantralabsglobal.cashin.service.PanCardService;
@@ -38,13 +37,13 @@ import java.io.File;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import retrofit.Callback;
-import retrofit.client.Response;
 
 /**
  * Created by pk on 13/06/2015.
  */
 public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCardDetail> implements OCRServiceProvider<PanCardService.PanCardDetail> {
 
+    private static String PAN_CARD_IMAGE_PATH = "PANCARD_IMAGE_PATH";
     @InjectView(R.id.vg_pan_card_scan)
     public ViewGroup vg_scan;
 
@@ -181,7 +180,7 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
 
     private void beginCrop(Uri source) {
         Uri destination = Uri.fromFile(new File(getActivity().getExternalFilesDir(null), "pan-card-cropped.jpg"));
-        Crop.of(source, destination).asSquare().withAspect(2,1).withMaxSize(600,300).start(getActivity(), BaseActivity.IMAGE_CROP_PAN_CARD);
+        Crop.of(source, destination).asSquare().withAspect(4,3).withMaxSize(400,300).start(getActivity(), BaseActivity.IMAGE_CROP_PAN_CARD);
     }
 
     @Override
@@ -197,7 +196,9 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
     private void handleCrop(int resultCode, Intent result) {
         if (resultCode == Activity.RESULT_OK) {
             showProgressDialog(getString(R.string.processing_image));
-            Bitmap colouredBinary = BitmapFactory.decodeFile(Crop.getOutput(result).getPath());
+            String path = Crop.getOutput(result).getPath();
+            Application.getInstance().putInAppPreference(PAN_CARD_IMAGE_PATH, path);
+            Bitmap colouredBinary = BitmapFactory.decodeFile(path);
             Bitmap binary = new ImageUtils().binarize( colouredBinary );
             uploadImageToServerForOCR(binary, PANCardFragment.this);
            /* if (BuildConfig.DEBUG) {
@@ -223,6 +224,7 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
         }
     }
 
+
     @Override
     public void bindDataToForm(PanCardService.PanCardDetail value) {
         setVisibleChildView(vg_form);
@@ -231,6 +233,16 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
 
             if(value.getIsDataComplete())
                 ((MainActivity)getActivity()).makeSubmitButtonVisible();
+
+
+            String path = Application.getInstance().getAppPreference().getString(PAN_CARD_IMAGE_PATH, null);
+            if(!TextUtils.isEmpty(path))
+            {
+                Bitmap colouredBinary = BitmapFactory.decodeFile(path);
+                camera_capture.setVisibility(View.GONE);
+                success_capture.setVisibility(View.VISIBLE);
+                photoViewer.setImageBitmap(colouredBinary);
+            }
 
            /* if(value.getName() != null)
             name.setText(value.getName());*/
@@ -264,6 +276,7 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
 
     @Override
     public boolean isFormValid() {
-        return true;
+       PanCardService.PanCardDetail detail = getDataFromForm(null);
+        return !TextUtils.isEmpty(detail.getDob()) && !TextUtils.isEmpty(detail.getPanNumber());
     }
 }

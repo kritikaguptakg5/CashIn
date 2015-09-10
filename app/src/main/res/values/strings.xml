@@ -279,5 +279,6 @@ s
     <string name="loan_not_approved">Unfortunately your loan could not be approved. We will get back to you once we get suitable plan for you.</string>
     <string name="please_decide">Please decide the loan amount you would like to borrow</string>
     <string name="terms_n_conditions">*Interest applicable only on the amount you access on next screen</string>
+    <string name="residence">Residence</string>
 
 </resources>

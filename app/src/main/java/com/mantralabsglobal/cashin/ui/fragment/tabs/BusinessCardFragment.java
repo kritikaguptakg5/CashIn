@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,6 +54,7 @@ import retrofit.Callback;
 public class BusinessCardFragment extends BaseBindableFragment<BusinessCardService.BusinessCardDetail>implements OCRServiceProvider<BusinessCardService.BusinessCardDetail> {
 
     private static final String TAG = "BusinessCardFragment";
+    private static final String BUSINESS_CARD_IMAGE_PATH = "BUSINESS_CARD_IMAGE_PATH";
     @InjectView(R.id.ll_business_card_snap)
     public ViewGroup vg_snap;
 
@@ -169,6 +171,15 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
             if(value.getIsDataComplete())
                 ((MainActivity)getActivity()).makeSubmitButtonVisible();
 
+            String path = Application.getInstance().getAppPreference().getString(BUSINESS_CARD_IMAGE_PATH, null);
+            if(!TextUtils.isEmpty(path))
+            {
+                Bitmap colouredBinary = BitmapFactory.decodeFile(path);
+                camera_capture.setVisibility(View.GONE);
+                success_capture.setVisibility(View.VISIBLE);
+                photoViewer.setImageBitmap(colouredBinary);
+            }
+
             if(value.getEmployerName() != null)
             employerName.setText(value.getEmployerName());
             String concatAddress = StringUtils.join(value.getaddressLines(), ",");
@@ -251,7 +262,9 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
     private void handleCrop(int resultCode, Intent result) {
         if (resultCode == Activity.RESULT_OK) {
             showProgressDialog(getString(R.string.processing_image));
-            Bitmap colouredBinary = BitmapFactory.decodeFile(Crop.getOutput(result).getPath());
+            String path = Crop.getOutput(result).getPath();
+            Application.getInstance().putInAppPreference(BUSINESS_CARD_IMAGE_PATH, path);
+            Bitmap colouredBinary = BitmapFactory.decodeFile(path);
             Bitmap binary = new ImageUtils().binarize(colouredBinary);
             uploadImageToServerForOCR(binary, BusinessCardFragment.this);
 
@@ -280,7 +293,12 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
 
     @Override
     public boolean isFormValid() {
-        return true;
+        BusinessCardService.BusinessCardDetail detail = getDataFromForm(null);
+        return !TextUtils.isEmpty(detail.getEmployerName())
+                && !TextUtils.isEmpty(detail.getEmail())
+                && !TextUtils.isEmpty(detail.getJoiningDate())
+                && !TextUtils.isEmpty(detail.getWorkExperience())
+                && !TextUtils.isEmpty(detail.getWorkExperience());
     }
 
 }

@@ -3,6 +3,7 @@ package com.mantralabsglobal.cashin.ui.fragment.tabs;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
+import android.widget.TextView;
 
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.service.AddressService;
@@ -101,7 +103,17 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
             }
         });
 
+        String addressLabel = getAddressLabel();
+        if(!TextUtils.isEmpty(addressLabel)){
+            TextView addressLabal = (TextView) view.findViewById(R.id.adressTextView);
+            addressLabal.setText(addressLabel);
+        }
+
         return view;
+    }
+
+    protected String getAddressLabel() {
+        return null;
     }
 
     @Override

@@ -51,6 +51,12 @@ public class MainFragmentAdapter extends FragmentPagerAdapter {
             return adapter;
         }
         @Override
+        protected void setTabLayoutMode(FragmentPagerAdapter fragmentPagerAdapter, TabLayout tabLayout)
+        {
+            tabLayout.setTabMode(TabLayout.MODE_FIXED);
+            tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        }
+        @Override
         protected Context getContext()
         {
             return context;

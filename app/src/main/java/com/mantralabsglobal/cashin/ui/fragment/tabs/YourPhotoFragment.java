@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.service.AvtarService;
 import com.mantralabsglobal.cashin.ui.Application;
@@ -55,6 +56,10 @@ public class YourPhotoFragment extends BaseBindableFragment<AvtarService.AvtarIm
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_your_photo, container, false);
+        BootstrapButton backButton = (BootstrapButton) view.findViewById(R.id.btn_back);
+        if(backButton != null)
+            backButton.setBootstrapButtonEnabled(false);
+
         return view;
     }
 

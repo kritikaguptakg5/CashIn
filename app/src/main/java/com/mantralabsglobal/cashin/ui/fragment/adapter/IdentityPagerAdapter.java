@@ -15,7 +15,7 @@ import com.mantralabsglobal.cashin.ui.fragment.tabs.PermanentAddressFragment;
  */
 public class IdentityPagerAdapter extends FragmentPagerAdapter{
 
-    private String tabtitles[] = new String[] { "Aadhar", "PAN", "Residence Address"/* , "Permanent Address"*/};
+    private String tabtitles[] = new String[] { "Aadhar", "PAN", "Address"/* , "Permanent Address"*/};
 
     AadharCardFragment aadharCardFragment;
     PANCardFragment panCardFragment;

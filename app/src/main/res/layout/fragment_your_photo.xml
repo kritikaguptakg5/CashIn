@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:id="@+id/business_card_viewflipper">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/business_card_viewflipper">
 
         <LinearLayout
             android:id="@+id/vg_image_picker" android:visibility="gone"
@@ -40,18 +43,34 @@
 
         </LinearLayout>
 
-            <FrameLayout android:visibility="visible" android:id="@+id/vg_image_viewer" android:padding="20dp"
+            <FrameLayout android:visibility="visible" android:id="@+id/vg_image_viewer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" android:id="@+id/photo_viewer" android:scaleType="fitXY" />
+                    android:layout_height="match_parent"
+                    android:id="@+id/photo_viewer"
+                    android:scaleType="fitXY"
+                    android:padding="16dp"
+                    android:layout_marginBottom="60dp"/>
 
                 <ImageButton android:id="@+id/edit_selfie_button"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:src="@drawable/ic_profile_edit_icon" android:layout_gravity="bottom|end" android:background="@drawable/round_button_translucent" android:layout_margin="20dp" />
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_profile_edit_icon"
+                    android:layout_gravity="bottom|end"
+                    android:background="@drawable/round_button_translucent"
+                    android:padding="16dp"
+                    android:layout_marginBottom="80dp"
+                    android:layout_marginRight="20dp"/>
+
+                <include layout="@layout/back_next_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"/>
+
             </FrameLayout>
 
     <ProgressBar

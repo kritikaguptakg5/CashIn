@@ -1,5 +1,7 @@
 package com.mantralabsglobal.cashin.ui.activity.app;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -111,7 +113,7 @@ public class IntroSliderActivity extends BaseActivity {
             @Override
             public void onSuccess(final String email) {
                 IntroSliderActivity.this.email = email;
-                tokenTask.execute(IntroSliderActivity.this);
+                new GoogleTask(email,IntroSliderActivity.this ).execute(IntroSliderActivity.this);
             }
 
             @Override
@@ -122,17 +124,25 @@ public class IntroSliderActivity extends BaseActivity {
         });
     }
 
-    private GoogleTokenRetrieverTask tokenTask = new GoogleTokenRetrieverTask(){
+    private class GoogleTask extends com.mantralabsglobal.cashin.social.GoogleTokenRetrieverTask{
 
+        Context context;
+        String email;
+
+        public GoogleTask(String email, Context context){
+            super();
+            this.email = email;
+            this.context = context;
+        }
 
         @Override
         protected String getEmail() {
-            return IntroSliderActivity.this.email;
+            return email;
         }
 
         @Override
         public void onException(UserRecoverableAuthException e) {
-            startActivityForResult(e.getIntent(), BaseActivity.REQ_SIGN_IN_REQUIRED);
+            ((Activity) context).startActivityForResult(e.getIntent(), BaseActivity.REQ_SIGN_IN_REQUIRED);
         }
 
         @Override
@@ -172,7 +182,7 @@ public class IntroSliderActivity extends BaseActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQ_SIGN_IN_REQUIRED && resultCode == RESULT_OK) {
-            tokenTask.execute(this);
+            new GoogleTask(email,IntroSliderActivity.this ).execute(this);
         }
         else {
             googlePlus.onActivityResult(requestCode, resultCode, data);

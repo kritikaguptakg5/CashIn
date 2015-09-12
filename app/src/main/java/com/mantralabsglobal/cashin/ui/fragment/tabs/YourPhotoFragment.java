@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,6 +84,10 @@ public class YourPhotoFragment extends BaseBindableFragment<AvtarService.AvtarIm
     protected void onUpdate(AvtarService.AvtarImage updatedData, Callback<AvtarService.AvtarImage> saveCallback) {
         if(updatedData != null && updatedData.getFilePath() != null && updatedData.getFilePath().length()>0) {
             TypedFile typedFile = new TypedFile("multipart/form-data", new File(updatedData.getFilePath()));
+            if(serverCopy != null && !TextUtils.isEmpty(serverCopy.getAvatar()))
+            {
+                Picasso.with(getActivity()).invalidate(serverCopy.getAvatar());
+            }
             avtarService.uploadAvtarImage(typedFile, saveCallback);
             avtarService.getNextDetail(saveCallback);
         }
@@ -95,7 +100,7 @@ public class YourPhotoFragment extends BaseBindableFragment<AvtarService.AvtarIm
 
     @Override
     protected void loadDataFromServer(Callback<AvtarService.AvtarImage> dataCallback) {
-        AvtarService.AvtarUtil.getAvtarImage(dataCallback, avtarService,  getActivity());
+        AvtarService.AvtarUtil.getAvtarImage(dataCallback, avtarService, getActivity());
     }
 
     @Override
@@ -163,6 +168,7 @@ public class YourPhotoFragment extends BaseBindableFragment<AvtarService.AvtarIm
                     bindDataToForm(avtarImage);
                     dirtyImage = avtarImage;
                     save();
+
                 } else if (resultCode == Crop.RESULT_ERROR) {
                     showToastOnUIThread(Crop.getError(imageReturnedIntent).getMessage());
                     reset(false);
@@ -180,11 +186,7 @@ public class YourPhotoFragment extends BaseBindableFragment<AvtarService.AvtarIm
 
     @Override
     protected boolean beforeBindDataToForm(AvtarService.AvtarImage value, Response response) {
-        if(value != null && value.getAvatar() != null && value.getAvatar().length()>0) {
-            Log.i(TAG, "deleting picasso cache " + value.getAvatar());
-            Picasso.with(getActivity()).invalidate(value.getAvatar());
-            dirtyImage = null;
-        }
+        //Don't bind immediately. Give server enough time to push changes to S3
         return false;
     }
     /*public void bindDataToForm(Uri imageUri) {
@@ -221,6 +223,7 @@ public class YourPhotoFragment extends BaseBindableFragment<AvtarService.AvtarIm
             Picasso.with(getActivity())
                     .load(value.getAvatar())
                     .fit()
+                    .centerCrop()
                     .into(photoViewer, new com.squareup.picasso.Callback() {
                         @Override
                         public void onSuccess() {

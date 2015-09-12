@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +13,13 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +29,8 @@ import com.mantralabsglobal.cashin.service.GetUserLoanService;
 import com.mantralabsglobal.cashin.service.LoanDetailService;
 import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
+
+import java.util.List;
 
 import butterknife.InjectView;
 import retrofit.Callback;
@@ -121,6 +128,85 @@ public class LoanDetailsFragment extends BaseBindableFragment<LoanDetailService.
         return view;
     }
 
+    private void createTable(List<LoanDetailService.LoanTenure> EMITable){
+
+        TextView tenureText,interestText, emiText;
+
+        TableRow tr_head = new TableRow(getActivity());
+        tr_head.setLayoutParams(new TableRow.LayoutParams(
+                TableRow.LayoutParams.FILL_PARENT,
+                TableRow.LayoutParams.WRAP_CONTENT,3));
+        tr_head.setGravity(Gravity.CENTER);
+
+         tenureText = new TextView(getActivity());
+
+        tenureText.setText("Tenure");
+         interestText = new TextView(getActivity());
+
+        interestText.setText("Interest");
+         emiText = new TextView(getActivity());
+
+        emiText.setText("EMI");
+
+        tr_head.addView(tenureText,0);
+        tr_head.addView(interestText,1);
+        tr_head.addView(emiText,2);
+
+        emiTable.addView(tr_head,0);
+
+
+       // TableRow tr=null;
+        for (int row_no=0; row_no < EMITable.size(); row_no++) {
+       //     tr_head.removeAllViews();
+            tr_head = new TableRow(getActivity());
+            tr_head.setLayoutParams(new TableRow.LayoutParams(
+                    TableRow.LayoutParams.FILL_PARENT,
+                    TableRow.LayoutParams.WRAP_CONTENT, 3));
+            tr_head.setGravity(Gravity.CENTER);
+            tenureText = new TextView(getActivity());
+
+            interestText = new TextView(getActivity());
+
+            emiText = new TextView(getActivity());
+
+            tenureText.setText(EMITable.get(row_no).getTenure());
+            interestText.setText(String.valueOf(EMITable.get(row_no).getInterest()));
+            emiText.setText(String.valueOf(EMITable.get(row_no).getEMI()));
+
+            tr_head.addView(tenureText, 0);
+            tr_head.addView(interestText, 1);
+            tr_head.addView(emiText, 2);
+
+            emiTable.addView(tr_head,row_no+1);
+
+
+            //);
+       //     tr_head.removeAllViews();
+
+       }
+
+       /* TableRow tr=null;
+        for (int row_size=0; row_size < EMITable.size(); row_size++) {
+                *//* maybe you want to do something special with the data from the server here ? *//*
+
+            if (row_size == 0) {
+                tr = new TableRow(getActivity());
+                tr.setLayoutParams(new TableLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            }
+            CheckBox check = new CheckBox(getActivity());
+            check.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                        *//* add your code here *//*
+                }
+            });
+            check.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
+            tr.addView(check);
+
+
+        }*/
+    }
+
     @Override
     public void bindDataToForm(final LoanDetailService.LoanDetail value) {
         if (value != null) {
@@ -134,6 +220,7 @@ public class LoanDetailsFragment extends BaseBindableFragment<LoanDetailService.
                 bankLogo.setImageResource(getActivity().getResources().getIdentifier(bank.getLogo(), "drawable", getActivity().getPackageName()));
                 bankLogoAccessFunds.setImageResource(getActivity().getResources().getIdentifier(bank.getLogo(), "drawable", getActivity().getPackageName()));
             }
+            createTable(value.getEMITable());
         }
     }
 

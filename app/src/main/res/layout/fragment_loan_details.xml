@@ -171,7 +171,8 @@
 
         <TableLayout
             android:id="@+id/emi_table"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
+            android:layout_marginLeft="20dp"
             android:layout_height="wrap_content"></TableLayout>
 
         <!-- <LinearLayout

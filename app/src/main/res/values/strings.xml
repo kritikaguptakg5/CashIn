@@ -294,5 +294,7 @@ s
     <string name="terms_n_conditions">*Interest applicable only on the amount you access on next screen</string>
     <string name="get_loan">Get the loan</string>
     <string name="residence">Residence</string>
+    <string name="already_have_you_bank_statements">We already have your last 3 month bank statements!</string>
+
 
 </resources>

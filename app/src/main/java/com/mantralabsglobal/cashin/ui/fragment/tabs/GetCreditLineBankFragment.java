@@ -144,7 +144,7 @@ public class GetCreditLineBankFragment extends BaseBindableFragment<GetCreditLin
             loan_amount.setText("A credit line of up to Rs " + totalApprovedAmount + " has been preapproved to you by RBL Bank");
             seekBar.setMax(totalApprovedAmount);
 
-        } else if (loanStatus == LOAN_STATUS_REJECTED) {
+        } else if (value.getStatus() == LOAN_STATUS_REJECTED) {
             loan_rejected_view.setVisibility(View.VISIBLE);
             transunion_view.setVisibility(View.GONE);
         }

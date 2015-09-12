@@ -5,9 +5,12 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,8 +57,14 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
     TabManager mTabManager;
     LinearLayout mainLayout, bank_detail_add_more;
 
+    @InjectView(R.id.bank_statement_bar)
+    ViewGroup bankStatementInfoBar;
+
     @InjectView(R.id.vg_bank_details)
     ViewGroup vg_bank_details;
+
+    @InjectView(R.id.already_have_statements)
+    ViewGroup bankStatementsPresentView;
 
     @InjectView(R.id.eStatement)
     Button eStatement;
@@ -110,10 +119,12 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
         mTabHost.setCurrentTab(1);
         netBanking.setSelected(true);
         eStatement.setSelected(false);
-
         //Load perfios webview
         Intent intent = new Intent(getActivity(), PerfiosActivity.class);
         getActivity().startActivityForResult(intent, BaseActivity.PERFIOS_NET_BANKING);
+       // netBanking.setEnabled(false);
+        //netBanking.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.bank_statements_button_disable));
+
     }
 
     @OnClick(R.id.eStatement)
@@ -121,6 +132,9 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
         mTabHost.setCurrentTab(2);
         netBanking.setSelected(false);
         eStatement.setSelected(true);
+        //eStatement.setEnabled(false);
+        //eStatement.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.bank_statements_button_disable));
+
     }
 
     @Override
@@ -183,6 +197,14 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
         }
     }
 
+    @OnClick(R.id.statement_edit)
+    public void editBankStatement() {
+        bankStatementsPresentView.setVisibility(View.GONE);
+        bankStatementInfoBar.setVisibility(View.VISIBLE);
+        mTabHost.setVisibility(View.VISIBLE);
+        ((Application)getActivity().getApplication()).setGmailAccount(null);
+
+    }
 
     public void onCreateDialog(final PrimaryBankService.BankDetail bankDetail) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -256,11 +278,26 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
         primaryBankService.createPrimaryBankDetail(updatedData, saveCallback);
     }
 
+    public void disableStatementsUploadededSuccessfully(){
+        String gmailAccount =  ((Application)getActivity().getApplication()).getGmailAccount();
+        if(!TextUtils.isEmpty(gmailAccount)){
+            bankStatementsPresentView.setVisibility(View.VISIBLE);
+            bankStatementInfoBar.setVisibility(View.GONE);
+            mTabHost.setVisibility(View.GONE);
+          /*  eStatement.setEnabled(false);
+            eStatement.setText("Already have your e-statements!");
+            eStatement.setTextColor(getActivity().getResources().getColor(R.color.white));
+            eStatement.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.bank_statements_button_disable));*/
+        }
+    }
+
     @Override
     public void bindDataToForm(final List<PrimaryBankService.BankDetail> value) {
         if (value != null) {
             if (value.size() > 1 && value.get(0).getIsDataComplete())
                 ((MainActivity) getActivity()).makeSubmitButtonVisible();
+
+            disableStatementsUploadededSuccessfully();
 
             bankDetailViewList = new ArrayList<>();
             for (final PrimaryBankService.BankDetail bankDetail : value) {

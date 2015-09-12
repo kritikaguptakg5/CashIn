@@ -176,7 +176,7 @@ public class EStatementFragment extends BaseBindableFragment<EStatementService.E
             getActivity().startActivityForResult(googlePicker, BaseActivity.PICK_ACCOUNT_REQUEST);
 
         }
-        /*else
+       /* else
         {
             createDialog("We already have your last 3 months bank statement");
         }*/

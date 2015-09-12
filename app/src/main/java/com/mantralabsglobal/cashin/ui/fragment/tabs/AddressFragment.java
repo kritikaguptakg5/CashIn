@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.service.AadharService;
@@ -98,18 +99,7 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
 
                 if (((CheckBox) v).isChecked()) {
                     setVisibleChildView(vg_aadhaar_address_layout);
-                    RestClient.getInstance().getAadharService().getAadharDetail(new Callback<AadharService.AadharDetail>() {
-                        @Override
-                        public void success(AadharService.AadharDetail aadharDetail, Response response) {
-                            aadhar_address_text.setText(aadharDetail.getAddress());
-
-                        }
-
-                        @Override
-                        public void failure(RetrofitError error) {
-                            showToastOnUIThread("Please first enter your aadhaar detail");
-                        }
-                    });
+                    getAadhaarAddressFromAadhaar();
                 } else {
                     setVisibleChildView(vg_addressForm);
                 }
@@ -123,6 +113,23 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
         }
 
         return view;
+    }
+
+    public void getAadhaarAddressFromAadhaar(){
+        RestClient.getInstance().getAadharService().getAadharDetail(new Callback<AadharService.AadharDetail>() {
+            @Override
+            public void success(AadharService.AadharDetail aadharDetail, Response response) {
+                if(aadharDetail != null)
+                    aadhar_address_text.setText(aadharDetail.getAddress());
+                else
+                    Toast.makeText(getActivity(),"Please first enter your aadhaar detail",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                showToastOnUIThread("Please first enter your aadhaar detail");
+            }
+        });
     }
 
     protected String getAddressLabel() {
@@ -231,8 +238,12 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
 
             if(address.isSameAsAadhaar()){
                 setVisibleChildView(vg_aadhaar_address_layout);
+                if(aadhar_address_text.getText() == null || aadhar_address_text.getText().toString().trim().length() < 1){
+                    getAadhaarAddressFromAadhaar();
+                }
+
             } else {
-            setVisibleChildView(vg_addressForm);
+                setVisibleChildView(vg_addressForm);
             }
 
             getActivity().runOnUiThread(new Runnable() {

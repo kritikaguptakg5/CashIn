@@ -1,5 +1,9 @@
 package com.mantralabsglobal.cashin.utils;
 
+import com.mantralabsglobal.cashin.R;
+import com.mantralabsglobal.cashin.ui.Application;
+
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -31,5 +35,10 @@ public class DateUtils {
             years++;
         }
         return years;
+    }
+
+    public static CharSequence getDateString(Date date) {
+        SimpleDateFormat format = new SimpleDateFormat( Application.getInstance().getString(R.string.global_date_format));
+        return format.format(date);
     }
 }

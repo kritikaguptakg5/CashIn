@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mantralabsglobal.cashin.R;
+import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.fragment.utils.DatepickerDialogFragment;
 import com.mantralabsglobal.cashin.utils.DateUtils;
 
@@ -37,10 +38,12 @@ import java.util.concurrent.TimeUnit;
  */
 public class BirthDayView extends LinearLayout {
 
+    public final static String DATE_FORMAT = Application.getInstance().getString(R.string.global_date_format);
     private EditText et_dob;
     private TextView tv_age;
     private TextView tv_dob;
     private ImageView iv_dob;
+    private Date selectedDate;
     private FragmentManager fragmentManager;
 
     public BirthDayView(Context context) {
@@ -87,7 +90,7 @@ public class BirthDayView extends LinearLayout {
                     defaultDate = dateFormat.parse(et_dob.getText().toString());
                 } catch (ParseException e) {
                     try {
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+                        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
                         defaultDate = sdf.parse(et_dob.getText().toString());
                     } catch (ParseException e1) {
 
@@ -102,8 +105,8 @@ public class BirthDayView extends LinearLayout {
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         Calendar cal = new GregorianCalendar(year, monthOfYear, dayOfMonth);
                         DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getContext());
-
-                        et_dob.setText(android.text.format.DateFormat.format("dd-MMM-yyyy",cal.getTime()) );
+                        selectedDate = cal.getTime();
+                        et_dob.setText(android.text.format.DateFormat.format(DATE_FORMAT,cal.getTime()) );
                         tv_age.setText(DateUtils.getYearsPassed(year, monthOfYear, dayOfMonth) + " Years");
                     }
                 }, defaultDate);
@@ -156,6 +159,10 @@ public class BirthDayView extends LinearLayout {
     public EditText getEditText()
     {
         return et_dob;
+    }
+
+    public Date getSelectedDate(){
+        return selectedDate;
     }
 
 

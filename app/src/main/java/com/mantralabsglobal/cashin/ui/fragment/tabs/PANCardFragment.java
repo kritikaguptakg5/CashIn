@@ -25,6 +25,7 @@ import com.mantralabsglobal.cashin.ui.activity.camera.CwacCameraActivity;
 import com.mantralabsglobal.cashin.ui.fragment.camera.CwacCameraFragment;
 import com.mantralabsglobal.cashin.ui.view.BirthDayView;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
+import com.mantralabsglobal.cashin.utils.DateUtils;
 import com.mantralabsglobal.cashin.utils.ImageUtils;
 import com.mantralabsglobal.cashin.utils.PANUtils;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
@@ -252,7 +253,7 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
             panNumber.setText(value.getPanNumber());
 
             if(value.getDob() != null)
-            dob.setText(value.getDob());
+            dob.setText(DateUtils.getDateString(value.getDob()));
         }
     }
 
@@ -262,7 +263,7 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
             base = new PanCardService.PanCardDetail();
        // base.setName(name.getText().toString());
        // panName = name.getText().toString();
-        base.setDob(dob.getText().toString());
+        base.setDob( dob.getSelectedDate());
         dateOfBirth = dob.getText().toString();
         base.setPanNumber(panNumber.getText().toString());
         panNo = panNumber.getText().toString();
@@ -277,6 +278,6 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
     @Override
     public boolean isFormValid() {
        PanCardService.PanCardDetail detail = getDataFromForm(null);
-        return !TextUtils.isEmpty(detail.getDob()) && !TextUtils.isEmpty(detail.getPanNumber());
+        return detail.getDob() != null && !TextUtils.isEmpty(detail.getPanNumber());
     }
 }

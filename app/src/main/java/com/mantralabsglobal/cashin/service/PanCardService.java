@@ -2,6 +2,8 @@ package com.mantralabsglobal.cashin.service;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 import retrofit.Callback;
 import retrofit.http.Body;
 import retrofit.http.GET;
@@ -38,7 +40,16 @@ public interface PanCardService {
         private String panNumber;
         @SerializedName(value = "sonOf")
         private String sonOf;
-        private String dob;
+
+        public Date getDob() {
+            return dob;
+        }
+
+        public void setDob(Date dob) {
+            this.dob = dob;
+        }
+
+        private Date dob;
         private String[] contentarr;
         private boolean isDataComplete;
 
@@ -64,14 +75,6 @@ public interface PanCardService {
 
         public void setSonOf(String sonOf) {
             this.sonOf = sonOf;
-        }
-
-        public String getDob() {
-            return dob;
-        }
-
-        public void setDob(String dob) {
-            this.dob = dob;
         }
 
         public String getPanNumber() {

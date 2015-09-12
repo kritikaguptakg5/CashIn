@@ -295,6 +295,6 @@ s
     <string name="get_loan">Get the loan</string>
     <string name="residence">Residence</string>
     <string name="already_have_you_bank_statements">We already have your last 3 month bank statements!</string>
-
+    <string name="global_date_format">dd-MMM-yyyy</string>
 
 </resources>

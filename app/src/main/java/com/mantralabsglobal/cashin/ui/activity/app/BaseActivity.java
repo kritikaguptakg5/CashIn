@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.mantralabsglobal.cashin.service.AuthenticationService;
 import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.utils.RetrofitUtils;
+
+import java.net.InetAddress;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -156,4 +159,17 @@ public class BaseActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    protected boolean isConnectedToInternet() {
+        try {
+            InetAddress ipAddr = InetAddress.getByName("www.google.com");
+
+            if (ipAddr == null || TextUtils.isEmpty(ipAddr.toString())) {
+                return false;
+            }
+
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
 }

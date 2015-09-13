@@ -1,10 +1,15 @@
 package com.mantralabsglobal.cashin.ui.activity.app;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -69,11 +74,52 @@ public class MainActivity extends BaseActivity  {
         buttonList.add(financialButton);
         buttonList.add(socialButton);
 
-        checkUserName();
+        handleInternetAvailability();
 
-        viewPager.addOnPageChangeListener(pageChangeListener);
-        mainFragmentAdapter = new MainFragmentAdapter(getSupportFragmentManager(), this);
-        viewPager.setAdapter(mainFragmentAdapter);
+    }
+
+    protected void handleInternetAvailability() {
+
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+
+        new AsyncTask<Void,Void,Boolean>(){
+
+            @Override
+            protected Boolean doInBackground(Void... params) {
+                return isConnectedToInternet();
+            }
+
+            @Override
+            protected void onPostExecute(Boolean result) {
+                if(result)
+                {
+                    checkUserName();
+
+                    viewPager.addOnPageChangeListener(pageChangeListener);
+                    mainFragmentAdapter = new MainFragmentAdapter(fragmentManager, MainActivity.this);
+                    viewPager.setAdapter(mainFragmentAdapter);
+                }
+                else {
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setTitle(R.string.error_title)
+                            .setMessage(R.string.no_internet_connection_error_message)
+                            .setPositiveButton(R.string.retry_button, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    handleInternetAvailability();
+                                }
+                            })
+                            .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setCancelable(false)
+                            .show();
+                }
+            }
+
+        }.execute();
 
     }
 

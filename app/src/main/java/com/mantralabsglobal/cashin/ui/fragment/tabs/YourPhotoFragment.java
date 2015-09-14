@@ -114,13 +114,6 @@ public class YourPhotoFragment extends BaseBindableFragment<AvtarService.AvtarIm
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
         photoPickerIntent.setType("image/*");
 
-     /*   photoPickerIntent.putExtra("crop", "true");
-        photoPickerIntent.putExtra("outputX", 512);
-        photoPickerIntent.putExtra("outputY", 512);
-        photoPickerIntent.putExtra("aspectX", 1);
-        photoPickerIntent.putExtra("aspectY", 1);
-        photoPickerIntent.putExtra("scale", true);*/
-
         getActivity().startActivityForResult(photoPickerIntent, BaseActivity.SELECT_PHOTO_FROM_GALLERY);
     }
 
@@ -185,21 +178,6 @@ public class YourPhotoFragment extends BaseBindableFragment<AvtarService.AvtarIm
     }
 
     @Override
-    protected boolean beforeBindDataToForm(AvtarService.AvtarImage value, Response response) {
-        //Don't bind immediately. Give server enough time to push changes to S3
-        return false;
-    }
-    /*public void bindDataToForm(Uri imageUri) {
-        try{
-
-            final InputStream imageStream = getActivity().getContentResolver().openInputStream(imageUri);
-            final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-            bindDataToForm(selectedImage);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }*/
-    @Override
     public void bindDataToForm(AvtarService.AvtarImage value) {
 
         setVisibleChildView(imageViewer);
@@ -220,6 +198,7 @@ public class YourPhotoFragment extends BaseBindableFragment<AvtarService.AvtarIm
         else if(value != null && value.getAvatar() != null && value.getAvatar().length()>0)
         {
             showProgressDialog("");
+            dirtyImage = null;
             Picasso.with(getActivity())
                     .load(value.getAvatar())
                     .fit()

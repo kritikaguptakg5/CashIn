@@ -82,6 +82,11 @@ public class HistoryFragment extends BaseBindableFragment<UserHistoryService.Use
 
     @Override
     public void bindDataToForm(UserHistoryService.UserHistory value) {
+        hasDefaulted.clearCheck();
+        loanTaken.clearCheck();
+        chequeBounced.clearCheck();
+        applicationRejected.clearCheck();
+
         if(value != null)
         {
             if(value.getIsDataComplete())

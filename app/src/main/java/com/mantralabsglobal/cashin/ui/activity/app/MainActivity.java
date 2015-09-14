@@ -3,11 +3,8 @@ package com.mantralabsglobal.cashin.ui.activity.app;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -29,7 +26,6 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import butterknife.Optional;
 
 
 public class MainActivity extends BaseActivity  {
@@ -61,51 +57,38 @@ public class MainActivity extends BaseActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        setTitle(R.string.title_activity_main);
-        toolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
-        setSupportActionBar(toolbar);
+        if(isUserLoggedIn()) {
+            setContentView(R.layout.activity_main);
+            setTitle(R.string.title_activity_main);
+            toolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
+            setSupportActionBar(toolbar);
 
-        ButterKnife.inject(this);
+            ButterKnife.inject(this);
 
-        buttonList.add(yourPhotoButton);
-        buttonList.add(yourIdentityButton);
-        buttonList.add(workButton);
-        buttonList.add(financialButton);
-        buttonList.add(socialButton);
 
-        handleInternetAvailability();
+            buttonList.add(yourPhotoButton);
+            buttonList.add(yourIdentityButton);
+            buttonList.add(workButton);
+            buttonList.add(financialButton);
+            buttonList.add(socialButton);
 
-    }
-
-    protected void handleInternetAvailability() {
-
-        final FragmentManager fragmentManager = getSupportFragmentManager();
-
-        new AsyncTask<Void,Void,Boolean>(){
-
-            @Override
-            protected Boolean doInBackground(Void... params) {
-                return isConnectedToInternet();
-            }
-
-            @Override
-            protected void onPostExecute(Boolean result) {
-                if(result)
-                {
-                    checkUserName();
-
+            checkNetworkAvailability(new SimpleNetworkResultHandler() {
+                @Override
+                protected void onNetworkAvailable() {
                     viewPager.addOnPageChangeListener(pageChangeListener);
-                    mainFragmentAdapter = new MainFragmentAdapter(fragmentManager, MainActivity.this);
+                    mainFragmentAdapter = new MainFragmentAdapter(getSupportFragmentManager(), MainActivity.this);
                     viewPager.setAdapter(mainFragmentAdapter);
                 }
-                else {
+
+                @Override
+                protected void onNetworkUnavailable() {
+                    final SimpleNetworkResultHandler handler = this;
                     new AlertDialog.Builder(MainActivity.this)
                             .setTitle(R.string.error_title)
                             .setMessage(R.string.no_internet_connection_error_message)
                             .setPositiveButton(R.string.retry_button, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-                                    handleInternetAvailability();
+                                    checkNetworkAvailability(handler);
                                 }
                             })
                             .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -117,10 +100,8 @@ public class MainActivity extends BaseActivity  {
                             .setCancelable(false)
                             .show();
                 }
-            }
-
-        }.execute();
-
+            });
+        }
     }
 
     public void makeSubmitButtonVisible(){
@@ -269,7 +250,7 @@ public class MainActivity extends BaseActivity  {
         return super.onOptionsItemSelected(item);
     }
 
-    protected void checkUserName()
+    protected boolean isUserLoggedIn()
     {
         String userName = getCashInApplication().getAppUser();
         if ("".equals(userName)) {
@@ -277,7 +258,9 @@ public class MainActivity extends BaseActivity  {
             Intent intent = new Intent(getBaseContext(), IntroSliderActivity.class);
             startActivity(intent);
             finish();
+            return false;
         }
+        return true;
     }
 
     @Override

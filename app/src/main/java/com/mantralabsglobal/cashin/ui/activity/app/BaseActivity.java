@@ -3,7 +3,9 @@ package com.mantralabsglobal.cashin.ui.activity.app;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.widget.Toast;
@@ -120,6 +122,50 @@ public class BaseActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
     }
 
+    protected void checkNetworkAvailability(final NetworkResultHandler handler) {
+
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+
+        new AsyncTask<Void,Void,Boolean>(){
+
+            @Override
+            protected Boolean doInBackground(Void... params) {
+                return isConnectedToInternet();
+            }
+
+            @Override
+            protected void onPostExecute(Boolean result) {
+                handler.onNetworkResult(result);
+            }
+
+        }.execute();
+
+    }
+
+    public static interface NetworkResultHandler{
+        void onNetworkResult(boolean isAvailable);
+    }
+
+    public static abstract class SimpleNetworkResultHandler implements NetworkResultHandler{
+
+        @Override
+        public void onNetworkResult(boolean isAvailable) {
+            if(isAvailable)
+            {
+                onNetworkAvailable();
+            }
+            else
+            {
+                onNetworkUnavailable();
+            }
+        }
+
+        protected abstract void onNetworkAvailable();
+        protected abstract void onNetworkUnavailable();
+
+    }
+
+
     protected void showProgressDialog(String title, String message, boolean indeterminate, boolean cancelable)
     {
         progressDialog.setTitle(title);
@@ -172,4 +218,5 @@ public class BaseActivity extends AppCompatActivity {
         }
         return true;
     }
+
 }

@@ -2,11 +2,11 @@
 <resources>
     <string name="server_url">http://52.10.22.1:1400</string>
     <string name="server_url_ocr">http://52.10.22.1:1400</string>
-    <string name="facebook_app_id">1442098402762222</string>
+    <string name="facebook_app_id">944152885656838</string>
     <string name="avatar_base_url">https://s3-ap-southeast-2.amazonaws.com/cashin-dev/avatars/</string>
     <string name="linkedin_key">75q2gx5d4hwr4m</string>
     <string name="linkedin_secret">cubxwrlPnQECmw8U</string>
-    <string name="facebook_secret">b620dc218af76f7d8f1cde28a0da5844</string>
+    <string name="facebook_secret">d75ce7ed74e1dc823fc32d78def1b2b1</string>
     <string name="server_client_id">773614146127-u3nif8uven9pk6416ge9d462qjcde86a.apps.googleusercontent.com</string>
     <string name="perfios_url">https://www.perfios.com/KuberaVault/insights</string>
 </resources>

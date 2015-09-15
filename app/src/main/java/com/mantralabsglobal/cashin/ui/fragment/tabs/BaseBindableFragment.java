@@ -173,11 +173,9 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
         if (force || (serverCopy == null && isDataPresentOnServer)) {
             showProgressDialog(getString(R.string.waiting_for_server));
             loadDataFromServer(dataCallback);
-            hideProgressDialog();
         } else {
             dataCallback.success(serverCopy, null);
         }
-
     }
 
     @Override

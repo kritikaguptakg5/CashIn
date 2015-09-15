@@ -12,9 +12,6 @@ public interface EStatementService {
     @GET("/user/statementperfios")
     void getEStatement(Callback<EStatement> callback);
 
-    @GET("/user/next?type=obj")
-    void getNextDetail( Callback<EStatement> callback);
-
     @POST("/user/statementperfios")
     void createEStatement(@Body EStatement emiDetail, Callback<EStatement> callback);
 
@@ -22,15 +19,7 @@ public interface EStatementService {
 
         int status = -1;
         String message ;
-        private boolean isDataComplete;
 
-        public boolean getIsDataComplete() {
-            return isDataComplete;
-        }
-
-        public void setIsDataComplete(boolean isDataComplete) {
-            this.isDataComplete = isDataComplete;
-        }
         public EStatement() {
         }
 

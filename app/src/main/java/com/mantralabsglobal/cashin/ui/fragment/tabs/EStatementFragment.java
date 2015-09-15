@@ -114,9 +114,6 @@ public class EStatementFragment extends BaseBindableFragment<EStatementService.E
     public void bindDataToForm(final EStatementService.EStatement value) {
         if (value != null) {
 
-            if(value.getIsDataComplete())
-                ((MainActivity)getActivity()).makeSubmitButtonVisible();
-
             /*if(value.getStatus() == 1)
                 *//*eStatementText.setText("Information already retrieved");*//*
             createDialog("Information already retrieved");
@@ -133,18 +130,16 @@ public class EStatementFragment extends BaseBindableFragment<EStatementService.E
     @Override
     protected void onUpdate(EStatementService.EStatement updatedData, Callback<EStatementService.EStatement> saveCallback) {
         eStatementService.createEStatement(updatedData, saveCallback);
-        eStatementService.getNextDetail(saveCallback);
     }
 
     @Override
     protected void onCreate(EStatementService.EStatement updatedData, Callback<EStatementService.EStatement> saveCallback) {
         eStatementService.createEStatement(updatedData, saveCallback);
-        eStatementService.getNextDetail(saveCallback);
     }
 
     @Override
     protected void loadDataFromServer(Callback<EStatementService.EStatement> dataCallback) {
-        eStatementService.getEStatement(dataCallback);
+       // eStatementService.getEStatement(dataCallback);
     }
 
 
@@ -167,15 +162,15 @@ public class EStatementFragment extends BaseBindableFragment<EStatementService.E
     }*/
 
     protected void scanGmailForBankStatements() {
-        String gmailAccount =  ((Application)getActivity().getApplication()).getGmailAccount();
-        if(TextUtils.isEmpty(gmailAccount))
-        {
+      //  String gmailAccount =  ((Application)getActivity().getApplication()).getGmailAccount();
+       // if(TextUtils.isEmpty(gmailAccount))
+        //{
             //Get the gmail account from user
             Intent googlePicker = AccountPicker.newChooseAccountIntent(null, null,
                     new String[]{GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE}, true, null, null, null, null);
             getActivity().startActivityForResult(googlePicker, BaseActivity.PICK_ACCOUNT_REQUEST);
 
-        }
+      //  }
        /* else
         {
             createDialog("We already have your last 3 months bank statement");
@@ -220,10 +215,11 @@ public class EStatementFragment extends BaseBindableFragment<EStatementService.E
                 authCode.setAuthCode(token);
                 authCode.setEmail(email);
                 showToastOnUIThread("Successfully Retrieved!");
-                getCashInApplication().getRestClient().getAuthenticationService().sendGoogleAuthCode(authCode, new Callback<Void>() {
+                getCashInApplication().getRestClient().getAuthenticationService().sendGoogleAuthCode(authCode, new Callback<AuthenticationService.UserStatementStatus>() {
                     @Override
-                    public void success(Void aVoid, Response response) {
+                    public void success(AuthenticationService.UserStatementStatus userStatementStatus, Response response) {
                         Log.i(TAG, "token posted to server");
+                        showToastOnUIThread(userStatementStatus.getMessage());
                     }
 
                     @Override

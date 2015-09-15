@@ -117,13 +117,11 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
     @Override
     protected void onUpdate(PanCardService.PanCardDetail updatedData, Callback<PanCardService.PanCardDetail> saveCallback) {
         panCardService.updatePanCardDetail(updatedData, saveCallback);
-        panCardService.getNextDetail(saveCallback);
     }
 
     @Override
     protected void onCreate(PanCardService.PanCardDetail updatedData, Callback<PanCardService.PanCardDetail> saveCallback) {
         panCardService.createPanCardDetail(updatedData, saveCallback);
-        panCardService.getNextDetail(saveCallback);
     }
 
     @Override
@@ -231,11 +229,6 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
         setVisibleChildView(vg_form);
         if(value != null)
         {
-
-            if(value.getIsDataComplete())
-                ((MainActivity)getActivity()).makeSubmitButtonVisible();
-
-
             String path = Application.getInstance().getAppPreference().getString(PAN_CARD_IMAGE_PATH, null);
             if(!TextUtils.isEmpty(path))
             {

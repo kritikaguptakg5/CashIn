@@ -127,4 +127,9 @@ public class TransactionsFragment extends BaseBindableFragment<TransactionsServi
     public void onResume() {
         super.onResume();
     }
+
+    @Override
+    public boolean isFormValid() {
+        return true;
+    }
 }

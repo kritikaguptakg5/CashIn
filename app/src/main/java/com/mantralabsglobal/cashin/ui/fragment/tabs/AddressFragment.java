@@ -127,7 +127,7 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
 
             @Override
             public void failure(RetrofitError error) {
-                showToastOnUIThread("Please first enter your aadhaar detail");
+             //   showToastOnUIThread("Please first enter your aadhaar detail");
             }
         });
     }
@@ -231,21 +231,21 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
     @Override
     public void bindDataToForm(final AddressService.Address address) {
 
-        if(address != null && address.getIsDataComplete())
-            ((MainActivity)getActivity()).makeSubmitButtonVisible();
-
         if(address != null) {
 
             if(address.isSameAsAadhaar()){
+                addrSameAsAadhaar.setChecked(true);
                 setVisibleChildView(vg_aadhaar_address_layout);
                 if(aadhar_address_text.getText() == null || aadhar_address_text.getText().toString().trim().length() < 1){
                     getAadhaarAddressFromAadhaar();
                 }
 
             } else {
+                addrSameAsAadhaar.setChecked(false);
                 setVisibleChildView(vg_addressForm);
             }
 
+            if(getActivity() != null)
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

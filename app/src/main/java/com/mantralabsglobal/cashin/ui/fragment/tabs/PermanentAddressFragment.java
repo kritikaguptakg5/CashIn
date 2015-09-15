@@ -14,13 +14,11 @@ public class PermanentAddressFragment extends AddressFragment {
     @Override
     protected void onUpdate(AddressService.Address updatedData, Callback<AddressService.Address> saveCallback) {
         getAddressService().updatePermanentAddress(updatedData, saveCallback);
-        getAddressService().getNextDetail(saveCallback);
     }
 
     @Override
     protected void onCreate(AddressService.Address updatedData, Callback<AddressService.Address> saveCallback) {
         getAddressService().createPermanentAddress(updatedData, saveCallback);
-        getAddressService().getNextDetail(saveCallback);
     }
 
     @Override

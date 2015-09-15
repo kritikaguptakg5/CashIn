@@ -214,4 +214,9 @@ public class GetCreditLineBankFragment extends BaseBindableFragment<GetCreditLin
     public void onResume() {
         super.onResume();
     }
+
+    @Override
+    public boolean isFormValid() {
+        return true;
+    }
 }

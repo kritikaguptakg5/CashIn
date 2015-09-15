@@ -11,6 +11,7 @@ import android.view.View;
 
 import com.google.gson.Gson;
 import com.mantralabsglobal.cashin.R;
+import com.mantralabsglobal.cashin.event.ProfileUpdateEvent;
 import com.mantralabsglobal.cashin.service.OCRServiceProvider;
 import com.mantralabsglobal.cashin.ui.view.BirthDayView;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
@@ -28,6 +29,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Optional;
+import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -77,8 +79,7 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
 
     }
 
-    protected void registerValidationAdapters(Validator validator)
-    {
+    protected void registerValidationAdapters(Validator validator) {
         validator.registerAdapter(CustomEditText.class, new ViewDataAdapter<CustomEditText, String>() {
             @Override
             public String getData(CustomEditText view) throws ConversionException {
@@ -109,16 +110,13 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
 
     }
 
-    public boolean isFormValid()
-    {
+    public boolean isFormValid() {
         try {
             validator.validate(false);
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             Log.w(TAG, e.getMessage());
         }
-        return isFormValid ;
+        return isFormValid;
     }
 
     @Optional
@@ -130,27 +128,22 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
 
 
     public void save(boolean force) {
-        if(isFormValid())
-        {
-            if(serverCopy == null)
-            {
+        if (isFormValid()) {
+            if (serverCopy == null) {
                 showProgressDialog(getString(R.string.waiting_for_server));
                 T formData = getDataFromForm(null);
                 onCreate(formData, saveCallback);
-            }
-            else
-            {
+            } else {
                 T data = cloneThroughJson(serverCopy);
                 T updatedData = getDataFromForm(data);
-                if(force || isDataChanged(updatedData)) {
+                if (force || isDataChanged(updatedData)) {
                     showProgressDialog(getString(R.string.waiting_for_server));
                     onUpdate(updatedData, saveCallback);
+
                 }
             }
         }
     }
-
-
 
 
     @SuppressWarnings("unchecked")
@@ -171,23 +164,18 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
 
     @Optional
     @OnClick(R.id.btn_reset)
-    public void onResetClick()
-    {
+    public void onResetClick() {
         reset(true);
     }
 
     @Override
-    public void reset(boolean force)
-    {
-        if(force || (serverCopy == null && isDataPresentOnServer))
-        {
+    public void reset(boolean force) {
+        if (force || (serverCopy == null && isDataPresentOnServer)) {
             showProgressDialog(getString(R.string.waiting_for_server));
             loadDataFromServer(dataCallback);
             hideProgressDialog();
-        }
-        else
-        {
-            dataCallback.success(serverCopy,null);
+        } else {
+            dataCallback.success(serverCopy, null);
         }
 
     }
@@ -198,15 +186,16 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
         save(false);
     }
 
-
     protected abstract void loadDataFromServer(Callback<T> dataCallback);
 
     private Callback<T> saveCallback = new Callback<T>() {
         @Override
         public void success(T value, Response response) {
             serverCopy = value;
-            if(beforeBindDataToForm(value, response))
+            if (beforeBindDataToForm(value, response)) {
                 bindDataToForm(value);
+                EventBus.getDefault().post(new ProfileUpdateEvent());
+            }
             //showToastOnUIThread(getString(R.string.save_sucess));
             hideProgressDialog();
         }
@@ -214,7 +203,7 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
         @Override
         public void failure(RetrofitError error) {
             hideProgressDialog();
-            if(getCurrentView() != null) {
+            if (getCurrentView() != null) {
                 Snackbar snackbar = Snackbar
                         .make(getCurrentView(), "Failed to save data. Error: " + error.getMessage(), Snackbar.LENGTH_LONG)
                         .setAction("Retry", new View.OnClickListener() {
@@ -229,7 +218,7 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
         }
     };
 
-        protected boolean beforeBindDataToForm(T value, Response response) {
+    protected boolean beforeBindDataToForm(T value, Response response) {
         return true;
     }
 
@@ -237,14 +226,13 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
         @Override
         public void success(T value, Response response) {
             hideProgressDialog();
-            if(response!= null && response.getBody() != null && response.getBody().length()<=2)
+            if (response != null && response.getBody() != null && response.getBody().length() <= 2)
                 value = null;
             serverCopy = value;
-            if(serverCopy != null) {
+            if (serverCopy != null) {
                 bindDataToForm(value);
                 isDataPresentOnServer = true;
-            }
-            else {
+            } else {
                 isDataPresentOnServer = false;
                 handleDataNotPresentOnServer();
             }
@@ -255,13 +243,11 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
         @Override
         public void failure(RetrofitError error) {
             hideProgressDialog();
-            if(RetrofitUtils.isDataNotOnServerError(error))
-            {
+            if (RetrofitUtils.isDataNotOnServerError(error)) {
                 isDataPresentOnServer = false;
                 handleDataNotPresentOnServer();
-            }
-            else {
-                if(getCurrentView() != null) {
+            } else {
+                if (getCurrentView() != null) {
                     Snackbar snackbar = Snackbar
                             .make(getCurrentView(), "Failed to query server. Error: " + error.getMessage(), Snackbar.LENGTH_LONG)
                             .setAction("Retry", new View.OnClickListener() {
@@ -282,7 +268,7 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
             protected Void doInBackground(Bitmap... params) {
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                 bmp.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-                byte[] byteArray = byteArrayOutputStream .toByteArray();
+                byte[] byteArray = byteArrayOutputStream.toByteArray();
                 String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
 
                 OCRServiceProvider.CardImage cardImage = new OCRServiceProvider.CardImage();
@@ -298,7 +284,7 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
                     @Override
                     public void failure(RetrofitError error) {
                         hideProgressDialog();
-                        if(getCurrentView() != null) {
+                        if (getCurrentView() != null) {
                             Snackbar snackbar = Snackbar
                                     .make(getCurrentView(), "Failed to process Image. Error: " + error.getMessage(), Snackbar.LENGTH_INDEFINITE)
                                     .setAction("Retry", new View.OnClickListener() {

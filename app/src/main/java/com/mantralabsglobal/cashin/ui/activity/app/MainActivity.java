@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +18,9 @@ import android.widget.Toast;
 
 import com.mantralabsglobal.cashin.BuildConfig;
 import com.mantralabsglobal.cashin.R;
+import com.mantralabsglobal.cashin.event.ProfileUpdateEvent;
+import com.mantralabsglobal.cashin.service.ProfileService;
+import com.mantralabsglobal.cashin.service.RestClient;
 import com.mantralabsglobal.cashin.ui.fragment.AbstractPager;
 import com.mantralabsglobal.cashin.ui.fragment.adapter.MainFragmentAdapter;
 
@@ -26,6 +30,10 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 
 public class MainActivity extends BaseActivity  {
@@ -65,7 +73,7 @@ public class MainActivity extends BaseActivity  {
 
             ButterKnife.inject(this);
 
-
+            EventBus.getDefault().register(this);
             buttonList.add(yourPhotoButton);
             buttonList.add(yourIdentityButton);
             buttonList.add(workButton);
@@ -102,10 +110,6 @@ public class MainActivity extends BaseActivity  {
                 }
             });
         }
-    }
-
-    public void makeSubmitButtonVisible(){
-        submitButton.setVisibility(View.VISIBLE);
     }
 
     @OnClick(R.id.submit_button)
@@ -285,6 +289,27 @@ public class MainActivity extends BaseActivity  {
                 doubleBackToExitPressedOnce = false;
             }
         }, 2000);
+    }
+
+    public void onEvent(ProfileUpdateEvent profileUpdatedEvent) {
+        RestClient.getInstance().getProfileService().getUserDataCompleteDetail(new Callback<ProfileService.UserDataComplete>() {
+            @Override
+            public void success(ProfileService.UserDataComplete userDataComplete, Response response) {
+                if (userDataComplete != null && userDataComplete.isDataComplete()) {
+                    submitButton.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.d("ProfileDetail Info", "Failed to retrieve profile completion detail");
+            }
+        });
+    }
+    @Override
+    protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
 
 }

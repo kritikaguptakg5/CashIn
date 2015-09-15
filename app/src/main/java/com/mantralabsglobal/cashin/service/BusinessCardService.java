@@ -18,9 +18,6 @@ public interface BusinessCardService {
     @GET("/user/businessCard")
     void getBusinessCardDetail(Callback<BusinessCardDetail> callback);
 
-    @GET("/user/next?type=obj")
-    void getNextDetail( Callback<BusinessCardDetail> callback);
-
     @POST("/user/businessCard")
     void createBusinessCardDetail(@Body BusinessCardDetail businessCardDetail, Callback<BusinessCardDetail> callback);
 
@@ -57,7 +54,6 @@ public interface BusinessCardService {
         private int year;
         @SerializedName("Month")
         private int month;
-        private boolean isDataComplete;
 
         String joiningDate;
 
@@ -69,13 +65,6 @@ public interface BusinessCardService {
             this.joiningDate = joiningDate;
         }
 
-        public boolean getIsDataComplete() {
-            return isDataComplete;
-        }
-
-        public void setIsDataComplete(boolean isDataComplete) {
-            this.isDataComplete = isDataComplete;
-        }
         public int getMonth() {
             return month;
         }

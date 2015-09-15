@@ -19,9 +19,6 @@ public interface AadharService {
     @GET("/user/aadhar")
     void getAadharDetail( Callback<AadharDetail> callback);
 
-    @GET("/user/next?type=obj")
-    void getNextDetail( Callback<AadharDetail> callback);
-
     @POST("/user/aadhar")
     void createAadharDetail(@Body AadharDetail aadhar, Callback<AadharDetail> callback);
 
@@ -39,15 +36,6 @@ public interface AadharService {
         @SerializedName(value = "sonOf")
         private String sonOf;
         private String dob;
-        private boolean isDataComplete;
-
-        public boolean getIsDataComplete() {
-            return isDataComplete;
-        }
-
-        public void setIsDataComplete(boolean isDataComplete) {
-            this.isDataComplete = isDataComplete;
-        }
 
         public String getName() {
             return name;

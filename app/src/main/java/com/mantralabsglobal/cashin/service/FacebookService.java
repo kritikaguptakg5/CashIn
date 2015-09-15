@@ -14,9 +14,6 @@ public interface FacebookService {
     @GET("/user/fbrofile")
     void getFacebookProfile(Callback<FacebookProfile> callback);
 
-    @GET("/user/next?type=obj")
-    void getNextDetail( Callback<FacebookProfile> callback);
-
     @POST("/user/fbrofile")
     void createFacebokProfile(FacebookProfile linkedInDetail, Callback<FacebookProfile> callback);
 
@@ -31,15 +28,7 @@ public interface FacebookService {
         private String relationshipStatus;
         private String dob;
         private String connectedAs;
-        private boolean isDataComplete;
 
-        public boolean getIsDataComplete() {
-            return isDataComplete;
-        }
-
-        public void setIsDataComplete(boolean isDataComplete) {
-            this.isDataComplete = isDataComplete;
-        }
         public String getWorkspace() {
             return workspace;
         }

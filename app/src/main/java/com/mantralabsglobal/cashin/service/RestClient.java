@@ -42,10 +42,13 @@ public class RestClient  {
     private GetUserLoanService getUserLoanService;
     private TransactionsService transactionsService;
     private LoanDetailService loanDetailService;
-
-
+    private ProfileService profileService;
 
     private static RestClient instance;
+
+    public ProfileService getProfileService() {
+        return profileService;
+    }
 
     public GetUserLoanService getGetUserLoanService() {
         return getUserLoanService;
@@ -107,6 +110,7 @@ public class RestClient  {
         getUserLoanService = restAdapter.create(GetUserLoanService.class);
         loanDetailService = restAdapter.create(LoanDetailService.class);
         transactionsService = restAdapter.create(TransactionsService.class);
+        profileService = restAdapter.create(ProfileService.class);
         instance = this;
     }
 

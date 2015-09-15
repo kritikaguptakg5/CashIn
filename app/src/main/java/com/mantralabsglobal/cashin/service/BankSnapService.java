@@ -31,9 +31,6 @@ public interface BankSnapService {
     @POST("/user/attachment")
     public void uploadBankSnapImage(@Part("bank_statement") TypedFile file, Callback<BankSnapImage> callback);
 
-    @GET("/user/next?type=obj")
-    void getNextDetail( Callback<BankSnapImage> callback);
-
     @GET("/user/attachment")
     public void getBankStmtSnapImage(Callback<BankSnapImage> callback);
 

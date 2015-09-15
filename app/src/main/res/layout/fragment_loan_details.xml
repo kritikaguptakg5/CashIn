@@ -6,11 +6,15 @@
     android:orientation="vertical"
     tools:context="com.mantralabsglobal.cashin.ui.fragment.tabs.LoanDetailsFragment">
 
-    <!-- <LinearLayout
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+     <LinearLayout
          android:layout_width="match_parent"
          android:layout_height="match_parent"
          android:orientation="vertical">
- -->
+
 
     <LinearLayout
         android:id="@+id/loan_approved_view_fragment"
@@ -243,4 +247,6 @@
             android:text="@string/tranfer_to_my_account" />
     </LinearLayout>
 
+    </LinearLayout>
+    </ScrollView>
 </FrameLayout>

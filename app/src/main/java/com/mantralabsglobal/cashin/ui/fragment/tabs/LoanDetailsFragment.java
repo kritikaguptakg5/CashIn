@@ -131,6 +131,7 @@ public class LoanDetailsFragment extends BaseBindableFragment<LoanDetailService.
     private void createTable(List<LoanDetailService.LoanTenure> EMITable){
 
         TextView tenureText,interestText, emiText;
+        CheckBox checkBox;
 
         TableRow tr_head = new TableRow(getActivity());
         tr_head.setLayoutParams(new TableRow.LayoutParams(
@@ -138,7 +139,10 @@ public class LoanDetailsFragment extends BaseBindableFragment<LoanDetailService.
                 TableRow.LayoutParams.WRAP_CONTENT,3));
         tr_head.setGravity(Gravity.CENTER);
 
-         tenureText = new TextView(getActivity());
+        checkBox = new CheckBox(getActivity());
+        checkBox.setVisibility(View.INVISIBLE);
+
+        tenureText = new TextView(getActivity());
 
         tenureText.setText("Tenure");
          interestText = new TextView(getActivity());
@@ -147,10 +151,10 @@ public class LoanDetailsFragment extends BaseBindableFragment<LoanDetailService.
          emiText = new TextView(getActivity());
 
         emiText.setText("EMI");
-
-        tr_head.addView(tenureText,0);
-        tr_head.addView(interestText,1);
-        tr_head.addView(emiText,2);
+        tr_head.addView(checkBox, 0);
+        tr_head.addView(tenureText,1);
+        tr_head.addView(interestText,2);
+        tr_head.addView(emiText,3);
 
         emiTable.addView(tr_head,0);
 
@@ -159,23 +163,25 @@ public class LoanDetailsFragment extends BaseBindableFragment<LoanDetailService.
         for (int row_no=0; row_no < EMITable.size(); row_no++) {
        //     tr_head.removeAllViews();
             tr_head = new TableRow(getActivity());
+            checkBox = new CheckBox(getActivity());
             tr_head.setLayoutParams(new TableRow.LayoutParams(
                     TableRow.LayoutParams.FILL_PARENT,
                     TableRow.LayoutParams.WRAP_CONTENT, 3));
             tr_head.setGravity(Gravity.CENTER);
+
             tenureText = new TextView(getActivity());
-
             interestText = new TextView(getActivity());
-
             emiText = new TextView(getActivity());
 
             tenureText.setText(EMITable.get(row_no).getTenure());
             interestText.setText(String.valueOf(EMITable.get(row_no).getInterest()));
             emiText.setText(String.valueOf(EMITable.get(row_no).getEMI()));
 
-            tr_head.addView(tenureText, 0);
-            tr_head.addView(interestText, 1);
-            tr_head.addView(emiText, 2);
+            checkBox.setChecked(false);
+            tr_head.addView(checkBox,0);
+            tr_head.addView(tenureText, 1);
+            tr_head.addView(interestText, 2);
+            tr_head.addView(emiText, 3);
 
             emiTable.addView(tr_head,row_no+1);
 
@@ -240,6 +246,7 @@ public class LoanDetailsFragment extends BaseBindableFragment<LoanDetailService.
         if(base == null)
             base = new LoanDetailService.LoanDetail();
 
+        if(userSelectedTransferredAmount.getText() != null && userSelectedTransferredAmount.getText().toString().trim().length() > 0)
         base.setAmountToBeTransferred(Integer.parseInt(userSelectedTransferredAmount.getText().toString()));
         return base;
     }
@@ -284,5 +291,10 @@ public class LoanDetailsFragment extends BaseBindableFragment<LoanDetailService.
     @Override
     public void onResume() {
         super.onResume();
+    }
+
+    @Override
+    public boolean isFormValid() {
+        return true;
     }
 }

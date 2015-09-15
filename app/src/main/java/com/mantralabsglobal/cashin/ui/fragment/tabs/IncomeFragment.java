@@ -82,7 +82,6 @@ public class IncomeFragment extends BaseBindableListFragment<IncomeService.Incom
     @Override
     protected void onCreate(List<IncomeService.Income> updatedData, Callback<List<IncomeService.Income>> saveCallback) {
         incomeService.createIncome(updatedData, saveCallback);
-        incomeService.getNextDetail(saveCallback);
     }
 
     @Override
@@ -129,8 +128,6 @@ public class IncomeFragment extends BaseBindableListFragment<IncomeService.Incom
         }
         if(value.size()>2)
         {
-            if(value.get(0).getIsDataComplete())
-                ((MainActivity)getActivity()).makeSubmitButtonVisible();
 
             monthIncomeViewThree.setYear(value.get(2).getYear());
             monthIncomeViewThree.setMonth(value.get(2).getMonth()-1);
@@ -149,16 +146,25 @@ public class IncomeFragment extends BaseBindableListFragment<IncomeService.Incom
         }
         base.get(0).setYear(monthIncomeViewOne.getYear());
         base.get(0).setMonth(monthIncomeViewOne.getMonth() + 1);
-        base.get(0).setAmount( Double.parseDouble(monthIncomeViewOne.getAmount().toString()));
+        if(monthIncomeViewOne.getAmount() != null && monthIncomeViewOne.getAmount().toString().length() > 0)
+            base.get(0).setAmount(Double.parseDouble(monthIncomeViewOne.getAmount().toString()));
 
         base.get(1).setYear(monthIncomeViewTwo.getYear());
         base.get(1).setMonth(monthIncomeViewTwo.getMonth() + 1);
+        if(monthIncomeViewTwo.getAmount() != null && monthIncomeViewTwo.getAmount().toString().length() > 0)
         base.get(1).setAmount(Double.parseDouble(monthIncomeViewTwo.getAmount().toString()));
 
         base.get(2).setYear(monthIncomeViewThree.getYear());
         base.get(2).setMonth(monthIncomeViewThree.getMonth() + 1);
+        if(monthIncomeViewThree.getAmount() != null && monthIncomeViewThree.getAmount().toString().length() > 0)
         base.get(2).setAmount( Double.parseDouble(monthIncomeViewThree.getAmount().toString()));
 
         return base;
     }
+
+    @Override
+    public boolean isFormValid() {
+        return true;
+    }
+
 }

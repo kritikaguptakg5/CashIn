@@ -110,13 +110,11 @@ public class AadharCardFragment extends BaseBindableFragment<AadharService.Aadha
     @Override
     protected void onUpdate(AadharService.AadharDetail updatedData, Callback<AadharService.AadharDetail> saveCallback) {
         aadharService.updateAadharDetail(updatedData, saveCallback);
-        aadharService.getNextDetail(saveCallback);
     }
 
     @Override
     protected void onCreate(AadharService.AadharDetail updatedData, Callback<AadharService.AadharDetail> saveCallback) {
         aadharService.createAadharDetail(updatedData, saveCallback);
-        aadharService.getNextDetail(saveCallback);
     }
 
     @Override
@@ -177,8 +175,6 @@ public class AadharCardFragment extends BaseBindableFragment<AadharService.Aadha
         setVisibleChildView(vg_form);
         //TODO: Replace with form binding
         if (value != null) {
-            if (value.getIsDataComplete())
-                ((MainActivity) getActivity()).makeSubmitButtonVisible();
 
             if (value.getName() != null)
                 name.setText(value.getName());

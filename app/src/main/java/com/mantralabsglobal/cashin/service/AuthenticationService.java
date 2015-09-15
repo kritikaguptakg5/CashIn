@@ -25,7 +25,19 @@ public interface AuthenticationService {
     void registerUser(@Body NewUser user  , Callback<AuthenticatedUser> callback);
 
     @POST("/user/authCode")
-    void sendGoogleAuthCode(@Body UserGoogleAuthCode authCode, Callback<Void> callback);
+    void sendGoogleAuthCode(@Body UserGoogleAuthCode authCode, Callback<UserStatementStatus> callback);
+
+    public static class UserStatementStatus{
+        String message;
+
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
+        }
+    }
 
     public static class UserGoogleAuthCode
     {

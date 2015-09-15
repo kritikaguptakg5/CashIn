@@ -100,13 +100,11 @@ public class LinkedInFragment extends BaseBindableFragment<LinkedInService.Linke
     @Override
     protected void onUpdate(LinkedInService.LinkedInDetail updatedData, Callback<LinkedInService.LinkedInDetail> saveCallback) {
         linkedInService.updateLinkedInDetail(updatedData, saveCallback);
-        linkedInService.getNextDetail(saveCallback);
     }
 
     @Override
     protected void onCreate(LinkedInService.LinkedInDetail updatedData, Callback<LinkedInService.LinkedInDetail> saveCallback) {
         linkedInService.createLinkedInDetail(updatedData, saveCallback);
-        linkedInService.getNextDetail(saveCallback);
     }
 
     @Override
@@ -198,8 +196,6 @@ public class LinkedInFragment extends BaseBindableFragment<LinkedInService.Linke
         setVisibleChildView(vg_linkedInProfile);
         if(value != null) {
 
-            if(value.getIsDataComplete())
-                ((MainActivity)getActivity()).makeSubmitButtonVisible();
 
             this.connectedAs.setText(value.getConnectedAs());
             if(value.getWorkExperience() != null) {

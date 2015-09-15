@@ -73,13 +73,11 @@ public class ReferencesFragment extends BaseBindableListFragment<ReferenceServic
     @Override
     protected void onUpdate(List<ReferenceService.Reference> updatedData, Callback<List<ReferenceService.Reference>> saveCallback) {
         referenceService.updateReferences(updatedData, saveCallback);
-        referenceService.getNextDetail(saveCallback);
     }
 
     @Override
     protected void onCreate(List<ReferenceService.Reference> updatedData, Callback<List<ReferenceService.Reference>> saveCallback) {
         referenceService.addReferences(updatedData,saveCallback);
-        referenceService.getNextDetail(saveCallback);
     }
 
     @Override
@@ -151,9 +149,6 @@ public class ReferencesFragment extends BaseBindableListFragment<ReferenceServic
         setVisibleChildView(vgReferenceDetail);
         if(value!= null) {
 
-            if(value.get(0).getIsDataComplete())
-                ((MainActivity)getActivity()).makeSubmitButtonVisible();
-
             ExpandableListView expandableListView = (ExpandableListView) getCurrentView().findViewById(R.id.elv_reference_list);
             expandableListView.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
             if(referenceListAdapter == null)
@@ -176,4 +171,8 @@ public class ReferencesFragment extends BaseBindableListFragment<ReferenceServic
         return detail;
     }
 
+    @Override
+    public boolean isFormValid() {
+        return true;
+    }
 }

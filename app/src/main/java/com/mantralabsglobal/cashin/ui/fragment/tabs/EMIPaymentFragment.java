@@ -152,4 +152,9 @@ public class EMIPaymentFragment extends BaseBindableFragment<GetUserLoanService.
     public void onResume() {
         super.onResume();
     }
+
+    @Override
+    public boolean isFormValid() {
+        return true;
+    }
 }

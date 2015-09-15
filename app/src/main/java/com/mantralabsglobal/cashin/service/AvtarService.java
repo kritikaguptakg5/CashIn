@@ -34,9 +34,6 @@ public interface AvtarService {
     @POST("/user/avatar")
     public void uploadAvtarImage(@Part("avatar") TypedFile file, Callback<AvtarImage> callback);
 
-    @GET("/user/next?type=obj")
-    void getNextDetail( Callback<AvtarImage> callback);
-
     @GET("/user/avatar")
     public void getAvtarImage(Callback<AvtarImage> callback);
 
@@ -99,15 +96,6 @@ public interface AvtarService {
         private String avatar;
 
         private String filePath;
-        private boolean isDataComplete;
-
-        public boolean getIsDataComplete() {
-            return isDataComplete;
-        }
-
-        public void setIsDataComplete(boolean isDataComplete) {
-            this.isDataComplete = isDataComplete;
-        }
 
             public String getFilePath() {
             return filePath;

@@ -17,10 +17,6 @@ public interface IncomeService {
     @GET("/user/income")
     void getIncomeDetail( Callback<List<Income>> callback);
 
-    @GET("/user/next?type=lis")
-    void getNextDetail( Callback<List<Income>> callback
-    );
-
     @POST("/user/income")
     void createIncome(@Body List<Income> bankDetail, Callback<List<Income>> callback);
 
@@ -33,15 +29,7 @@ public interface IncomeService {
         @SerializedName("Amount")
         private double amount;
         private String id;
-        private boolean isDataComplete;
 
-        public boolean getIsDataComplete() {
-            return isDataComplete;
-        }
-
-        public void setIsDataComplete(boolean isDataComplete) {
-            this.isDataComplete = isDataComplete;
-        }
         public Income() {
         }
 

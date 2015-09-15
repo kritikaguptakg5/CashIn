@@ -103,9 +103,6 @@ public class EMIFragment extends BaseBindableListFragment<EMIService.EMI> {
     @Override
     public void bindDataToForm(List<EMIService.EMI> value) {
 
-        if(value != null && value.size()>1 && value.get(0).getIsDataComplete())
-            ((MainActivity)getActivity()).makeSubmitButtonVisible();
-
     }
 
     @Override

@@ -87,6 +87,7 @@ dependencies {
         exclude module: 'stax-api'
         exclude module: 'xpp3'
     }
+    compile 'de.greenrobot:eventbus:2.4.0'
     /*compile 'org.boofcv:geo:0.18'
                     compile 'org.boofcv:recognition:0.18'*/
 

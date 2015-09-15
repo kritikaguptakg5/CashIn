@@ -58,7 +58,6 @@ public class GetUserLoanWantedFragment extends BaseBindableFragment<GetUserLoanS
                                               KeyEvent event) {
                     boolean handled = false;
                     if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        save();
                          loanAmount = v.getText().toString();
                         InputMethodManager imm = (InputMethodManager) (getActivity().getSystemService(Context.INPUT_METHOD_SERVICE));
                         imm.hideSoftInputFromWindow(userSelectedAmount.getWindowToken(), 0);
@@ -106,6 +105,10 @@ public class GetUserLoanWantedFragment extends BaseBindableFragment<GetUserLoanS
 
     @Override
     public GetUserLoanService.GetUserLoan getDataFromForm(GetUserLoanService.GetUserLoan base) {
+
+        if(base == null)
+            base = new GetUserLoanService.GetUserLoan();
+        if(userSelectedAmount.getText() != null || userSelectedAmount.getText().toString().trim().length() > 0)
         base.setUserAsk(Integer.parseInt(userSelectedAmount.getText().toString()));
         return base;
     }
@@ -151,5 +154,16 @@ public class GetUserLoanWantedFragment extends BaseBindableFragment<GetUserLoanS
     @Override
     public void onResume() {
         super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        save(false);
+    }
+
+    @Override
+    public boolean isFormValid() {
+        return true;
     }
 }

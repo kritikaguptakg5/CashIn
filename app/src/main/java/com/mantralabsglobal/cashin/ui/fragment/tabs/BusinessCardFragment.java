@@ -136,13 +136,11 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
     @Override
     protected void onUpdate(BusinessCardService.BusinessCardDetail updatedData, Callback<BusinessCardService.BusinessCardDetail> saveCallback) {
         businessCardService.updateBusinessCardDetail(updatedData, saveCallback);
-        businessCardService.getNextDetail(saveCallback);
     }
 
     @Override
     protected void onCreate(BusinessCardService.BusinessCardDetail updatedData, Callback<BusinessCardService.BusinessCardDetail> saveCallback) {
         businessCardService.createBusinessCardDetail(updatedData, saveCallback);
-        businessCardService.getNextDetail(saveCallback);
     }
 
     @Override
@@ -167,9 +165,6 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
         setVisibleChildView(vg_form);
         if(value != null)
         {
-
-            if(value.getIsDataComplete())
-                ((MainActivity)getActivity()).makeSubmitButtonVisible();
 
             String path = Application.getInstance().getAppPreference().getString(BUSINESS_CARD_IMAGE_PATH, null);
             if(!TextUtils.isEmpty(path))
@@ -293,12 +288,13 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
 
     @Override
     public boolean isFormValid() {
-        BusinessCardService.BusinessCardDetail detail = getDataFromForm(null);
+        /*BusinessCardService.BusinessCardDetail detail = getDataFromForm(null);
         return !TextUtils.isEmpty(detail.getEmployerName())
                 && !TextUtils.isEmpty(detail.getEmail())
                 && !TextUtils.isEmpty(detail.getJoiningDate())
                 && !TextUtils.isEmpty(detail.getWorkExperience())
-                && !TextUtils.isEmpty(detail.getWorkExperience());
+                && !TextUtils.isEmpty(detail.getWorkExperience());*/
+        return true;
     }
 
 }

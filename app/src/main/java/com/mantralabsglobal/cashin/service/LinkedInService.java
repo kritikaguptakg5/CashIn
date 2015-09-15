@@ -16,9 +16,6 @@ public interface LinkedInService {
     @GET("/user/linkedIn")
     void getLinkedInDetail(Callback<LinkedInDetail> callback);
 
-    @GET("/user/next?type=obj")
-    void getNextDetail( Callback<LinkedInDetail> callback);
-
     @POST("/user/linkedIn")
     void createLinkedInDetail(@Body LinkedInDetail linkedInDetail, Callback<LinkedInDetail> callback);
 
@@ -58,15 +55,7 @@ public interface LinkedInService {
         private Education education;
 
        private String connectedAs;
-       private boolean isDataComplete;
 
-       public boolean getIsDataComplete() {
-           return isDataComplete;
-       }
-
-       public void setIsDataComplete(boolean isDataComplete) {
-           this.isDataComplete = isDataComplete;
-       }
        public WorkExperience getWorkExperience() {
             return workExperience;
         }

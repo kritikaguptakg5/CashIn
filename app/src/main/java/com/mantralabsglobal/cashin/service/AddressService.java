@@ -19,9 +19,6 @@ public interface AddressService {
     @GET("/user/address/current")
     void getCurrentAddress(Callback<Address> callback);
 
-    @GET("/user/next?type=obj")
-    void getNextDetail( Callback<Address> callback);
-
     @POST("/user/address/current")
     void createCurrentAddress(@Body Address address ,Callback<Address> callback);
 

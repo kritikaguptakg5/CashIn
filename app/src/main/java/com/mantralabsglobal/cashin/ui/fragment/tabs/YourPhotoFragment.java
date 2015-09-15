@@ -89,7 +89,6 @@ public class YourPhotoFragment extends BaseBindableFragment<AvtarService.AvtarIm
                 Picasso.with(getActivity()).invalidate(serverCopy.getAvatar());
             }
             avtarService.uploadAvtarImage(typedFile, saveCallback);
-            avtarService.getNextDetail(saveCallback);
         }
     }
 
@@ -184,10 +183,6 @@ public class YourPhotoFragment extends BaseBindableFragment<AvtarService.AvtarIm
 
         if(value != null && value.getFilePath() != null && value.getFilePath().length()>0) {
             try{
-
-                if(value.getIsDataComplete())
-                    ((MainActivity)getActivity()).makeSubmitButtonVisible();
-
                 final InputStream imageStream = getActivity().getContentResolver().openInputStream(value.getImageUri());
                 final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
                 photoViewer.setImageBitmap(selectedImage);

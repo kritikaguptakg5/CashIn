@@ -299,6 +299,7 @@ public class MainActivity extends BaseActivity  {
             public void success(ProfileService.UserDataComplete userDataComplete, Response response) {
                 if (userDataComplete != null && userDataComplete.isDataComplete()) {
                     submitButton.setVisibility(View.VISIBLE);
+                    invalidateOptionsMenu();
                 }
             }
 

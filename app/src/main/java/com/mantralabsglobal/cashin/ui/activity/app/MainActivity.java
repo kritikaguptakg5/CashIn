@@ -86,6 +86,10 @@ public class MainActivity extends BaseActivity  {
                     viewPager.addOnPageChangeListener(pageChangeListener);
                     mainFragmentAdapter = new MainFragmentAdapter(getSupportFragmentManager(), MainActivity.this);
                     viewPager.setAdapter(mainFragmentAdapter);
+                    viewPager.setCurrentItem(0, false);
+                    pageChangeListener.onPageSelected(0);
+                    //To check for the first time app is loading
+                    EventBus.getDefault().post(new ProfileUpdateEvent());
                 }
 
                 @Override
@@ -110,6 +114,7 @@ public class MainActivity extends BaseActivity  {
                 }
             });
         }
+
     }
 
     @OnClick(R.id.submit_button)
@@ -122,10 +127,6 @@ public class MainActivity extends BaseActivity  {
     @Override
     protected void onResume() {
         super.onResume();
-        viewPager.setCurrentItem(0, false);
-        pageChangeListener.onPageSelected(0);
-        //To check for the first time app is loading
-        EventBus.getDefault().post(new ProfileUpdateEvent());
     }
 
     @Override

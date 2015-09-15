@@ -33,10 +33,10 @@ public class GetUserLoanWantedFragment extends BaseBindableFragment<GetUserLoanS
     int totalAmountAsked;
 
     @InjectView(R.id.cc_ask_user_amount_view)
-    ViewGroup getUserView ;
+    ViewGroup getUserView;
 
-    CustomEditText userSelectedAmount ;
-    Button loanApplyButton ;
+    CustomEditText userSelectedAmount;
+    Button loanApplyButton;
     String loanAmount = null;
 
     @Override
@@ -46,26 +46,26 @@ public class GetUserLoanWantedFragment extends BaseBindableFragment<GetUserLoanS
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-       final View view = inflater.inflate(R.layout.fragment_get_user_loan_wanted, container, false);
+        final View view = inflater.inflate(R.layout.fragment_get_user_loan_wanted, container, false);
 
-        userSelectedAmount = (CustomEditText)view.findViewById(R.id.cc_loan_amount_user);
-        loanApplyButton = (Button)view.findViewById(R.id.apply_loan_button);
+        userSelectedAmount = (CustomEditText) view.findViewById(R.id.cc_loan_amount_user);
+        loanApplyButton = (Button) view.findViewById(R.id.apply_loan_button);
 
-            userSelectedAmount.getEditText().setImeOptions(EditorInfo.IME_ACTION_DONE);
-            userSelectedAmount.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                @Override
-                public boolean onEditorAction(TextView v, int actionId,
-                                              KeyEvent event) {
-                    boolean handled = false;
-                    if (actionId == EditorInfo.IME_ACTION_DONE) {
-                         loanAmount = v.getText().toString();
-                        InputMethodManager imm = (InputMethodManager) (getActivity().getSystemService(Context.INPUT_METHOD_SERVICE));
-                        imm.hideSoftInputFromWindow(userSelectedAmount.getWindowToken(), 0);
-                        handled = true;
-                    }
-                    return handled;
+        userSelectedAmount.getEditText().setImeOptions(EditorInfo.IME_ACTION_DONE);
+        userSelectedAmount.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId,
+                                          KeyEvent event) {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    loanAmount = v.getText().toString();
+                    InputMethodManager imm = (InputMethodManager) (getActivity().getSystemService(Context.INPUT_METHOD_SERVICE));
+                    imm.hideSoftInputFromWindow(userSelectedAmount.getWindowToken(), 0);
+                    handled = true;
                 }
-            });
+                return handled;
+            }
+        });
 
         loanApplyButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,14 +88,14 @@ public class GetUserLoanWantedFragment extends BaseBindableFragment<GetUserLoanS
 
     @Override
     public void bindDataToForm(final GetUserLoanService.GetUserLoan value) {
-        if (value != null ) {
+        if (value != null) {
             userSelectedAmount.setText(String.valueOf(value.getUserAsk()));
         }
     }
 
     @Override
     protected void onUpdate(GetUserLoanService.GetUserLoan updatedData, Callback<GetUserLoanService.GetUserLoan> saveCallback) {
-       // getUserLoanService.createUserAmountWantedService(updatedData, saveCallback);
+        // getUserLoanService.createUserAmountWantedService(updatedData, saveCallback);
     }
 
     @Override
@@ -106,10 +106,10 @@ public class GetUserLoanWantedFragment extends BaseBindableFragment<GetUserLoanS
     @Override
     public GetUserLoanService.GetUserLoan getDataFromForm(GetUserLoanService.GetUserLoan base) {
 
-        if(base == null)
+        if (base == null)
             base = new GetUserLoanService.GetUserLoan();
-        if(userSelectedAmount.getText() != null || userSelectedAmount.getText().toString().trim().length() > 0)
-        base.setUserAsk(Integer.parseInt(userSelectedAmount.getText().toString()));
+        if (userSelectedAmount.getText() != null || userSelectedAmount.getText().toString().trim().length() > 0)
+            base.setUserAsk(Integer.parseInt(userSelectedAmount.getText().toString()));
         return base;
     }
 
@@ -121,7 +121,7 @@ public class GetUserLoanWantedFragment extends BaseBindableFragment<GetUserLoanS
 
     @Override
     protected View getFormView() {
-        return getUserView ;
+        return getUserView;
     }
 
     @Override
@@ -133,7 +133,6 @@ public class GetUserLoanWantedFragment extends BaseBindableFragment<GetUserLoanS
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getUserLoanService = ((Application) getActivity().getApplication()).getRestClient().getGetUserLoanService();
-        reset(false);
     }
 
     @Override

@@ -124,6 +124,8 @@ public class MainActivity extends BaseActivity  {
         super.onResume();
         viewPager.setCurrentItem(appPreference.getInt(SELECTED_TAB_INDEX, 0), false);
         pageChangeListener.onPageSelected(appPreference.getInt(SELECTED_TAB_INDEX, 0));
+        //To check for the first time app is loading
+        EventBus.getDefault().post(new ProfileUpdateEvent());
     }
 
     @Override

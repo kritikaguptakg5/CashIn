@@ -38,7 +38,6 @@ import java.util.concurrent.TimeUnit;
  */
 public class BirthDayView extends LinearLayout {
 
-    public final static String DATE_FORMAT = Application.getInstance().getString(R.string.global_date_format);
     private EditText et_dob;
     private TextView tv_age;
     private TextView tv_dob;
@@ -82,6 +81,8 @@ public class BirthDayView extends LinearLayout {
 
         et_dob.setOnClickListener(new View.OnClickListener() {
 
+            public final String DATE_FORMAT = Application.getInstance().getString(R.string.global_date_format);
+
             @Override
             public void onClick(View v) {
                 DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getContext());
@@ -98,7 +99,7 @@ public class BirthDayView extends LinearLayout {
                     }
                 }
 
-                FragmentTransaction ft =  fragmentManager.beginTransaction();
+                FragmentTransaction ft = fragmentManager.beginTransaction();
                 DialogFragment newFragment = new DatepickerDialogFragment(new DatePickerDialog.OnDateSetListener() {
 
                     @Override
@@ -106,7 +107,7 @@ public class BirthDayView extends LinearLayout {
                         Calendar cal = new GregorianCalendar(year, monthOfYear, dayOfMonth);
                         DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getContext());
                         selectedDate = cal.getTime();
-                        et_dob.setText(android.text.format.DateFormat.format(DATE_FORMAT,cal.getTime()) );
+                        et_dob.setText(android.text.format.DateFormat.format(DATE_FORMAT, cal.getTime()));
                         tv_age.setText(DateUtils.getYearsPassed(year, monthOfYear, dayOfMonth) + " Years");
                     }
                 }, defaultDate);

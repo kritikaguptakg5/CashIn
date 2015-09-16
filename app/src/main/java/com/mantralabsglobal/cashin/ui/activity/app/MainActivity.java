@@ -14,6 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mantralabsglobal.cashin.BuildConfig;
@@ -54,6 +56,11 @@ public class MainActivity extends BaseActivity  {
     public Button socialButton;
     @InjectView(R.id.main_frame)
     public ViewPager viewPager;
+    @InjectView(R.id.user_profile_data_progress_bar)
+    public ProgressBar userProfileDataProgress;
+    @InjectView(R.id.apply_text_view)
+    public TextView applyText;
+
 
 
     private MainFragmentAdapter mainFragmentAdapter;
@@ -300,8 +307,13 @@ public class MainActivity extends BaseActivity  {
             public void success(ProfileService.UserDataComplete userDataComplete, Response response) {
                 if (userDataComplete != null && userDataComplete.isDataComplete()) {
                     submitButton.setVisibility(View.VISIBLE);
-                    invalidateOptionsMenu();
+                    userProfileDataProgress.setVisibility(View.GONE);
+                    applyText.setVisibility(View.GONE);
                 }
+                else if(userDataComplete != null){
+                    userProfileDataProgress.setProgress((int)userDataComplete.getCompletePercent());
+                }
+                invalidateOptionsMenu();
             }
 
             @Override

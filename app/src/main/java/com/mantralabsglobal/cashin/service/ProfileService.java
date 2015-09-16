@@ -19,6 +19,15 @@ public interface ProfileService {
     public static class UserDataComplete{
 
         private boolean isDataComplete;
+        private double completePercent;
+
+        public double getCompletePercent() {
+            return completePercent;
+        }
+
+        public void setCompletePercent(double completePercent) {
+            this.completePercent = completePercent;
+        }
 
         public boolean isDataComplete() {
             return isDataComplete;

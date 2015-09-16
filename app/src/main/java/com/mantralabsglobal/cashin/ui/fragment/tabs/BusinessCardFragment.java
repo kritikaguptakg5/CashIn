@@ -181,6 +181,7 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
 
                             @Override
                             public void onError() {
+
                                 showToastOnUIThread(getString(R.string.failed_to_load_image));
                             }
                         });
@@ -320,13 +321,13 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
 
     @Override
     public boolean isFormValid() {
-        /*BusinessCardService.BusinessCardDetail detail = getDataFromForm(null);
+        BusinessCardService.BusinessCardDetail detail = getDataFromForm(null);
         return !TextUtils.isEmpty(detail.getEmployerName())
                 && !TextUtils.isEmpty(detail.getEmail())
                 && !TextUtils.isEmpty(detail.getJoiningDate())
                 && !TextUtils.isEmpty(detail.getWorkExperience())
-                && !TextUtils.isEmpty(detail.getWorkExperience());*/
-        return true;
+                && !TextUtils.isEmpty(detail.getWorkExperience());
+        //return true;
     }
 
 }

@@ -170,7 +170,7 @@ public class ScannerActivity extends AppCompatActivity implements MessageDialogF
 
             Intent resultIntent = new Intent();
         // TODO Add extras or a data URI to this intent as appropriate.
-            resultIntent.putExtra("aadhar_xml", rawResult.getText());
+            resultIntent.putExtra("aadhaar_xml", rawResult.getText());
             setResult(Activity.RESULT_OK, resultIntent);
             finish();
 

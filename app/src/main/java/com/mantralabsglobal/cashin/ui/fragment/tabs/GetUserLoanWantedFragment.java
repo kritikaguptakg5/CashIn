@@ -108,7 +108,7 @@ public class GetUserLoanWantedFragment extends BaseBindableFragment<GetUserLoanS
 
         if (base == null)
             base = new GetUserLoanService.GetUserLoan();
-        if (userSelectedAmount.getText() != null || userSelectedAmount.getText().toString().trim().length() > 0)
+        if (userSelectedAmount.getText() != null && userSelectedAmount.getText().toString().trim().length() > 0)
             base.setUserAsk(Integer.parseInt(userSelectedAmount.getText().toString()));
         return base;
     }

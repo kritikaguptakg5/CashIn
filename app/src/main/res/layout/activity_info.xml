@@ -12,7 +12,7 @@
         android:layout_height="wrap_content" android:text="@string/Must" style="@style/text_medium_nl"/>
     <TextView
         android:layout_width="match_parent" android:gravity="center_horizontal"
-        android:layout_height="wrap_content" android:text="@string/aadhar" style="@style/text_medium_white_gs" />
+        android:layout_height="wrap_content" android:text="@string/aadhaar" style="@style/text_medium_white_gs" />
 
     <TextView
         android:layout_width="match_parent" android:gravity="center_horizontal"

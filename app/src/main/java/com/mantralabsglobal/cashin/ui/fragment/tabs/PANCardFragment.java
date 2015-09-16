@@ -158,8 +158,8 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("AadharCardFragment", "onActivityResult: " + this);
-        Log.d("AadharCardFragment", "requestCode " + requestCode + " , resultCode=" + resultCode);
+        Log.d("AadhaarCardFragment", "onActivityResult: " + this);
+        Log.d("AadhaarCardFragment", "requestCode " + requestCode + " , resultCode=" + resultCode);
 
         if (requestCode == BaseActivity.IMAGE_CAPTURE_PAN_CARD) {
             if (resultCode == Activity.RESULT_OK) {

@@ -1,12 +1,14 @@
 package com.mantralabsglobal.cashin.social;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
@@ -16,6 +18,10 @@ import com.google.android.gms.plus.Plus;
  * Created by pk on 7/4/2015.
  */
 public class GooglePlus{
+
+    private static final int GOOGLE_PLAY_SERVICE_MISSING_CODE = 1;
+    private static final int GOOGLE_PLAY_SERVICE_UPDATE_CODE = 2;
+    private static final int GOOGLE_PLAY_SERVICE_DISABLED_CODE = 3;
 
     private static final String TAG = "GooglePlus";
     /* Client used to interact with Google APIs. */
@@ -31,6 +37,8 @@ public class GooglePlus{
 
     /* Should we automatically resolve ConnectionResults when possible? */
     protected boolean mShouldResolve = false;
+
+    private static GooglePlus defaultInstance;
 
     public void authenticate(final Activity activity, final SocialBase.SocialListener<String> listener)
     {
@@ -58,6 +66,37 @@ public class GooglePlus{
 
     }
 
+    public boolean checkPlayServiceStatus(Activity activity){
+        int result = GooglePlayServicesUtil.isGooglePlayServicesAvailable(activity);
+        if(result != ConnectionResult.SUCCESS){
+            handleGooglePlayServiceError(result, activity);
+        }
+        return result == ConnectionResult.SUCCESS;
+    }
+
+    protected void handleGooglePlayServiceError(int result, Activity activity) {
+        Dialog dialog = null;
+
+        switch(result){
+            case ConnectionResult.SERVICE_MISSING:
+                dialog = GooglePlayServicesUtil.getErrorDialog(result, activity, GOOGLE_PLAY_SERVICE_MISSING_CODE);
+                break;
+            case ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED:
+                dialog = GooglePlayServicesUtil.getErrorDialog(result, activity, GOOGLE_PLAY_SERVICE_UPDATE_CODE);
+                break;
+            case ConnectionResult.SERVICE_DISABLED:
+                dialog = GooglePlayServicesUtil.getErrorDialog(result, activity, GOOGLE_PLAY_SERVICE_DISABLED_CODE);
+                break;
+        }
+        if(dialog != null)
+            dialog.show();
+    }
+
+    public static GooglePlus defaultInstance() {
+        if(defaultInstance == null)
+            defaultInstance = new GooglePlus();
+        return defaultInstance;
+    }
 
 
     protected abstract class AuthenticateCallback implements GoogleApiClient.ConnectionCallbacks {

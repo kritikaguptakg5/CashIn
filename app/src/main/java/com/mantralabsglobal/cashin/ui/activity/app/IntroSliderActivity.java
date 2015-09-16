@@ -16,7 +16,6 @@ import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.social.GooglePlus;
-import com.mantralabsglobal.cashin.social.GoogleTokenRetrieverTask;
 import com.mantralabsglobal.cashin.social.SocialBase;
 import com.mantralabsglobal.cashin.ui.fragment.adapter.IntroSliderFragmentAdapter;
 
@@ -108,21 +107,24 @@ public class IntroSliderActivity extends BaseActivity {
 
     @OnClick(R.id.gplus_sign_in_button)
     public void signInWithGoogle() {
-        showProgressDialog(getString(R.string.title_please_wait), getString(R.string.signing_in), true, false);
-        googlePlus.authenticate(this , new SocialBase.SocialListener<String>() {
-            @Override
-            public void onSuccess(final String email) {
-                IntroSliderActivity.this.email = email;
-                new GoogleTask(email,IntroSliderActivity.this ).execute(IntroSliderActivity.this);
-            }
+        if(GooglePlus.defaultInstance().checkPlayServiceStatus(IntroSliderActivity.this)) {
+            showProgressDialog(getString(R.string.title_please_wait), getString(R.string.signing_in), true, false);
+            googlePlus.authenticate(this, new SocialBase.SocialListener<String>() {
+                @Override
+                public void onSuccess(final String email) {
+                    IntroSliderActivity.this.email = email;
+                    new GoogleTask(email, IntroSliderActivity.this).execute(IntroSliderActivity.this);
+                }
 
-            @Override
-            public void onFailure(String message) {
-                hideProgressDialog();
-                Snackbar.make(viewPager, message, Snackbar.LENGTH_LONG).show();
-            }
-        });
+                @Override
+                public void onFailure(String message) {
+                    hideProgressDialog();
+                    Snackbar.make(viewPager, message, Snackbar.LENGTH_LONG).show();
+                }
+            });
+        }
     }
+
 
     private class GoogleTask extends com.mantralabsglobal.cashin.social.GoogleTokenRetrieverTask{
 

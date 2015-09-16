@@ -76,10 +76,12 @@ public class Facebook extends SocialBase<FacebookService.FacebookProfile>{
         if(facebookUserProfile != null)
         {
             facebookProfile = new FacebookService.FacebookProfile();
-            facebookProfile.setCity(facebookUserProfile.getLocation().getName());
+            if(facebookUserProfile.getLocation() != null)
+                facebookProfile.setCity(facebookUserProfile.getLocation().getName());
             facebookProfile.setConnectedAs(facebookUserProfile.getFirstName() + " " + facebookUserProfile.getLastName());
             facebookProfile.setDob(facebookUserProfile.getBirthday());
-            facebookProfile.setHometown(facebookUserProfile.getHometown().getName());
+            if(facebookUserProfile.getHometown() != null)
+                facebookProfile.setHometown(facebookUserProfile.getHometown().getName());
             //Not available
             //facebookProfile.setRelationshipStatus(facebookUserProfile.getRelationshipStatus());
             if(facebookUserProfile.getWork() != null && facebookUserProfile.getWork().size()>0)

@@ -9,18 +9,17 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.activity.app.MainActivity;
@@ -267,5 +266,17 @@ public abstract class BaseFragment extends Fragment {
 
     }
 
+    @Override
+    public void onResume() {
+
+        super.onResume();
+
+        final Tracker tracker = Application.getInstance().getAppTracker();
+        if(tracker != null){
+
+            tracker.setScreenName(getClass().getSimpleName());
+            tracker.send(new HitBuilders.ScreenViewBuilder().build());
+        }
+    }
 
 }

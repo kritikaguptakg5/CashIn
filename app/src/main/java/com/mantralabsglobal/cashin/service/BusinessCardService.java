@@ -1,6 +1,7 @@
 package com.mantralabsglobal.cashin.service;
 
 import com.google.gson.annotations.SerializedName;
+import com.mantralabsglobal.cashin.utils.RetrofitUtils;
 
 import java.util.List;
 
@@ -23,6 +24,9 @@ public interface BusinessCardService {
 
     @PUT("/user/businessCard")
     void updateBusinessCardDetail(@Body BusinessCardDetail businessCardDetail, Callback<BusinessCardDetail> callback);
+
+    @POST("/user/businessCard/image")
+    void updateBusinessCardImage(@Body OCRServiceProvider.CardImage businessCardImage, Callback<RetrofitUtils.ServerMessage> callback);
 
     @POST("/user/ocr/businessCard")
     void getBusinessCardDetailFromImage(@Body OCRServiceProvider.CardImage businessCardImage, Callback<BusinessCardDetail> callback);
@@ -56,6 +60,9 @@ public interface BusinessCardService {
         private int month;
 
         String joiningDate;
+
+        @SerializedName("cardImageUrl")
+        private String businessCardUrl;
 
         public String getJoiningDate() {
             return joiningDate;
@@ -136,6 +143,14 @@ public interface BusinessCardService {
 
         public void setContentArr(List<String> contentArr) {
             this.contentArr = contentArr;
+        }
+
+        public String getBusinessCardUrl() {
+            return businessCardUrl;
+        }
+
+        public void setBusinessCardUrl(String businessCardUrl) {
+            this.businessCardUrl = businessCardUrl;
         }
     }
 

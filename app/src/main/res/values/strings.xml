@@ -299,5 +299,6 @@ s
     <string name="error_title">Connection Error</string>
     <string name="retry_button">Retry</string>
     <string name="no_internet_connection_error_message">We could not establish a connection with our servers. Try again when you are connected to the internet.</string>
+    <string name="failed_to_load_image">Failed to load image</string>
 
 </resources>

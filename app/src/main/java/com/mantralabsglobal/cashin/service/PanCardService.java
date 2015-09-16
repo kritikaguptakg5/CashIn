@@ -1,6 +1,7 @@
 package com.mantralabsglobal.cashin.service;
 
 import com.google.gson.annotations.SerializedName;
+import com.mantralabsglobal.cashin.utils.RetrofitUtils;
 
 import java.util.Date;
 
@@ -24,6 +25,9 @@ public interface PanCardService {
     @PUT("/user/pancard")
     void updatePanCardDetail(@Body PanCardDetail panCardDetail, Callback<PanCardDetail> callback);
 
+    @POST("/user/pancard/image")
+    void updatePanCardImage(@Body OCRServiceProvider.CardImage panCardImage, Callback<RetrofitUtils.ServerMessage> callback);
+
     @POST("/user/ocr/pancard")
     void getPanCardDetailFromImage(@Body OCRServiceProvider.CardImage panCardImage, Callback<PanCardDetail> callback);
 
@@ -37,6 +41,9 @@ public interface PanCardService {
         private String panNumber;
         @SerializedName(value = "sonOf")
         private String sonOf;
+
+        @SerializedName(value = "panImageUrl")
+        private String panUrl;
 
         public Date getDob() {
             return dob;
@@ -79,6 +86,14 @@ public interface PanCardService {
 
         public void setContentarr(String[] contentarr) {
             this.contentarr = contentarr;
+        }
+
+        public String getPanUrl() {
+            return panUrl;
+        }
+
+        public void setPanUrl(String panUrl) {
+            this.panUrl = panUrl;
         }
     }
 

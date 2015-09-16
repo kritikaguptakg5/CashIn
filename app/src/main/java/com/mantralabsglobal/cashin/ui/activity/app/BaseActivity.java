@@ -10,6 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.mantralabsglobal.cashin.service.AuthenticationService;
 import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.utils.RetrofitUtils;
@@ -120,6 +123,22 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         appPreference = getCashInApplication().getAppPreference();
         progressDialog = new ProgressDialog(this);
+
+        Tracker t = Application.getInstance().getAppTracker();
+        t.setScreenName(getTitle() != null? getTitle().toString(): this.getClass().getSimpleName());
+        t.send(new HitBuilders.AppViewBuilder().build());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        GoogleAnalytics.getInstance(this).reportActivityStart(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        GoogleAnalytics.getInstance(this).reportActivityStop(this);
     }
 
     protected void checkNetworkAvailability(final NetworkResultHandler handler) {

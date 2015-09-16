@@ -24,21 +24,21 @@ public class RetrofitUtils {
         return false;
     }
 
-    public static ErrorMessage getErrorMessage(RetrofitError error)
+    public static ServerMessage getErrorMessage(RetrofitError error)
     {
         if(error.getResponse() != null) {
             String json = new String(((TypedByteArray) error.getResponse().getBody()).getBytes());
             Gson gson = new Gson();
-            return gson.fromJson(json, ErrorMessage.class);
+            return gson.fromJson(json, ServerMessage.class);
         }
         else {
-            ErrorMessage message = new ErrorMessage();
+            ServerMessage message = new ServerMessage();
             message.setMessage(error.getMessage());
             return message;
         }
     }
 
-    public static class ErrorMessage {
+    public static class ServerMessage {
         public String getMessage() {
             return message;
         }

@@ -260,14 +260,19 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
         }
     };
 
+    protected String base64(Bitmap bmp){
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
+
     protected void uploadImageToServerForOCR(final Bitmap bmp, final OCRServiceProvider<T> service) {
         AsyncTask<Bitmap, Void, Void> asynTask = new AsyncTask<Bitmap, Void, Void>() {
             @Override
             protected Void doInBackground(Bitmap... params) {
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                bmp.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-                byte[] byteArray = byteArrayOutputStream.toByteArray();
-                String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+
+                String encoded = base64(bmp);
 
                 OCRServiceProvider.CardImage cardImage = new OCRServiceProvider.CardImage();
                 cardImage.setBase64encodedImage(encoded);

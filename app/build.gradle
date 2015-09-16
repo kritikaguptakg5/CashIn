@@ -16,7 +16,7 @@ android {
     dexOptions {
         jumboMode = true
         incremental true
-       // javaMaxHeapSize "1g"
+        javaMaxHeapSize "2g"
     }
     buildTypes {
         release {
@@ -61,6 +61,7 @@ dependencies {
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.google.android.gms:play-services-plus:7.5.0'
+    compile 'com.google.android.gms:play-services-analytics:7.5.0'
     compile 'com.android.support:support-v4:22.2.1'
     compile 'com.android.support:design:22.2.1'
     compile 'com.github.lzyzsd:circleprogress:1.1.0@aar'

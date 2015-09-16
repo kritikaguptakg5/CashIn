@@ -7,46 +7,39 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 
-import com.mantralabsglobal.cashin.BuildConfig;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.service.BusinessCardService;
 import com.mantralabsglobal.cashin.service.OCRServiceProvider;
 import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.activity.app.BaseActivity;
-import com.mantralabsglobal.cashin.ui.activity.app.MainActivity;
 import com.mantralabsglobal.cashin.ui.activity.camera.CwacCameraActivity;
 import com.mantralabsglobal.cashin.ui.fragment.camera.CwacCameraFragment;
 import com.mantralabsglobal.cashin.ui.view.BirthDayView;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
-import com.mantralabsglobal.cashin.ui.view.MonthIncomeView;
 import com.mantralabsglobal.cashin.utils.BusinessCardUtils;
-import com.mantralabsglobal.cashin.utils.CameraUtils;
-import com.mantralabsglobal.cashin.utils.ImageUtils;
-import com.mobsandgeeks.saripaar.annotation.Email;
-import com.mobsandgeeks.saripaar.annotation.NotEmpty;
+import com.mantralabsglobal.cashin.utils.RetrofitUtils;
 import com.soundcloud.android.crop.Crop;
+import com.squareup.picasso.Picasso;
 
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
 import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Created by pk on 13/06/2015.
@@ -165,14 +158,32 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
         setVisibleChildView(vg_form);
         if(value != null)
         {
+            camera_capture.setVisibility(View.GONE);
+            success_capture.setVisibility(View.VISIBLE);
 
             String path = Application.getInstance().getAppPreference().getString(BUSINESS_CARD_IMAGE_PATH, null);
             if(!TextUtils.isEmpty(path))
             {
                 Bitmap colouredBinary = BitmapFactory.decodeFile(path);
-                camera_capture.setVisibility(View.GONE);
-                success_capture.setVisibility(View.VISIBLE);
                 photoViewer.setImageBitmap(colouredBinary);
+            }
+            else
+            {
+                Picasso.with(getActivity())
+                        .load(value.getBusinessCardUrl())
+                        .fit()
+                        .centerCrop()
+                        .into(photoViewer, new com.squareup.picasso.Callback() {
+                            @Override
+                            public void onSuccess() {
+                                hideProgressDialog();
+                            }
+
+                            @Override
+                            public void onError() {
+                                showToastOnUIThread(getString(R.string.failed_to_load_image));
+                            }
+                        });
             }
 
             if(value.getEmployerName() != null)
@@ -256,12 +267,17 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
 
     private void handleCrop(int resultCode, Intent result) {
         if (resultCode == Activity.RESULT_OK) {
-            showProgressDialog(getString(R.string.processing_image));
+            //showProgressDialog(getString(R.string.processing_image));
             String path = Crop.getOutput(result).getPath();
             Application.getInstance().putInAppPreference(BUSINESS_CARD_IMAGE_PATH, path);
             Bitmap colouredBinary = BitmapFactory.decodeFile(path);
+            /*
+            OCR not in use currently
             Bitmap binary = new ImageUtils().binarize(colouredBinary);
             uploadImageToServerForOCR(binary, BusinessCardFragment.this);
+            */
+            //Upload colored image to server
+            uploadBusinessCardImage(colouredBinary);
 
             imageButtonClicked = true;
             camera_capture.setVisibility(View.GONE);
@@ -273,6 +289,22 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
             showToastOnUIThread(Crop.getError(result).getMessage());
             reset(false);
         }
+    }
+
+    protected void uploadBusinessCardImage(Bitmap bmp){
+        CardImage cardImage = new CardImage();
+        cardImage.setBase64encodedImage(base64(bmp));
+        businessCardService.updateBusinessCardImage(cardImage, new Callback<RetrofitUtils.ServerMessage>() {
+            @Override
+            public void success(RetrofitUtils.ServerMessage serverMessage, Response response) {
+                //Ignore success
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                showToastOnUIThread(error.getMessage());
+            }
+        });
     }
 
     @Override

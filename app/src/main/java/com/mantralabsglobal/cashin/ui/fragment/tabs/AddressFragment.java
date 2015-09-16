@@ -2,13 +2,10 @@ package com.mantralabsglobal.cashin.ui.fragment.tabs;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -22,12 +19,8 @@ import com.mantralabsglobal.cashin.service.AadharService;
 import com.mantralabsglobal.cashin.service.AddressService;
 import com.mantralabsglobal.cashin.service.RestClient;
 import com.mantralabsglobal.cashin.ui.Application;
-import com.mantralabsglobal.cashin.ui.activity.app.MainActivity;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
-import com.mantralabsglobal.cashin.ui.view.CustomSpinner;
 import com.mantralabsglobal.cashin.utils.LocationAddress;
-import com.mobsandgeeks.saripaar.annotation.Digits;
-import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -280,7 +273,7 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
         }
         else {
             address.setSameAsAadhaar(true);
-            address.setAddress(aadhar_address_text.getText().toString());
+            //address.setAddress(aadhar_address_text.getText().toString());
         }
         return address;
     }

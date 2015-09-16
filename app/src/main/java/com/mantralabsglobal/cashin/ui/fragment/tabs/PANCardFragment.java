@@ -20,16 +20,16 @@ import com.mantralabsglobal.cashin.service.OCRServiceProvider;
 import com.mantralabsglobal.cashin.service.PanCardService;
 import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.activity.app.BaseActivity;
-import com.mantralabsglobal.cashin.ui.activity.app.MainActivity;
 import com.mantralabsglobal.cashin.ui.activity.camera.CwacCameraActivity;
 import com.mantralabsglobal.cashin.ui.fragment.camera.CwacCameraFragment;
 import com.mantralabsglobal.cashin.ui.view.BirthDayView;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
 import com.mantralabsglobal.cashin.utils.DateUtils;
-import com.mantralabsglobal.cashin.utils.ImageUtils;
 import com.mantralabsglobal.cashin.utils.PANUtils;
+import com.mantralabsglobal.cashin.utils.RetrofitUtils;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.soundcloud.android.crop.Crop;
+import com.squareup.picasso.Picasso;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -38,6 +38,8 @@ import java.io.File;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Created by pk on 13/06/2015.
@@ -194,16 +196,16 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
 
     private void handleCrop(int resultCode, Intent result) {
         if (resultCode == Activity.RESULT_OK) {
-            showProgressDialog(getString(R.string.processing_image));
+            //showProgressDialog(getString(R.string.processing_image));
             String path = Crop.getOutput(result).getPath();
             Application.getInstance().putInAppPreference(PAN_CARD_IMAGE_PATH, path);
             Bitmap colouredBinary = BitmapFactory.decodeFile(path);
-            Bitmap binary = new ImageUtils().binarize( colouredBinary );
+           /* Bitmap binary = new ImageUtils().binarize( colouredBinary );
             uploadImageToServerForOCR(binary, PANCardFragment.this);
-           /* if (BuildConfig.DEBUG) {
+            if (BuildConfig.DEBUG) {
                 showImageDialog(binary);
             }*/
-
+            uploadPanImage(colouredBinary);
             cameraClicked = true;
             camera_capture.setVisibility(View.GONE);
             success_capture.setVisibility(View.VISIBLE);
@@ -223,6 +225,21 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
         }
     }
 
+    protected void uploadPanImage(Bitmap bmp){
+        CardImage cardImage = new CardImage();
+        cardImage.setBase64encodedImage(base64(bmp));
+        panCardService.updatePanCardImage(cardImage, new Callback<RetrofitUtils.ServerMessage>() {
+            @Override
+            public void success(RetrofitUtils.ServerMessage serverMessage, Response response) {
+                //Ignore success
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                showToastOnUIThread(error.getMessage());
+            }
+        });
+    }
 
     @Override
     public void bindDataToForm(PanCardService.PanCardDetail value) {
@@ -230,12 +247,31 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
         if(value != null)
         {
             String path = Application.getInstance().getAppPreference().getString(PAN_CARD_IMAGE_PATH, null);
+            camera_capture.setVisibility(View.GONE);
+            success_capture.setVisibility(View.VISIBLE);
+
             if(!TextUtils.isEmpty(path))
             {
                 Bitmap colouredBinary = BitmapFactory.decodeFile(path);
-                camera_capture.setVisibility(View.GONE);
-                success_capture.setVisibility(View.VISIBLE);
                 photoViewer.setImageBitmap(colouredBinary);
+            }
+            else
+            {
+                Picasso.with(getActivity())
+                        .load(value.getPanUrl())
+                        .fit()
+                        .centerCrop()
+                        .into(photoViewer, new com.squareup.picasso.Callback() {
+                            @Override
+                            public void onSuccess() {
+                                hideProgressDialog();
+                            }
+
+                            @Override
+                            public void onError() {
+                                showToastOnUIThread(getString(R.string.failed_to_load_image));
+                            }
+                        });
             }
 
            /* if(value.getName() != null)

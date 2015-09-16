@@ -8,7 +8,10 @@ import android.support.multidex.MultiDexApplication;
 import android.util.Base64;
 import android.util.Log;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.Tracker;
 import com.google.gson.Gson;
+import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.businessobjects.BankProvider;
 import com.mantralabsglobal.cashin.service.AuthenticationService;
 import com.mantralabsglobal.cashin.service.PerfiosClient;
@@ -21,13 +24,14 @@ import com.squareup.okhttp.Request;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 
 /**
  * Created by pk on 6/21/2015.
  */
 public class Application extends MultiDexApplication{
 
-     public static final String APP_PREFERENCE = "APP_PREFERENCE";
+    public static final String APP_PREFERENCE = "APP_PREFERENCE";
     public static final String USER_NAME = "USER_NAME";
     public static final String USER_ID = "USER_ID";
     public static final String GOOGLE_TOKEN = "GOOGLE_TOKEN";
@@ -77,7 +81,7 @@ public class Application extends MultiDexApplication{
             {
                 String json = new String(response.body().bytes());
                 Gson gson = new Gson();
-                RetrofitUtils.ErrorMessage errorMessage = gson.fromJson(json, RetrofitUtils.ErrorMessage.class);
+                RetrofitUtils.ServerMessage errorMessage = gson.fromJson(json, RetrofitUtils.ServerMessage.class);
                 if(errorMessage != null && "user is not logged in".equals(errorMessage.getMessage()))
                 {
                     AuthenticationService.UserPrincipal up = new AuthenticationService.UserPrincipal();
@@ -166,6 +170,17 @@ public class Application extends MultiDexApplication{
 
     public PerfiosClient getPerfiosClient() {
         return perfiosClient;
+    }
+
+    private Tracker mTracker;
+
+    public synchronized Tracker getAppTracker() {
+        if (mTracker == null) {
+
+            GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
+            mTracker = analytics.newTracker(R.xml.app_tracker);
+        }
+        return mTracker;
     }
 }
 

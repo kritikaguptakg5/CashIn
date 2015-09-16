@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -151,6 +152,11 @@ public class BirthDayView extends LinearLayout {
 
     public void setText(CharSequence name) {
         et_dob.setText(name);
+        try {
+            selectedDate = DateUtils.getDate(name.toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     public Editable getText() {
@@ -163,6 +169,13 @@ public class BirthDayView extends LinearLayout {
     }
 
     public Date getSelectedDate(){
+        if(selectedDate == null && !TextUtils.isEmpty(getText().toString()) ) {
+            try {
+                selectedDate = DateUtils.getDate(getText().toString());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
         return selectedDate;
     }
 

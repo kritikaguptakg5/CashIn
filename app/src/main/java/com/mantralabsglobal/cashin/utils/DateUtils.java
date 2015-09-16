@@ -3,6 +3,7 @@ package com.mantralabsglobal.cashin.utils;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.ui.Application;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -40,5 +41,10 @@ public class DateUtils {
     public static CharSequence getDateString(Date date) {
         SimpleDateFormat format = new SimpleDateFormat( Application.getInstance().getString(R.string.global_date_format));
         return format.format(date);
+    }
+
+    public static Date getDate(String date) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat( Application.getInstance().getString(R.string.global_date_format));
+        return format.parse(date);
     }
 }

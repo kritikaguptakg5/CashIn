@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mantralabsglobal.cashin.R;
-import com.mantralabsglobal.cashin.service.AadharService;
+import com.mantralabsglobal.cashin.service.AadhaarService;
 import com.mantralabsglobal.cashin.service.AddressService;
 import com.mantralabsglobal.cashin.service.RestClient;
 import com.mantralabsglobal.cashin.ui.Application;
@@ -50,8 +50,8 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
     @InjectView(R.id.btn_edit_address)
     Button btn_editAddress;
 
-    @InjectView(R.id.aadhar_address_text)
-    EditText aadhar_address_text;
+    @InjectView(R.id.aadhaar_address_text)
+    EditText aadhaar_address_text;
 
     @InjectView(R.id.ib_get_gps_location)
     ImageButton ib_get_gps_location;
@@ -85,7 +85,7 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_address, container, false);
 
-        addrSameAsAadhaar = (CheckBox)view.findViewById(R.id.chkAadhar);
+        addrSameAsAadhaar = (CheckBox)view.findViewById(R.id.chkAadhaar);
         addrSameAsAadhaar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,11 +109,11 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
     }
 
     public void getAadhaarAddressFromAadhaar(){
-        RestClient.getInstance().getAadharService().getAadharDetail(new Callback<AadharService.AadharDetail>() {
+        RestClient.getInstance().getAadhaarService().getAadhaarDetail(new Callback<AadhaarService.AadhaarDetail>() {
             @Override
-            public void success(AadharService.AadharDetail aadharDetail, Response response) {
-                if(aadharDetail != null)
-                    aadhar_address_text.setText(aadharDetail.getAddress());
+            public void success(AadhaarService.AadhaarDetail aadhaarDetail, Response response) {
+                if(aadhaarDetail != null)
+                    aadhaar_address_text.setText(aadhaarDetail.getAddress());
                 else
                     Toast.makeText(getActivity(),"Please first enter your aadhaar detail",Toast.LENGTH_SHORT).show();
             }
@@ -229,7 +229,7 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
             if(address.isSameAsAadhaar()){
                 addrSameAsAadhaar.setChecked(true);
                 setVisibleChildView(vg_aadhaar_address_layout);
-                if(aadhar_address_text.getText() == null || aadhar_address_text.getText().toString().trim().length() < 1){
+                if(aadhaar_address_text.getText() == null || aadhaar_address_text.getText().toString().trim().length() < 1){
                     getAadhaarAddressFromAadhaar();
                 }
 
@@ -273,7 +273,7 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
         }
         else {
             address.setSameAsAadhaar(true);
-            //address.setAddress(aadhar_address_text.getText().toString());
+            //address.setAddress(aadhaar_address_text.getText().toString());
         }
         return address;
     }

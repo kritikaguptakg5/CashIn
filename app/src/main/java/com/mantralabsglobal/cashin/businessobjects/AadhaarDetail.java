@@ -3,7 +3,7 @@ package com.mantralabsglobal.cashin.businessobjects;
 /**
  * Created by pk on 6/19/2015.
  */
-public class AadharDetail {
+public class AadhaarDetail {
     private String uid;
     private String name;
     private String gender;

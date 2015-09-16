@@ -91,7 +91,7 @@ public class RestClient  {
         authenticationService = restAdapter.create(AuthenticationService.class);
         linkedInService = restAdapter.create(LinkedInService.class);
         addressService = restAdapter.create(AddressService.class);
-        aadharService = restAdapter.create(AadharService.class);
+        aadhaarService = restAdapter.create(AadhaarService.class);
         primaryBankService = restAdapter.create(PrimaryBankService.class);
         panCardService = restAdapter.create(PanCardService.class);
         businessCardService = restAdapter.create(BusinessCardService.class);
@@ -159,8 +159,8 @@ public class RestClient  {
         return addressService;
     }
 
-    public AadharService getAadharService() {
-        return aadharService;
+    public AadhaarService getAadhaarService() {
+        return aadhaarService;
     }
 
     public  PrimaryBankService getPrimaryBankService()

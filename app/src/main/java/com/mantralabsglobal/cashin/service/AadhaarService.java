@@ -1,7 +1,7 @@
 package com.mantralabsglobal.cashin.service;
 
 import com.google.gson.annotations.SerializedName;
-import com.mantralabsglobal.cashin.businessobjects.AadharDetail;
+import com.mantralabsglobal.cashin.businessobjects.AadhaarDetail;
 
 import java.util.List;
 
@@ -14,25 +14,25 @@ import retrofit.http.PUT;
 /**
  * Created by pk on 6/25/2015.
  */
-public interface AadharService {
+public interface AadhaarService {
 
     @GET("/user/aadhar")
-    void getAadharDetail( Callback<AadharDetail> callback);
+    void getAadhaarDetail( Callback<AadhaarDetail> callback);
 
     @POST("/user/aadhar")
-    void createAadharDetail(@Body AadharDetail aadhar, Callback<AadharDetail> callback);
+    void createAadhaarDetail(@Body AadhaarDetail aadhaar, Callback<AadhaarDetail> callback);
 
     @PUT("/user/aadhar")
-    void updateAadharDetail(@Body AadharDetail aadhar, Callback<AadharDetail> callback);
+    void updateAadhaarDetail(@Body AadhaarDetail aadhaar, Callback<AadhaarDetail> callback);
 
 
-    public static class AadharDetail{
+    public static class AadhaarDetail{
 
         private String name;
         private String address;
         private String gender;
         @SerializedName(value="aadhar_no")
-        private String aadharNumber;
+        private String aadhaarNumber;
         @SerializedName(value = "sonOf")
         private String sonOf;
         private String dob;
@@ -61,12 +61,12 @@ public interface AadharService {
             this.gender = gender;
         }
 
-        public String getAadharNumber() {
-            return aadharNumber;
+        public String getAadhaarNumber() {
+            return aadhaarNumber;
         }
 
-        public void setAadharNumber(String aadharNumber) {
-            this.aadharNumber = aadharNumber;
+        public void setAadhaarNumber(String aadhaarNumber) {
+            this.aadhaarNumber = aadhaarNumber;
         }
 
         public String getSonOf() {

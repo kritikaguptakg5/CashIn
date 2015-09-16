@@ -24,7 +24,7 @@ public class RestClient  {
     private AuthenticationService authenticationService;
     private LinkedInService linkedInService;
     private AddressService addressService;
-    private AadharService aadharService;
+    private AadhaarService aadhaarService;
     private PrimaryBankService primaryBankService;
     private PanCardService panCardService;
     private BusinessCardService businessCardService;

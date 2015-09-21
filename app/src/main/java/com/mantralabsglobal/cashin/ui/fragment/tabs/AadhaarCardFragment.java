@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.ImageButton;
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.google.zxing.BarcodeFormat;
 import com.mantralabsglobal.cashin.R;
+import com.mantralabsglobal.cashin.service.BusinessCardService;
 import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.activity.app.MainActivity;
 import com.mantralabsglobal.cashin.ui.view.BirthDayView;
@@ -24,6 +26,7 @@ import com.mantralabsglobal.cashin.ui.activity.scanner.ScannerActivity;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
 import com.mantralabsglobal.cashin.ui.view.CustomSpinner;
 import com.mantralabsglobal.cashin.ui.view.SonOfSpinner;
+import com.mobsandgeeks.saripaar.annotation.Digits;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
 import java.util.ArrayList;
@@ -48,6 +51,7 @@ public class AadhaarCardFragment extends BaseBindableFragment<AadhaarService.Aad
     @InjectView(R.id.cc_address)
     CustomEditText address;
     @NotEmpty
+    @Digits(integer = 12)
     @InjectView(R.id.cc_aadhaar)
     CustomEditText aadhaarNumber;
 
@@ -104,7 +108,6 @@ public class AadhaarCardFragment extends BaseBindableFragment<AadhaarService.Aad
 
         reset(false);
 
-        Log.d("AadhaarCardFragment", "On view created");
     }
 
     @Override
@@ -202,5 +205,18 @@ public class AadhaarCardFragment extends BaseBindableFragment<AadhaarService.Aad
         detail.setGender(gender.getSpinner().getSelectedItem().toString());
         detail.setSonOf(fatherName.getText().toString());
         return detail;
+    }
+
+    @Override
+    public boolean isFormValid() {
+        AadhaarService.AadhaarDetail aadhaarDetail = getDataFromForm(null);
+        return !TextUtils.isEmpty(aadhaarDetail.getName())
+                && !TextUtils.isEmpty(aadhaarDetail.getAddress())
+                && !TextUtils.isEmpty(aadhaarDetail.getGender())
+                && !TextUtils.isEmpty(aadhaarDetail.getAadhaarNumber())
+                && TextUtils.isDigitsOnly(aadhaarDetail.getAadhaarNumber())
+                && !TextUtils.isEmpty(aadhaarDetail.getSonOf())
+                && !TextUtils.isEmpty(aadhaarDetail.getDob());
+
     }
 }

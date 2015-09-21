@@ -280,17 +280,15 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
 
     @Override
     public boolean isFormValid() {
-        AddressService.Address address = getDataFromForm(null);
-        return address.isSameAsAadhaar() ||
+        AddressService.Address addressDetail = getDataFromForm(null);
+        return addressDetail.isSameAsAadhaar() ||
                 (
-                        !TextUtils.isEmpty(address.getAddress())
-                &&      !TextUtils.isEmpty(address.getCity())
-                &&      !TextUtils.isEmpty(address.getPincode())
-                                &&      !TextUtils.isEmpty(address.getState())
-                                &&      !TextUtils.isEmpty(address.getStreet())
-                                &&      !TextUtils.isEmpty(address.getOwn())
+                        !TextUtils.isEmpty(addressDetail.getStreet())
+                                && !TextUtils.isEmpty(addressDetail.getCity())
+                                && !TextUtils.isEmpty(addressDetail.getState())
+                                && !TextUtils.isEmpty(addressDetail.getPincode())
+                                && TextUtils.isDigitsOnly(addressDetail.getPincode()));
 
-                );
     }
 
 }

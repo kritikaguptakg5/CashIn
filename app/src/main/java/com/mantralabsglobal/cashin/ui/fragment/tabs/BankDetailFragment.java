@@ -426,6 +426,18 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
 
     @Override
     public boolean isFormValid() {
-        return true;
+        List<PrimaryBankService.BankDetail> bankDetailList = getDataFromForm(null);
+        boolean bankDataPresent = false;
+
+        if(bankDetailList.size() >= 1)
+            bankDataPresent = true;
+
+       for( PrimaryBankService.BankDetail bankDetail : bankDetailList ) {
+           bankDataPresent = bankDataPresent && !TextUtils.isEmpty(bankDetail.getBankName())
+                   && !TextUtils.isEmpty(bankDetail.getAccountNumber());
+       }
+
+        return bankDataPresent;
     }
+
 }

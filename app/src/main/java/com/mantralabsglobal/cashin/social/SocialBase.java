@@ -1,6 +1,7 @@
 package com.mantralabsglobal.cashin.social;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.scribe.exceptions.OAuthException;
 import org.scribe.model.OAuthRequest;
@@ -15,12 +16,13 @@ import org.scribe.oauth.OAuthService;
 public abstract class SocialBase<T> {
 
     public abstract OAuthService getOAuthService(Context context);
+    private String token;
 
     protected abstract String getProfileUrl();
 
     public T getSocialProfile(Context context, Token accessToken)
     {
-        OAuthRequest request = new OAuthRequest(Verb.GET, getProfileUrl());
+        OAuthRequest request = new OAuthRequest(Verb.GET, getProfileUrl()+token);
         getOAuthService(context).signRequest(accessToken, request);
         Response response = request.send();
 
@@ -31,6 +33,7 @@ public abstract class SocialBase<T> {
     protected abstract T getProfileFromResponse(String responseBody);
 
     public Token getAccessToken(String token, String secret){
+        this.token = token;
         return new Token(token, secret);
     }
 

@@ -2,6 +2,7 @@ package com.mantralabsglobal.cashin.social;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
@@ -18,14 +19,15 @@ import org.scribe.model.Token;
 import org.scribe.oauth.OAuthService;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * Created by pk on 7/4/2015.
  */
-public class Facebook extends SocialBase<FacebookService.FacebookProfile>{
+public class Facebook extends SocialBase<FacebookService.FacebookProfile> {
 
-    private static final String PROTECTED_RESOURCE_URL = "https://graph.facebook.com/me?fields=location,first_name,last_name,birthday,hometown,relationship_status,work";
+    private static final String PROTECTED_RESOURCE_URL = "https://graph.facebook.com/me?fields=location,first_name,last_name,birthday,hometown,relationship_status,work&access_token=";
     final static String CALLBACK = "http://www.mantralabsglobal.com/oauth_callback/";
     private static final Token EMPTY_TOKEN = null;
 
@@ -33,6 +35,7 @@ public class Facebook extends SocialBase<FacebookService.FacebookProfile>{
     public OAuthService getOAuthService(Context context) {
         return new ServiceBuilder()
                 .provider(FacebookApi.class)
+                .scope("public_profile,user_birthday,user_hometown,user_location,user_relationship_details,user_work_history")
                 .apiKey(context.getResources().getString(R.string.facebook_app_id))
                 .apiSecret(context.getResources().getString(R.string.facebook_secret))
                 .callback(CALLBACK)
@@ -40,8 +43,7 @@ public class Facebook extends SocialBase<FacebookService.FacebookProfile>{
     }
 
     @Override
-    public Token getRequestToken(OAuthService service)
-    {
+    public Token getRequestToken(OAuthService service) {
         return EMPTY_TOKEN;
     }
 
@@ -67,24 +69,24 @@ public class Facebook extends SocialBase<FacebookService.FacebookProfile>{
     protected FacebookService.FacebookProfile getProfileFromResponse(String responseBody) {
         Gson gson = new Gson();
         FacebookUserProfile facebookUserProfile = gson.fromJson(responseBody, FacebookUserProfile.class);
-
+        Log.d("facebook data", responseBody);
         return convertToFacebookFacebookProfile(facebookUserProfile);
     }
 
     private FacebookService.FacebookProfile convertToFacebookFacebookProfile(FacebookUserProfile facebookUserProfile) {
         FacebookService.FacebookProfile facebookProfile = null;
-        if(facebookUserProfile != null)
-        {
+        if (facebookUserProfile != null) {
             facebookProfile = new FacebookService.FacebookProfile();
-            if(facebookUserProfile.getLocation() != null)
+            if (facebookUserProfile.getLocation() != null)
                 facebookProfile.setCity(facebookUserProfile.getLocation().getName());
             facebookProfile.setConnectedAs(facebookUserProfile.getFirstName() + " " + facebookUserProfile.getLastName());
-            facebookProfile.setDob(facebookUserProfile.getBirthday());
-            if(facebookUserProfile.getHometown() != null)
+            if (facebookUserProfile.getBirthday() != null)
+                facebookProfile.setDob(facebookUserProfile.getBirthday());
+            if (facebookUserProfile.getHometown() != null)
                 facebookProfile.setHometown(facebookUserProfile.getHometown().getName());
             //Not available
             //facebookProfile.setRelationshipStatus(facebookUserProfile.getRelationshipStatus());
-            if(facebookUserProfile.getWork() != null && facebookUserProfile.getWork().size()>0)
+            if (facebookUserProfile.getWork() != null && facebookUserProfile.getWork().size() > 0)
                 facebookProfile.setWorkspace(facebookUserProfile.getWork().get(0).getEmployer().getName());
         }
         return facebookProfile;
@@ -134,36 +136,28 @@ public class Facebook extends SocialBase<FacebookService.FacebookProfile>{
         private String name;
 
         /**
-         *
-         * @return
-         * The id
+         * @return The id
          */
         public String getId() {
             return id;
         }
 
         /**
-         *
-         * @param id
-         * The id
+         * @param id The id
          */
         public void setId(String id) {
             this.id = id;
         }
 
         /**
-         *
-         * @return
-         * The name
+         * @return The name
          */
         public String getName() {
             return name;
         }
 
         /**
-         *
-         * @param name
-         * The name
+         * @param name The name
          */
         public void setName(String name) {
             this.name = name;
@@ -208,270 +202,210 @@ public class Facebook extends SocialBase<FacebookService.FacebookProfile>{
         private List<Work> work = new ArrayList<Work>();
 
         /**
-         *
-         * @return
-         * The id
+         * @return The id
          */
         public String getId() {
             return id;
         }
 
         /**
-         *
-         * @param id
-         * The id
+         * @param id The id
          */
         public void setId(String id) {
             this.id = id;
         }
 
         /**
-         *
-         * @return
-         * The birthday
+         * @return The birthday
          */
         public String getBirthday() {
             return birthday;
         }
 
         /**
-         *
-         * @param birthday
-         * The birthday
+         * @param birthday The birthday
          */
         public void setBirthday(String birthday) {
             this.birthday = birthday;
         }
 
         /**
-         *
-         * @return
-         * The email
+         * @return The email
          */
         public String getEmail() {
             return email;
         }
 
         /**
-         *
-         * @param email
-         * The email
+         * @param email The email
          */
         public void setEmail(String email) {
             this.email = email;
         }
 
         /**
-         *
-         * @return
-         * The firstName
+         * @return The firstName
          */
         public String getFirstName() {
             return firstName;
         }
 
         /**
-         *
-         * @param firstName
-         * The first_name
+         * @param firstName The first_name
          */
         public void setFirstName(String firstName) {
             this.firstName = firstName;
         }
 
         /**
-         *
-         * @return
-         * The gender
+         * @return The gender
          */
         public String getGender() {
             return gender;
         }
 
         /**
-         *
-         * @param gender
-         * The gender
+         * @param gender The gender
          */
         public void setGender(String gender) {
             this.gender = gender;
         }
 
         /**
-         *
-         * @return
-         * The hometown
+         * @return The hometown
          */
         public Hometown getHometown() {
             return hometown;
         }
 
         /**
-         *
-         * @param hometown
-         * The hometown
+         * @param hometown The hometown
          */
         public void setHometown(Hometown hometown) {
             this.hometown = hometown;
         }
 
         /**
-         *
-         * @return
-         * The lastName
+         * @return The lastName
          */
         public String getLastName() {
             return lastName;
         }
 
         /**
-         *
-         * @param lastName
-         * The last_name
+         * @param lastName The last_name
          */
         public void setLastName(String lastName) {
             this.lastName = lastName;
         }
 
         /**
-         *
-         * @return
-         * The link
+         * @return The link
          */
         public String getLink() {
             return link;
         }
 
         /**
-         *
-         * @param link
-         * The link
+         * @param link The link
          */
         public void setLink(String link) {
             this.link = link;
         }
 
         /**
-         *
-         * @return
-         * The location
+         * @return The location
          */
         public Location getLocation() {
             return location;
         }
 
         /**
-         *
-         * @param location
-         * The location
+         * @param location The location
          */
         public void setLocation(Location location) {
             this.location = location;
         }
 
         /**
-         *
-         * @return
-         * The locale
+         * @return The locale
          */
         public String getLocale() {
             return locale;
         }
 
         /**
-         *
-         * @param locale
-         * The locale
+         * @param locale The locale
          */
         public void setLocale(String locale) {
             this.locale = locale;
         }
 
         /**
-         *
-         * @return
-         * The name
+         * @return The name
          */
         public String getName() {
             return name;
         }
 
         /**
-         *
-         * @param name
-         * The name
+         * @param name The name
          */
         public void setName(String name) {
             this.name = name;
         }
 
         /**
-         *
-         * @return
-         * The timezone
+         * @return The timezone
          */
         public Double getTimezone() {
             return timezone;
         }
 
         /**
-         *
-         * @param timezone
-         * The timezone
+         * @param timezone The timezone
          */
         public void setTimezone(Double timezone) {
             this.timezone = timezone;
         }
 
         /**
-         *
-         * @return
-         * The updatedTime
+         * @return The updatedTime
          */
         public String getUpdatedTime() {
             return updatedTime;
         }
 
         /**
-         *
-         * @param updatedTime
-         * The updated_time
+         * @param updatedTime The updated_time
          */
         public void setUpdatedTime(String updatedTime) {
             this.updatedTime = updatedTime;
         }
 
         /**
-         *
-         * @return
-         * The verified
+         * @return The verified
          */
         public Boolean getVerified() {
             return verified;
         }
 
         /**
-         *
-         * @param verified
-         * The verified
+         * @param verified The verified
          */
         public void setVerified(Boolean verified) {
             this.verified = verified;
         }
 
         /**
-         *
-         * @return
-         * The work
+         * @return The work
          */
         public List<Work> getWork() {
             return work;
         }
 
         /**
-         *
-         * @param work
-         * The work
+         * @param work The work
          */
         public void setWork(List<Work> work) {
             this.work = work;
@@ -487,36 +421,28 @@ public class Facebook extends SocialBase<FacebookService.FacebookProfile>{
         private String name;
 
         /**
-         *
-         * @return
-         * The id
+         * @return The id
          */
         public String getId() {
             return id;
         }
 
         /**
-         *
-         * @param id
-         * The id
+         * @param id The id
          */
         public void setId(String id) {
             this.id = id;
         }
 
         /**
-         *
-         * @return
-         * The name
+         * @return The name
          */
         public String getName() {
             return name;
         }
 
         /**
-         *
-         * @param name
-         * The name
+         * @param name The name
          */
         public void setName(String name) {
             this.name = name;
@@ -532,36 +458,28 @@ public class Facebook extends SocialBase<FacebookService.FacebookProfile>{
         private String name;
 
         /**
-         *
-         * @return
-         * The id
+         * @return The id
          */
         public String getId() {
             return id;
         }
 
         /**
-         *
-         * @param id
-         * The id
+         * @param id The id
          */
         public void setId(String id) {
             this.id = id;
         }
 
         /**
-         *
-         * @return
-         * The name
+         * @return The name
          */
         public String getName() {
             return name;
         }
 
         /**
-         *
-         * @param name
-         * The name
+         * @param name The name
          */
         public void setName(String name) {
             this.name = name;
@@ -577,36 +495,28 @@ public class Facebook extends SocialBase<FacebookService.FacebookProfile>{
         private String name;
 
         /**
-         *
-         * @return
-         * The id
+         * @return The id
          */
         public String getId() {
             return id;
         }
 
         /**
-         *
-         * @param id
-         * The id
+         * @param id The id
          */
         public void setId(String id) {
             this.id = id;
         }
 
         /**
-         *
-         * @return
-         * The name
+         * @return The name
          */
         public String getName() {
             return name;
         }
 
         /**
-         *
-         * @param name
-         * The name
+         * @param name The name
          */
         public void setName(String name) {
             this.name = name;
@@ -622,36 +532,28 @@ public class Facebook extends SocialBase<FacebookService.FacebookProfile>{
         private String name;
 
         /**
-         *
-         * @return
-         * The id
+         * @return The id
          */
         public String getId() {
             return id;
         }
 
         /**
-         *
-         * @param id
-         * The id
+         * @param id The id
          */
         public void setId(String id) {
             this.id = id;
         }
 
         /**
-         *
-         * @return
-         * The name
+         * @return The name
          */
         public String getName() {
             return name;
         }
 
         /**
-         *
-         * @param name
-         * The name
+         * @param name The name
          */
         public void setName(String name) {
             this.name = name;
@@ -675,90 +577,70 @@ public class Facebook extends SocialBase<FacebookService.FacebookProfile>{
         private String endDate;
 
         /**
-         *
-         * @return
-         * The employer
+         * @return The employer
          */
         public Employer getEmployer() {
             return employer;
         }
 
         /**
-         *
-         * @param employer
-         * The employer
+         * @param employer The employer
          */
         public void setEmployer(Employer employer) {
             this.employer = employer;
         }
 
         /**
-         *
-         * @return
-         * The location
+         * @return The location
          */
         public Location_ getLocation() {
             return location;
         }
 
         /**
-         *
-         * @param location
-         * The location
+         * @param location The location
          */
         public void setLocation(Location_ location) {
             this.location = location;
         }
 
         /**
-         *
-         * @return
-         * The position
+         * @return The position
          */
         public Position getPosition() {
             return position;
         }
 
         /**
-         *
-         * @param position
-         * The position
+         * @param position The position
          */
         public void setPosition(Position position) {
             this.position = position;
         }
 
         /**
-         *
-         * @return
-         * The startDate
+         * @return The startDate
          */
         public String getStartDate() {
             return startDate;
         }
 
         /**
-         *
-         * @param startDate
-         * The start_date
+         * @param startDate The start_date
          */
         public void setStartDate(String startDate) {
             this.startDate = startDate;
         }
 
         /**
-         *
-         * @return
-         * The endDate
+         * @return The endDate
          */
         public String getEndDate() {
             return endDate;
         }
 
         /**
-         *
-         * @param endDate
-         * The end_date
+         * @param endDate The end_date
          */
         public void setEndDate(String endDate) {
             this.endDate = endDate;

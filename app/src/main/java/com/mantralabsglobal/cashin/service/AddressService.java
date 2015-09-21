@@ -38,29 +38,12 @@ public interface AddressService {
     public static class Address{
 
         private boolean sameAsAadhaar;
-        private String addressId;
         private String street;
         private String city;
         private String state;
         private String pincode;
         private boolean isHouseRented;
-        private String own;
-        @SerializedName("user")
-        private String userId;
         private String type;
-        private Date createdAt;
-        private Date updatedAt;
-        @SerializedName("id")
-        private String address;
-        private boolean isDataComplete;
-
-        public boolean getIsDataComplete() {
-            return isDataComplete;
-        }
-
-        public void setIsDataComplete(boolean isDataComplete) {
-            this.isDataComplete = isDataComplete;
-        }
 
         public String getStreet() {
             return street;
@@ -94,14 +77,6 @@ public interface AddressService {
             this.pincode = pincode;
         }
 
-        public String getAddress() {
-            return address;
-        }
-
-        public void setAddress(String address) {
-            this.address = address;
-        }
-
         public boolean isHouseRented() {
             return isHouseRented;
         }
@@ -110,48 +85,12 @@ public interface AddressService {
             this.isHouseRented = isHouseRented;
         }
 
-        public String getOwn() {
-            return own;
-        }
-
-        public void setOwn(String own) {
-            this.own = own;
-        }
-
-        public String getUserId() {
-            return userId;
-        }
-
-        public void setUserId(String userId) {
-            this.userId = userId;
-        }
-
         public String getType() {
             return type;
         }
 
         public void setType(String type) {
             this.type = type;
-        }
-
-        public Date getCreatedAt() {
-            return createdAt;
-        }
-
-        public void setCreatedAt(Date createdAt) {
-            this.createdAt = createdAt;
-        }
-
-        public Date getUpdatedAt() {
-            return updatedAt;
-        }
-
-        public void setUpdatedAt(Date updatedAt) {
-            this.updatedAt = updatedAt;
-        }
-
-        public String getAddressId() {
-            return addressId;
         }
 
         public boolean isSameAsAadhaar() {

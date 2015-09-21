@@ -56,18 +56,15 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
             @Override
             public void onValidationSucceeded() {
                 if (getFormView() != null && getFormView().isShown() && getFormView().isEnabled()) {
-                    Log.d("Get form View1", getFormView() + " is shown " + getFormView().isShown() + " Enabled" + getFormView().isEnabled());
 
                     isFormValid = true;
                 } else {
-                    Log.d("Get form View2", getFormView() + " is shown " + getFormView().isShown() + " Enabled" + getFormView().isEnabled());
                     isFormValid = false;
                 }
             }
 
             @Override
             public void onValidationFailed(List<ValidationError> errors) {
-                Log.d("Error Get form View", getFormView() + " is shown " + getFormView().isShown() + " Enabled" + getFormView().isEnabled());
                 for (ValidationError ve : errors) {
                     if (ve.getView() instanceof CustomEditText) {
                         ((CustomEditText) ve.getView()).getEditText().setError(ve.getFailedRules().get(0).getMessage(getActivity()));
@@ -144,6 +141,7 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
             }
         }
     }
+
 
 
     @SuppressWarnings("unchecked")

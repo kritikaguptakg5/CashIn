@@ -27,7 +27,7 @@ import java.util.List;
  */
 public class Facebook extends SocialBase<FacebookService.FacebookProfile> {
 
-    private static final String PROTECTED_RESOURCE_URL = "https://graph.facebook.com/me?fields=location,first_name,last_name,birthday,hometown,relationship_status,work&access_token=";
+    private static final String PROTECTED_RESOURCE_URL = "https://graph.facebook.com/me?fields=location,first_name,last_name,birthday,hometown,relationship_status,work";
     final static String CALLBACK = "http://www.mantralabsglobal.com/oauth_callback/";
     private static final Token EMPTY_TOKEN = null;
 

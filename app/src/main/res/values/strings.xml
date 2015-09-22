@@ -2,9 +2,9 @@
     <string name="app_name">CashIn</string>
     <string name="title_activity_main">Your Profile</string>
 
-    <string name="cash_in">Cash In</string>
+    <string name="cash_in">CashIn</string>
     <string name="action_settings">Settings</string>
-    <string name="login_header">Cash In</string>
+    <string name="login_header">CashIn</string>
     <string name="title_activity_authenticated">AuthenticatedActivity</string>
 
     <string name="username_hint">someone@example.com</string>
@@ -12,7 +12,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="your_photo">Your Photo</string>
     <string name="joining_date">Joining Date</string>
-    <string name="confirm_on_close">Exit Cash In</string>
+    <string name="confirm_on_close">Exit CashIn</string>
     <string name="default_dateof_birth">01-Jan-1990</string>
     <string name="pan_number">PAN Number</string>
     <string name="bank_statement_info">Pick one of the below option to fetch your last 3 months bank statement</string>
@@ -139,7 +139,7 @@ s
     <string name="saving_permanent_address">Saving permanent address</string>
     <string name="reset_sucess">Reset sucessfull</string>
     <string name="your_profile">Your Profile</string>
-    <string name="father_name">Father\'s Name/Spouse Name</string>
+    <string name="father_name">Father/Spouse</string>
     <string name="logout">Logout</string>
     <string name="product_tour">Product tour</string>
     <string name="sign_in_with_google">Sign in with Gmail</string>
@@ -176,7 +176,7 @@ s
     <string-array name="gender_array">
         <item>Male</item>
         <item>Female</item>
-        <item>Others</item>
+        <item>Transgender</item>
     </string-array>
     <string-array name="reference_relationship_array">
         <item>Friend</item>
@@ -301,5 +301,8 @@ s
     <string name="retry_button">Retry</string>
     <string name="no_internet_connection_error_message">We could not establish a connection with our servers. Try again when you are connected to the internet.</string>
     <string name="failed_to_load_image">Failed to load image</string>
+
+    <!--Validation strings-->
+
 
 </resources>

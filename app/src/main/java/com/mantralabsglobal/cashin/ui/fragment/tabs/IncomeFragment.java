@@ -14,6 +14,8 @@ import com.mantralabsglobal.cashin.ui.activity.app.MainActivity;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
 import com.mantralabsglobal.cashin.ui.view.MonthIncomeView;
 import com.mobsandgeeks.saripaar.annotation.Digits;
+import com.mobsandgeeks.saripaar.annotation.Max;
+import com.mobsandgeeks.saripaar.annotation.Min;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.mobsandgeeks.saripaar.annotation.ValidateUsing;
 
@@ -25,23 +27,30 @@ import java.util.List;
 import butterknife.InjectView;
 import retrofit.Callback;
 
-/**++
+/**
+ * ++
  * Created by pk on 14/06/2015.
  */
 public class IncomeFragment extends BaseBindableListFragment<IncomeService.Income> {
 
-    @NotEmpty
+    @NotEmpty(trim = true, message = "Income cannot be empty")
     @Digits(integer = 6)
+    @Min(value = 1)
+    @Max(value = 999999)
     @InjectView(R.id.cc_month_one)
     public MonthIncomeView monthIncomeViewOne;
 
     @Digits(integer = 6)
-    @NotEmpty
+    @NotEmpty(trim = true, message = "Income cannot be empty")
+    @Min(value = 1)
+    @Max(value = 999999)
     @InjectView(R.id.cc_month_two)
     public MonthIncomeView monthIncomeViewTwo;
 
-    @Digits (integer = 6)
-    @NotEmpty
+    @Digits(integer = 6)
+    @Min(value = 1)
+    @Max(value = 999999)
+    @NotEmpty(trim = true, message = "Income cannot be empty")
     @InjectView(R.id.cc_month_three)
     public MonthIncomeView monthIncomeViewThree;
 
@@ -68,7 +77,7 @@ public class IncomeFragment extends BaseBindableListFragment<IncomeService.Incom
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        incomeService = ((Application)getActivity().getApplication()).getRestClient().getIncomeService();
+        incomeService = ((Application) getActivity().getApplication()).getRestClient().getIncomeService();
 
         reset(false);
 
@@ -114,55 +123,51 @@ public class IncomeFragment extends BaseBindableListFragment<IncomeService.Incom
 
     @Override
     public void bindDataToForm(List<IncomeService.Income> value) {
-        if(value.size()>0)
-        {
+        if (value.size() > 0) {
             monthIncomeViewOne.setYear(value.get(0).getYear());
-            monthIncomeViewOne.setMonth(value.get(0).getMonth()-1);
+            monthIncomeViewOne.setMonth(value.get(0).getMonth() - 1);
             monthIncomeViewOne.setAmount(String.valueOf(value.get(0).getAmount()));
         }
-        if(value.size()>1)
-        {
+        if (value.size() > 1) {
             monthIncomeViewTwo.setYear(value.get(1).getYear());
-            monthIncomeViewTwo.setMonth(value.get(1).getMonth()-1);
+            monthIncomeViewTwo.setMonth(value.get(1).getMonth() - 1);
             monthIncomeViewTwo.setAmount(String.valueOf(value.get(1).getAmount()));
         }
-        if(value.size()>2)
-        {
+        if (value.size() > 2) {
 
             monthIncomeViewThree.setYear(value.get(2).getYear());
-            monthIncomeViewThree.setMonth(value.get(2).getMonth()-1);
+            monthIncomeViewThree.setMonth(value.get(2).getMonth() - 1);
             monthIncomeViewThree.setAmount(String.valueOf(value.get(2).getAmount()));
         }
     }
 
     @Override
     public List<IncomeService.Income> getDataFromForm(List<IncomeService.Income> base) {
-        if(base == null) {
+        if (base == null) {
             base = new ArrayList<>();
         }
-        while(base.size()<3)
-        {
+        while (base.size() < 3) {
             base.add(new IncomeService.Income());
         }
         base.get(0).setYear(monthIncomeViewOne.getYear());
         base.get(0).setMonth(monthIncomeViewOne.getMonth() + 1);
-        if(monthIncomeViewOne.getAmount() != null && monthIncomeViewOne.getAmount().toString().length() > 0)
+        if (monthIncomeViewOne.getAmount() != null && monthIncomeViewOne.getAmount().toString().length() > 0)
             base.get(0).setAmount(Double.parseDouble(monthIncomeViewOne.getAmount().toString()));
 
         base.get(1).setYear(monthIncomeViewTwo.getYear());
         base.get(1).setMonth(monthIncomeViewTwo.getMonth() + 1);
-        if(monthIncomeViewTwo.getAmount() != null && monthIncomeViewTwo.getAmount().toString().length() > 0)
-        base.get(1).setAmount(Double.parseDouble(monthIncomeViewTwo.getAmount().toString()));
+        if (monthIncomeViewTwo.getAmount() != null && monthIncomeViewTwo.getAmount().toString().length() > 0)
+            base.get(1).setAmount(Double.parseDouble(monthIncomeViewTwo.getAmount().toString()));
 
         base.get(2).setYear(monthIncomeViewThree.getYear());
         base.get(2).setMonth(monthIncomeViewThree.getMonth() + 1);
-        if(monthIncomeViewThree.getAmount() != null && monthIncomeViewThree.getAmount().toString().length() > 0)
-        base.get(2).setAmount( Double.parseDouble(monthIncomeViewThree.getAmount().toString()));
+        if (monthIncomeViewThree.getAmount() != null && monthIncomeViewThree.getAmount().toString().length() > 0)
+            base.get(2).setAmount(Double.parseDouble(monthIncomeViewThree.getAmount().toString()));
 
         return base;
     }
 
-    @Override
+   /* @Override
     public boolean isFormValid() {
         List<IncomeService.Income> incomeList = getDataFromForm(null);
         for(IncomeService.Income income:incomeList)
@@ -172,5 +177,5 @@ public class IncomeFragment extends BaseBindableListFragment<IncomeService.Incom
         }
         return true;
     }
-
+*/
 }

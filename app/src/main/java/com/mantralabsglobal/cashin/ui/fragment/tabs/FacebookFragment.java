@@ -39,27 +39,27 @@ public class FacebookFragment extends BaseBindableFragment<FacebookService.Faceb
 
     private EditText dobEditText;
 
-    @NotEmpty
+    @NotEmpty(trim = true)
     @InjectView(R.id.et_connectedAs)
     public EditText connectedAs;
 
-    @NotEmpty
+    @NotEmpty(trim = true)
     @InjectView(R.id.cet_workplace)
     public CustomEditText workplace;
 
-    @NotEmpty
+    @NotEmpty(trim = true)
     @InjectView(R.id.cet_city)
     public CustomEditText city;
 
-    @NotEmpty
+    @NotEmpty(trim = true)
     @InjectView(R.id.cet_hometown)
     public CustomEditText hometown;
 
-    @NotEmpty
+    @NotEmpty(trim = true)
     @InjectView(R.id.cet_relationshipStatus)
     public CustomEditText relationshipStatus;
 
-    @NotEmpty
+    @NotEmpty(trim = true)
     @InjectView(R.id.cet_dob)
     public BirthDayView dob;
 
@@ -89,15 +89,9 @@ public class FacebookFragment extends BaseBindableFragment<FacebookService.Faceb
         super.onViewCreated(view, savedInstanceState);
         Button btnFacebookConnect = (Button) view.findViewById(R.id.btn_facebook_connect);
 
-
-        //List<String> permissions = Arrays.asList("public_profile","user_birthday", "user_hometown", "user_location", "user_relationship_details", "user_work_history");
-
         registerChildView(vg_facebookConnect, View.VISIBLE);
         registerChildView(vg_facebookForm, View.GONE);
         reset(false);
-
-
-
     }
 
     @Override
@@ -195,7 +189,6 @@ public class FacebookFragment extends BaseBindableFragment<FacebookService.Faceb
             ((Application)getActivity().getApplication()).putInAppPreference("facebook_access_secret", access_secret);
 
             handleDataNotPresentOnServer();
-
         }
     }
 

@@ -22,12 +22,19 @@ import retrofit.Callback;
  */
 public class HistoryFragment extends BaseBindableFragment<UserHistoryService.UserHistory> {
 
+    @NotEmpty
     @InjectView(R.id.rg_loan_taken)
     RadioGroup loanTaken;
+
+    @NotEmpty
     @InjectView(R.id.rg_defaulted)
     RadioGroup hasDefaulted;
+
+    @NotEmpty
     @InjectView(R.id.rg_cheque_bounced)
     RadioGroup chequeBounced;
+
+    @NotEmpty
     @InjectView(R.id.rg_application_rejected)
     RadioGroup applicationRejected;
 
@@ -110,9 +117,9 @@ public class HistoryFragment extends BaseBindableFragment<UserHistoryService.Use
         return base;
     }
 
-    @Override
+   /* @Override
     public boolean isFormValid()
     {
         return true;
-    }
+    }*/
 }

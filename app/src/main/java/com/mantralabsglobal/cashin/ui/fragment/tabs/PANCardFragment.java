@@ -30,6 +30,7 @@ import com.mantralabsglobal.cashin.utils.DateUtils;
 import com.mantralabsglobal.cashin.utils.PANUtils;
 import com.mantralabsglobal.cashin.utils.RetrofitUtils;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
+import com.mobsandgeeks.saripaar.annotation.Pattern;
 import com.soundcloud.android.crop.Crop;
 import com.squareup.picasso.Picasso;
 
@@ -61,6 +62,8 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
     @InjectView(R.id.photo_viewer)
     ImageView photoViewer;
 
+    @NotEmpty(trim = true, message = "PAN number cannot be empty")
+    @Pattern(regex =  BaseActivity.PAN_NUMBER_VALIDATION,  message = "Invalid PAN number")
     @InjectView(R.id.cc_pan)
     public CustomEditText panNumber;
 
@@ -78,7 +81,7 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
     @InjectView(R.id.cc_father_name)
     public CustomEditText fatherName;*/
 
-    @NotEmpty
+    @NotEmpty(trim = true, message = "Date of birth cannot be empty")
     @InjectView(R.id.cc_dob)
     public BirthDayView dob;
 
@@ -104,6 +107,7 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
         registerChildView(vg_form, View.VISIBLE);
         registerChildView(vg_scan, View.GONE);
 //        registerFloatingActionButton((FloatingActionButton) getCurrentView().findViewById(R.id.fab_launch_camera), getCurrentView().findViewById(R.id.vg_pan_card_form));
+  //      giveEditTextLength(panNumber.getEditText(), BaseActivity.PAN_NUMBER_LENGTH);
 
         if (cameraClicked) {
             camera_capture.setVisibility(View.GONE);
@@ -139,7 +143,7 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
     @Override
     protected void handleDataNotPresentOnServer() {
         setVisibleChildView(vg_form);
-        if(dob != null && (dob.getText() == null || dob.getText().toString().trim().length() < 1))
+        if (dob != null && (dob.getText() == null || dob.getText().toString().trim().length() < 1))
             getDobFromAadhar();
     }
 
@@ -295,7 +299,7 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
         RestClient.getInstance().getAadhaarService().getAadhaarDetail(new Callback<AadhaarService.AadhaarDetail>() {
             @Override
             public void success(AadhaarService.AadhaarDetail aadhaarDetail, Response response) {
-                if(aadhaarDetail != null && (dob.getText() == null || dob.getText().toString().trim().length() < 1)) {
+                if (aadhaarDetail != null && (dob.getText() == null || dob.getText().toString().trim().length() < 1)) {
                     dob.setText(aadhaarDetail.getDob());
                 }
             }
@@ -324,9 +328,11 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
         panCardServiceOCR.getPanCardDetailFromImage(image, callback);
     }
 
-    @Override
+  /*  @Override
     public boolean isFormValid() {
         PanCardService.PanCardDetail detail = getDataFromForm(null);
-        return detail.getDob() != null && !TextUtils.isEmpty(detail.getPanNumber());
+        return detail.getDob() != null && !TextUtils.isEmpty(detail.getPanNumber())
+                && isPanNumberValid(detail.getPanNumber());
     }
+*/
 }

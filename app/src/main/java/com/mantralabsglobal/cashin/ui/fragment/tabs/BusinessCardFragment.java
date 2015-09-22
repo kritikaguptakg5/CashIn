@@ -28,6 +28,8 @@ import com.mantralabsglobal.cashin.ui.view.BirthDayView;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
 import com.mantralabsglobal.cashin.utils.BusinessCardUtils;
 import com.mantralabsglobal.cashin.utils.RetrofitUtils;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
+import com.mobsandgeeks.saripaar.annotation.Pattern;
 import com.soundcloud.android.crop.Crop;
 import com.squareup.picasso.Picasso;
 
@@ -68,18 +70,24 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
     @InjectView(R.id.ib_launch_camera)
     public ImageButton camera_capture;
 
+    @Pattern(regex =  BaseActivity.NAME_VALIDATION, message = "Enter valid name")
+    @NotEmpty(trim = true, message="Employer name cannot be empty")
     @InjectView(R.id.cc_employer_name)
     public CustomEditText employerName;
 
+    @NotEmpty(trim = true, message = "EmailID cannot be empty")
+    @Pattern(regex =  BaseActivity.EMAIL_VALIDATION, message = "Not a valid EmailID")
     @InjectView(R.id.cc_work_email_id)
     public CustomEditText emailId;
 
+    @NotEmpty(trim = true, message= "Experience cannot be empty")
     @InjectView(R.id.total_work_experience)
     public CustomEditText total_work_experience;
 
     @InjectView(R.id.photo_viewer)
     ImageView photoViewer;
 
+    @NotEmpty(trim = true, message= "Joining date cannot be empty")
     @InjectView(R.id.joining_date)
     public BirthDayView joining_date;
 
@@ -319,15 +327,18 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
         businessCardService.getBusinessCardDetailFromImage(image, callback);
     }
 
-    @Override
+    /*@Override
     public boolean isFormValid() {
+        super.isFormValid();
         BusinessCardService.BusinessCardDetail detail = getDataFromForm(null);
         return !TextUtils.isEmpty(detail.getEmployerName())
+                && isJustAlphabets(detail.getEmployerName())
                 && !TextUtils.isEmpty(detail.getEmail())
+                && isEmailValid(detail.getEmail())
                 && !TextUtils.isEmpty(detail.getJoiningDate())
                 && !TextUtils.isEmpty(detail.getWorkExperience())
                 && !TextUtils.isEmpty(detail.getWorkExperience());
         //return true;
     }
-
+*/
 }

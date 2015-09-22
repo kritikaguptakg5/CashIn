@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import com.google.zxing.BarcodeFormat;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.service.BusinessCardService;
 import com.mantralabsglobal.cashin.ui.Application;
+import com.mantralabsglobal.cashin.ui.activity.app.BaseActivity;
 import com.mantralabsglobal.cashin.ui.activity.app.MainActivity;
 import com.mantralabsglobal.cashin.ui.view.BirthDayView;
 import com.mantralabsglobal.cashin.utils.AadhaarDAO;
@@ -27,7 +29,9 @@ import com.mantralabsglobal.cashin.ui.view.CustomEditText;
 import com.mantralabsglobal.cashin.ui.view.CustomSpinner;
 import com.mantralabsglobal.cashin.ui.view.SonOfSpinner;
 import com.mobsandgeeks.saripaar.annotation.Digits;
+import com.mobsandgeeks.saripaar.annotation.Length;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
+import com.mobsandgeeks.saripaar.annotation.Pattern;
 
 import java.util.ArrayList;
 
@@ -44,23 +48,29 @@ import retrofit.client.Response;
  */
 public class AadhaarCardFragment extends BaseBindableFragment<AadhaarService.AadhaarDetail> {
 
-    @NotEmpty
+    @NotEmpty(trim = true, message= "Name cannot be empty")
     @InjectView(R.id.cc_name)
+    @Pattern(regex =  BaseActivity.NAME_VALIDATION, message = "Enter valid name")
     CustomEditText name;
-    @NotEmpty
+
+    @NotEmpty(trim = true, message= "Address cannot be empty")
     @InjectView(R.id.cc_address)
     CustomEditText address;
-    @NotEmpty
-    @Digits(integer = 12)
+
+    @NotEmpty(trim = true)
+    @Digits(integer = 12, message= "Invalid Aadhaar Card Number")
     @InjectView(R.id.cc_aadhaar)
     CustomEditText aadhaarNumber;
 
     @InjectView(R.id.cs_gender)
     CustomSpinner gender;
 
+    @NotEmpty(trim = true, message= "Father/Spouse name cannot be empty")
+    @Pattern(regex =  BaseActivity.NAME_VALIDATION, message = "Enter valid name")
     @InjectView(R.id.cc_father_name)
     CustomEditText fatherName;
 
+    @NotEmpty(trim = true, message="Date of birth cannot be empty")
     @InjectView(R.id.cc_dob)
     BirthDayView birthDay;
 
@@ -100,7 +110,12 @@ public class AadhaarCardFragment extends BaseBindableFragment<AadhaarService.Aad
         aadhaarService = ((Application) getActivity().getApplication()).getRestClient().getAadhaarService();
         gender.setAdapter(getGenderAdapter());
 
+       /* InputFilter[] fArray = new InputFilter[1];
+        fArray[0] = new InputFilter.LengthFilter(AADHAR_NUMBER_LENGTH);
+        .setFilters(fArray);*/
+    //    giveEditTextLength(aadhaarNumber.getEditText(), BaseActivity.AADHAR_NUMBER_LENGTH);
         //sonOfSpinner.setAdapter(sonOfSpinner.getAdapter());
+
 
         registerChildView(vg_camera, View.VISIBLE);
         registerChildView(vg_form, View.GONE);
@@ -207,16 +222,18 @@ public class AadhaarCardFragment extends BaseBindableFragment<AadhaarService.Aad
         return detail;
     }
 
-    @Override
+   /* @Override
     public boolean isFormValid() {
         AadhaarService.AadhaarDetail aadhaarDetail = getDataFromForm(null);
         return !TextUtils.isEmpty(aadhaarDetail.getName())
+                && isJustAlphabets(aadhaarDetail.getName())
                 && !TextUtils.isEmpty(aadhaarDetail.getAddress())
                 && !TextUtils.isEmpty(aadhaarDetail.getGender())
                 && !TextUtils.isEmpty(aadhaarDetail.getAadhaarNumber())
                 && TextUtils.isDigitsOnly(aadhaarDetail.getAadhaarNumber())
                 && !TextUtils.isEmpty(aadhaarDetail.getSonOf())
+                && isJustAlphabets(aadhaarDetail.getSonOf())
                 && !TextUtils.isEmpty(aadhaarDetail.getDob());
 
-    }
+    }*/
 }

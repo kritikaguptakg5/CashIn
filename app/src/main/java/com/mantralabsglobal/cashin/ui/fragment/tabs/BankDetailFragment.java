@@ -281,12 +281,14 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
             bankDetailViewList = new ArrayList<>();
             BankDetailView primaryBankView = null;
             for (final PrimaryBankService.BankDetail bankDetail : value) {
-                BankDetailView view = new BankDetailView(getActivity());
-                view.setBankDetail(bankDetail);
-                bankDetailViewList.add(view);
-                primaryBankChangeListener(view);
-                if(bankDetail.isPrimary())
-                    primaryBankView = view;
+                if(getActivity() != null) {
+                    BankDetailView view = new BankDetailView(getActivity());
+                    view.setBankDetail(bankDetail);
+                    bankDetailViewList.add(view);
+                    primaryBankChangeListener(view);
+                    if (bankDetail.isPrimary())
+                        primaryBankView = view;
+                }
             }
 
             vg_bank_details.removeAllViews();

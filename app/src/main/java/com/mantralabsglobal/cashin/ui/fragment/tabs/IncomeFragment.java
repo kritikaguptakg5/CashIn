@@ -167,15 +167,4 @@ public class IncomeFragment extends BaseBindableListFragment<IncomeService.Incom
         return base;
     }
 
-   /* @Override
-    public boolean isFormValid() {
-        List<IncomeService.Income> incomeList = getDataFromForm(null);
-        for(IncomeService.Income income:incomeList)
-        {
-            if(income.getAmount()<=0)
-                return false;
-        }
-        return true;
-    }
-*/
 }

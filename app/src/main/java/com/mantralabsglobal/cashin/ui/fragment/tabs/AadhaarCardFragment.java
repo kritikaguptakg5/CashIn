@@ -221,19 +221,4 @@ public class AadhaarCardFragment extends BaseBindableFragment<AadhaarService.Aad
         detail.setSonOf(fatherName.getText().toString());
         return detail;
     }
-
-   /* @Override
-    public boolean isFormValid() {
-        AadhaarService.AadhaarDetail aadhaarDetail = getDataFromForm(null);
-        return !TextUtils.isEmpty(aadhaarDetail.getName())
-                && isJustAlphabets(aadhaarDetail.getName())
-                && !TextUtils.isEmpty(aadhaarDetail.getAddress())
-                && !TextUtils.isEmpty(aadhaarDetail.getGender())
-                && !TextUtils.isEmpty(aadhaarDetail.getAadhaarNumber())
-                && TextUtils.isDigitsOnly(aadhaarDetail.getAadhaarNumber())
-                && !TextUtils.isEmpty(aadhaarDetail.getSonOf())
-                && isJustAlphabets(aadhaarDetail.getSonOf())
-                && !TextUtils.isEmpty(aadhaarDetail.getDob());
-
-    }*/
 }

@@ -117,9 +117,4 @@ public class HistoryFragment extends BaseBindableFragment<UserHistoryService.Use
         return base;
     }
 
-   /* @Override
-    public boolean isFormValid()
-    {
-        return true;
-    }*/
 }

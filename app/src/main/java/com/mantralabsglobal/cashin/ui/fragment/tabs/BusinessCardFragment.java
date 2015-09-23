@@ -326,19 +326,4 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
     public void getDetailFromImage(CardImage image, Callback<BusinessCardService.BusinessCardDetail> callback) {
         businessCardService.getBusinessCardDetailFromImage(image, callback);
     }
-
-    /*@Override
-    public boolean isFormValid() {
-        super.isFormValid();
-        BusinessCardService.BusinessCardDetail detail = getDataFromForm(null);
-        return !TextUtils.isEmpty(detail.getEmployerName())
-                && isJustAlphabets(detail.getEmployerName())
-                && !TextUtils.isEmpty(detail.getEmail())
-                && isEmailValid(detail.getEmail())
-                && !TextUtils.isEmpty(detail.getJoiningDate())
-                && !TextUtils.isEmpty(detail.getWorkExperience())
-                && !TextUtils.isEmpty(detail.getWorkExperience());
-        //return true;
-    }
-*/
 }

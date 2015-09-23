@@ -80,6 +80,7 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
     private TabHost mTabHost;
 
     List<BankDetailView> bankDetailViewList;
+    List<String> bankList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -212,9 +213,11 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
     public void onCreateDialog(final PrimaryBankService.BankDetail bankDetail) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Select Bank");
-        builder.setItems(BankProvider.getInstance().getBanks().getBankNameList().toArray(new String[]{}), new DialogInterface.OnClickListener() {
+        bankList = BankProvider.getInstance().getBanks().getBankNameList();
+        Collections.sort(bankList);
+        builder.setItems(bankList.toArray(new String[]{}), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
-                String bankName = BankProvider.getInstance().getBanks().getBankCodeList().get(item);
+                String bankName = bankList.get(item);
                 Log.d("Bank name", bankName);
                 dialog.dismiss();
                 bankDetail.setBankName(bankName);
@@ -258,21 +261,6 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
         // showProgressDialog2("Scanning SMS");
         task.execute(Long.MIN_VALUE);
     }
-
-/*
-    private void sortBankDetailsList(List<PrimaryBankService.BankDetail> bankDetailList, final Map<String, Integer> bankCount) {
-        if (bankDetailList.size() > 0) {
-            Collections.sort(bankDetailList, new Comparator<PrimaryBankService.BankDetail>() {
-                @Override
-                public int compare(PrimaryBankService.BankDetail lhs, PrimaryBankService.BankDetail rhs) {
-                    return bankCount.get(rhs.getAccountNumberLast4Digits()).compareTo(bankCount.get(lhs.getAccountNumberLast4Digits()));
-                }
-            });
-            //    bankDetailList.get(0).setIsPrimary(true);
-        }
-        bindDataToForm(bankDetailList);
-    }
-*/
 
     @Override
     protected void onUpdate(List<PrimaryBankService.BankDetail> updatedData, Callback<List<PrimaryBankService.BankDetail>> saveCallback) {

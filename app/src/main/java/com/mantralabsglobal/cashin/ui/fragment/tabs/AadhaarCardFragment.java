@@ -17,6 +17,7 @@ import android.widget.ImageButton;
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.google.zxing.BarcodeFormat;
 import com.mantralabsglobal.cashin.R;
+import com.mantralabsglobal.cashin.event.PanDateUpdateEvent;
 import com.mantralabsglobal.cashin.service.BusinessCardService;
 import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.activity.app.BaseActivity;
@@ -37,6 +38,7 @@ import java.util.ArrayList;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -203,8 +205,10 @@ public class AadhaarCardFragment extends BaseBindableFragment<AadhaarService.Aad
             gender.setSelection(getGenderAdapter().getPosition(value.getGender()));
             if (value.getSonOf() != null)
                 fatherName.setText(value.getSonOf());
-            if (value.getDob() != null)
+            if (value.getDob() != null) {
                 birthDay.setText(value.getDob());
+                EventBus.getDefault().post(new PanDateUpdateEvent());
+            }
         }
     }
 

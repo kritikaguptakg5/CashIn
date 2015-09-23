@@ -18,6 +18,8 @@ import org.scribe.builder.api.LinkedInApi;
 import org.scribe.model.Token;
 import org.scribe.oauth.OAuthService;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -80,8 +82,10 @@ public class Facebook extends SocialBase<FacebookService.FacebookProfile> {
             if (facebookUserProfile.getLocation() != null)
                 facebookProfile.setCity(facebookUserProfile.getLocation().getName());
             facebookProfile.setConnectedAs(facebookUserProfile.getFirstName() + " " + facebookUserProfile.getLastName());
-            if (facebookUserProfile.getBirthday() != null)
-                facebookProfile.setDob(facebookUserProfile.getBirthday());
+            if (facebookUserProfile.getBirthday() != null) {
+                String formattedDate = changeDateFormat(facebookUserProfile.getBirthday());
+                facebookProfile.setDob(formattedDate);
+            }
             if (facebookUserProfile.getHometown() != null)
                 facebookProfile.setHometown(facebookUserProfile.getHometown().getName());
             //Not available
@@ -91,6 +95,8 @@ public class Facebook extends SocialBase<FacebookService.FacebookProfile> {
         }
         return facebookProfile;
     }
+
+
 
     /*public static void getFacebookProfile(AccessToken accessToken, final SocialBase.SocialListener<FacebookService.FacebookProfile> listener)
     {

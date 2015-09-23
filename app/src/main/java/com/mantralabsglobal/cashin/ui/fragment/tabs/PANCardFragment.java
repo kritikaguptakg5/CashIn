@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.mantralabsglobal.cashin.R;
+import com.mantralabsglobal.cashin.event.PanDateUpdateEvent;
 import com.mantralabsglobal.cashin.service.AadhaarService;
 import com.mantralabsglobal.cashin.service.OCRServiceProvider;
 import com.mantralabsglobal.cashin.service.PanCardService;
@@ -40,6 +41,7 @@ import java.io.File;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -87,6 +89,12 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
 
     PanCardService panCardService;
     PanCardService panCardServiceOCR;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -143,8 +151,6 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
     @Override
     protected void handleDataNotPresentOnServer() {
         setVisibleChildView(vg_form);
-        if (dob != null && (dob.getText() == null || dob.getText().toString().trim().length() < 1))
-            getDobFromAadhar();
     }
 
     /*@OnClick( {R.id.ib_launch_camera, R.id.fab_launch_camera}
@@ -288,24 +294,21 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
 
             if (value.getDob() != null)
                 dob.setText(DateUtils.getDateString(value.getDob()));
-            else
-                getDobFromAadhar();
-        } else {
-            getDobFromAadhar();
         }
     }
 
-    private void getDobFromAadhar() {
+    public void onEvent(PanDateUpdateEvent panDateUpdateEvent) {
         RestClient.getInstance().getAadhaarService().getAadhaarDetail(new Callback<AadhaarService.AadhaarDetail>() {
             @Override
             public void success(AadhaarService.AadhaarDetail aadhaarDetail, Response response) {
-                if (aadhaarDetail != null && (dob.getText() == null || dob.getText().toString().trim().length() < 1)) {
+                if (aadhaarDetail != null && aadhaarDetail.getDob() != null) {
                     dob.setText(aadhaarDetail.getDob());
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
+                //TODO
             }
         });
     }
@@ -328,11 +331,9 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
         panCardServiceOCR.getPanCardDetailFromImage(image, callback);
     }
 
-  /*  @Override
-    public boolean isFormValid() {
-        PanCardService.PanCardDetail detail = getDataFromForm(null);
-        return detail.getDob() != null && !TextUtils.isEmpty(detail.getPanNumber())
-                && isPanNumberValid(detail.getPanNumber());
+    @Override
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
-*/
 }

@@ -10,6 +10,10 @@ import org.scribe.model.Token;
 import org.scribe.model.Verb;
 import org.scribe.oauth.OAuthService;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by pk on 7/4/2015.
  */
@@ -28,6 +32,18 @@ public abstract class SocialBase<T> {
         return getProfileFromResponse(response.getBody());
     }
 
+    protected String changeDateFormat(String fromDate) {
+        SimpleDateFormat fromUser = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat myFormat = new SimpleDateFormat("dd-MMM-yyyy");
+        String formattedDate = null;
+        try {
+            Date date = fromUser.parse(fromDate);
+            formattedDate = myFormat.format(date);
+        } catch (ParseException e) {
+            Log.d("Date parse exception",e.getMessage());
+        }
+    return formattedDate;
+    }
 
     protected abstract T getProfileFromResponse(String responseBody);
 

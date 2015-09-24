@@ -12,6 +12,7 @@ import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.service.UserHistoryService;
 import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.activity.app.MainActivity;
+import com.mobsandgeeks.saripaar.annotation.Checked;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
 import butterknife.InjectView;
@@ -22,19 +23,19 @@ import retrofit.Callback;
  */
 public class HistoryFragment extends BaseBindableFragment<UserHistoryService.UserHistory> {
 
-    @NotEmpty
+    @Checked
     @InjectView(R.id.rg_loan_taken)
     RadioGroup loanTaken;
 
-    @NotEmpty
+    @Checked
     @InjectView(R.id.rg_defaulted)
     RadioGroup hasDefaulted;
 
-    @NotEmpty
+    @Checked
     @InjectView(R.id.rg_cheque_bounced)
     RadioGroup chequeBounced;
 
-    @NotEmpty
+    @Checked
     @InjectView(R.id.rg_application_rejected)
     RadioGroup applicationRejected;
 
@@ -109,9 +110,9 @@ public class HistoryFragment extends BaseBindableFragment<UserHistoryService.Use
             base = new UserHistoryService.UserHistory();
         }
 
-        base.setApplicationRejected(applicationRejected.getCheckedRadioButtonId()==R.id.rg_application_rejected_yes);
-        base.setHasDefaulted(hasDefaulted.getCheckedRadioButtonId()==R.id.rg_defaulted_yes);
-        base.setIsChequeBounced(chequeBounced.getCheckedRadioButtonId()==R.id.rg_cheque_bounced_yes);
+        base.setApplicationRejected(applicationRejected.getCheckedRadioButtonId() == R.id.rg_application_rejected_yes);
+        base.setHasDefaulted(hasDefaulted.getCheckedRadioButtonId() == R.id.rg_defaulted_yes);
+        base.setIsChequeBounced(chequeBounced.getCheckedRadioButtonId() == R.id.rg_cheque_bounced_yes);
         base.setLoanTaken(loanTaken.getCheckedRadioButtonId()==R.id.rg_loan_taken_yes);
 
         return base;

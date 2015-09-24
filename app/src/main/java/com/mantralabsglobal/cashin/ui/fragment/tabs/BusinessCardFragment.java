@@ -28,6 +28,7 @@ import com.mantralabsglobal.cashin.ui.view.BirthDayView;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
 import com.mantralabsglobal.cashin.utils.BusinessCardUtils;
 import com.mantralabsglobal.cashin.utils.RetrofitUtils;
+import com.mobsandgeeks.saripaar.annotation.Email;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.mobsandgeeks.saripaar.annotation.Pattern;
 import com.soundcloud.android.crop.Crop;
@@ -76,7 +77,7 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
     public CustomEditText employerName;
 
     @NotEmpty(trim = true, message = "EmailID cannot be empty")
-    @Pattern(regex =  BaseActivity.EMAIL_VALIDATION, message = "Not a valid EmailID")
+    @Email
     @InjectView(R.id.cc_work_email_id)
     public CustomEditText emailId;
 

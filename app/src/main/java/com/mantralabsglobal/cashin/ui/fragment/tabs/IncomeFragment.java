@@ -35,21 +35,15 @@ public class IncomeFragment extends BaseBindableListFragment<IncomeService.Incom
 
     @NotEmpty(trim = true, message = "Income cannot be empty")
     @Digits(integer = 6)
-    @Min(value = 1)
-    @Max(value = 999999)
     @InjectView(R.id.cc_month_one)
     public MonthIncomeView monthIncomeViewOne;
 
     @Digits(integer = 6)
     @NotEmpty(trim = true, message = "Income cannot be empty")
-    @Min(value = 1)
-    @Max(value = 999999)
     @InjectView(R.id.cc_month_two)
     public MonthIncomeView monthIncomeViewTwo;
 
     @Digits(integer = 6)
-    @Min(value = 1)
-    @Max(value = 999999)
     @NotEmpty(trim = true, message = "Income cannot be empty")
     @InjectView(R.id.cc_month_three)
     public MonthIncomeView monthIncomeViewThree;

@@ -54,9 +54,6 @@ public class BaseActivity extends AppCompatActivity {
     public static final int PAN_NUMBER_LENGTH = 10;
     public static final String NAME_VALIDATION = "[a-zA-Z]+";
     public static final String PAN_NUMBER_VALIDATION = "[A-Z]{5}[0-9]{4}[A-Z]{1}";
-    public static final String EMAIL_VALIDATION = "^[_A-Za-z0-9-\\\\+]+(\\\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\\\.[A-Za-z0-9]+)*(\\\\.[A-Za-z]{2,})$";
-
-
 
     protected void putInAppPreference(String key, String value) {
         appPreference.edit().putString(key, value).apply();

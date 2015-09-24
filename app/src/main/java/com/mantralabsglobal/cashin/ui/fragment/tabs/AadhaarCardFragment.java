@@ -112,19 +112,13 @@ public class AadhaarCardFragment extends BaseBindableFragment<AadhaarService.Aad
         aadhaarService = ((Application) getActivity().getApplication()).getRestClient().getAadhaarService();
         gender.setAdapter(getGenderAdapter());
 
-       /* InputFilter[] fArray = new InputFilter[1];
-        fArray[0] = new InputFilter.LengthFilter(AADHAR_NUMBER_LENGTH);
-        .setFilters(fArray);*/
-    //    giveEditTextLength(aadhaarNumber.getEditText(), BaseActivity.AADHAR_NUMBER_LENGTH);
         //sonOfSpinner.setAdapter(sonOfSpinner.getAdapter());
-
 
         registerChildView(vg_camera, View.VISIBLE);
         registerChildView(vg_form, View.GONE);
         registerFloatingActionButton(fab_launchScanner, vg_form);
 
         reset(false);
-
     }
 
     @Override
@@ -207,7 +201,6 @@ public class AadhaarCardFragment extends BaseBindableFragment<AadhaarService.Aad
                 fatherName.setText(value.getSonOf());
             if (value.getDob() != null) {
                 birthDay.setText(value.getDob());
-                EventBus.getDefault().post(new PanDateUpdateEvent());
             }
         }
     }

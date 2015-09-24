@@ -201,7 +201,7 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
             hideProgressDialog();
             if (getCurrentView() != null) {
                 Snackbar snackbar = Snackbar
-                        .make(getCurrentView(), "Failed to save data. Error: " + error.getMessage(), Snackbar.LENGTH_LONG)
+                        .make(getCurrentView(), "Failed to save data in CashIn Server", Snackbar.LENGTH_INDEFINITE)
                         .setAction("Retry", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -245,7 +245,7 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
             } else {
                 if (getCurrentView() != null) {
                     Snackbar snackbar = Snackbar
-                            .make(getCurrentView(), "Failed to query server. Error: " + error.getMessage(), Snackbar.LENGTH_LONG)
+                            .make(getCurrentView(), "Failed to query CashIn Server", Snackbar.LENGTH_INDEFINITE)
                             .setAction("Retry", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -287,7 +287,7 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
                         hideProgressDialog();
                         if (getCurrentView() != null) {
                             Snackbar snackbar = Snackbar
-                                    .make(getCurrentView(), "Failed to process Image. Error: " + error.getMessage(), Snackbar.LENGTH_INDEFINITE)
+                                    .make(getCurrentView(), "Failed to process Image", Snackbar.LENGTH_INDEFINITE)
                                     .setAction("Retry", new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {

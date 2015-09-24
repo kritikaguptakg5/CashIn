@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mantralabsglobal.cashin.R;
+import com.mantralabsglobal.cashin.ui.activity.app.BaseActivity;
 
 /**
  * Created by pk on 6/21/2015.
@@ -48,7 +50,10 @@ public class CustomEditText extends LinearLayout  {
             if (drawable != null)
                 iv_icon.setBackground(drawable);
             et_editText.setText(ta.getString(R.styleable.custom_view_field_text));
-
+            int maxLength = ta.getInt(R.styleable.custom_view_field_max_length, -1);
+            if(maxLength > -1){
+                editTextMaxLength( et_editText, maxLength);
+            }
             boolean isPassword = ta.getBoolean(R.styleable.custom_view_password, false);
             if(isPassword)
                 et_editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
@@ -57,6 +62,12 @@ public class CustomEditText extends LinearLayout  {
             ta.recycle();
         }
 
+    }
+
+    protected void editTextMaxLength(EditText edittext, int length) {
+        InputFilter[] fArray = new InputFilter[1];
+        fArray[0] = new InputFilter.LengthFilter(length);
+        edittext.setFilters(fArray);
     }
 
     private void init(){

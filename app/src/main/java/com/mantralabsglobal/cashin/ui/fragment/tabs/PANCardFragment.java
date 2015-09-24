@@ -93,7 +93,6 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -114,6 +113,7 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
         //SonOfSpinner relation = (SonOfSpinner) view.findViewById(R.id.cs_sonOf);
         registerChildView(vg_form, View.VISIBLE);
         registerChildView(vg_scan, View.GONE);
+
 //        registerFloatingActionButton((FloatingActionButton) getCurrentView().findViewById(R.id.fab_launch_camera), getCurrentView().findViewById(R.id.vg_pan_card_form));
   //      giveEditTextLength(panNumber.getEditText(), BaseActivity.PAN_NUMBER_LENGTH);
 
@@ -151,6 +151,7 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
     @Override
     protected void handleDataNotPresentOnServer() {
         setVisibleChildView(vg_form);
+        getDobFromAadhar();
     }
 
     /*@OnClick( {R.id.ib_launch_camera, R.id.fab_launch_camera}
@@ -297,11 +298,12 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
         }
     }
 
-    public void onEvent(PanDateUpdateEvent panDateUpdateEvent) {
+    private void getDobFromAadhar() {
         RestClient.getInstance().getAadhaarService().getAadhaarDetail(new Callback<AadhaarService.AadhaarDetail>() {
             @Override
             public void success(AadhaarService.AadhaarDetail aadhaarDetail, Response response) {
-                if (aadhaarDetail != null && aadhaarDetail.getDob() != null) {
+                if (aadhaarDetail != null && aadhaarDetail.getDob() != null &&
+                        dob != null && dob.getText().toString().trim().length() < 1) {
                     dob.setText(aadhaarDetail.getDob());
                 }
             }
@@ -331,9 +333,4 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
         panCardServiceOCR.getPanCardDetailFromImage(image, callback);
     }
 
-    @Override
-    public void onDestroy() {
-        EventBus.getDefault().unregister(this);
-        super.onDestroy();
-    }
 }

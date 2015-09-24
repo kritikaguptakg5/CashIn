@@ -46,7 +46,7 @@
             <com.mantralabsglobal.cashin.ui.view.CustomEditText
                 android:id="@+id/cc_pan"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" app:field_label="@string/pan_number" app:field_icon="@drawable/ic_aadhar_number"/>
+                android:layout_height="wrap_content" app:field_label="@string/pan_number" app:field_max_length="10" app:field_icon="@drawable/ic_aadhar_number"/>
 
             <LinearLayout
                 android:orientation="horizontal" android:layout_width="match_parent"

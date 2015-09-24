@@ -68,7 +68,7 @@
             <com.mantralabsglobal.cashin.ui.view.CustomEditText
                 android:id="@+id/cc_aadhaar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" app:field_label="@string/aadhaar_number" app:field_icon="@drawable/ic_aadhar_number"/>
+                android:layout_height="wrap_content" app:field_max_length="12" app:field_label="@string/aadhaar_number" app:field_icon="@drawable/ic_aadhar_number"/>
 
             <com.mantralabsglobal.cashin.ui.view.CustomEditText
                 android:id="@+id/cc_father_name"

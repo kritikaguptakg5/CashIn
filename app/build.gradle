@@ -38,6 +38,10 @@ android {
             applicationId "com.mantralabsglobal.cashin"
         }
     }
+    compileOptions{
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
 }
 
 allprojects {

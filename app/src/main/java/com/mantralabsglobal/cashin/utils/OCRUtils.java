@@ -1,51 +1,7 @@
 package com.mantralabsglobal.cashin.utils;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.nfc.Tag;
 import android.os.AsyncTask;
-import android.util.Log;
-
-import org.ejml.data.DenseMatrix64F;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import boofcv.abst.feature.detect.line.DetectLineSegmentsGridRansac;
-import boofcv.abst.geo.Estimate1ofEpipolar;
-import boofcv.alg.distort.DistortImageOps;
-import boofcv.alg.distort.PointToPixelTransform_F32;
-import boofcv.alg.distort.PointTransformHomography_F32;
-import boofcv.alg.feature.detect.edge.CannyEdge;
-import boofcv.alg.feature.detect.edge.EdgeContour;
-import boofcv.alg.feature.detect.quadblob.DetectQuadBlobsBinary;
-import boofcv.alg.feature.detect.quadblob.FindQuadCorners;
-import boofcv.alg.feature.detect.quadblob.QuadBlob;
-import boofcv.alg.feature.shapes.ShapeFittingOps;
-import boofcv.alg.filter.binary.BinaryImageOps;
-import boofcv.alg.filter.binary.Contour;
-import boofcv.alg.filter.binary.ThresholdImageOps;
-import boofcv.alg.interpolate.TypeInterpolate;
-import boofcv.alg.misc.ImageStatistics;
-import boofcv.android.ConvertBitmap;
-import boofcv.android.VisualizeImageData;
-import boofcv.factory.feature.detect.edge.FactoryEdgeDetectors;
-import boofcv.factory.feature.detect.line.FactoryDetectLineAlgs;
-import boofcv.factory.geo.FactoryMultiView;
-import boofcv.struct.ConnectRule;
-import boofcv.struct.PointIndex_I32;
-import boofcv.struct.distort.PixelTransform_F32;
-import boofcv.struct.geo.AssociatedPair;
-import boofcv.struct.image.ImageFloat32;
-import boofcv.struct.image.ImageInt16;
-import boofcv.struct.image.ImageSInt16;
-import boofcv.struct.image.ImageUInt8;
-import boofcv.struct.image.MultiSpectral;
-import georegression.struct.line.LineSegment2D_F32;
-import georegression.struct.point.Point2D_I32;
 
 /**
  * Created by hello on 7/27/2015.
@@ -58,7 +14,7 @@ public class OCRUtils extends AsyncTask<Bitmap,Bitmap,Bitmap> {
 
     public Bitmap automatedPerspectiveTransform(Bitmap source)
     {
-        ImageUInt8 gray = ConvertBitmap.bitmapToGray(source, (ImageUInt8) null, null);
+        /*ImageUInt8 gray = ConvertBitmap.bitmapToGray(source, (ImageUInt8) null, null);
 
         publishProgress(ConvertBitmap.grayToBitmap(gray, Bitmap.Config.RGB_565));
 
@@ -133,32 +89,18 @@ public class OCRUtils extends AsyncTask<Bitmap,Bitmap,Bitmap> {
         }
         publishProgress(bmp);
 
-        /*
-            DetectQuadBlobsBinary detectQuadBlobsBinary = new DetectQuadBlobsBinary(10, 0.25, 1);
-        detectQuadBlobsBinary.process(ConvertBitmap.bitmapToGray(output,(ImageUInt8) null, null));
-        List<QuadBlob> quadBlobList = detectQuadBlobsBinary.getDetected();
-
-        double largestArea = Double.MIN_VALUE;
-        QuadBlob largestBlob = null;
-        if(quadBlobList != null && quadBlobList.size()>0) {
-            for (QuadBlob quadBlob : quadBlobList) {
-                double area = quadBlob.largestSide * quadBlob.smallestSide;
-                if (area > largestArea && quadBlob.corners.size() == 4) {
-                    largestArea = area;
-                    largestBlob = quadBlob;
-                }
-            }
-        }*/
-
         if(largestContour != null)
             return removePerspectiveDistortion(source, largestContour.external);
         else
             return source;
+            */
+        return null;
 
     }
-
+/*
     private Bitmap removePerspectiveDistortion(Bitmap source, List<Point2D_I32> corners)
     {
+
         MultiSpectral<ImageFloat32> input = ConvertBitmap.bitmapToMS(source, null, ImageFloat32.class, null);
 
         // Create a smaller output image for processing later on
@@ -194,7 +136,7 @@ public class OCRUtils extends AsyncTask<Bitmap,Bitmap,Bitmap> {
 
         return bmp;
     }
-
+*/
     @Override
     protected Bitmap doInBackground(Bitmap... params) {
         return automatedPerspectiveTransform(params[0]);

@@ -33,10 +33,23 @@ android {
         incremental true
        // javaMaxHeapSize "2g"
     }
+    signingConfigs {
+        release {
+            storeFile file("android.jks")
+            storePassword System.getenv("KEYSTORE_PASSWORD")
+            keyAlias "android"
+            keyPassword System.getenv("KEY_PASSWORD")
+        }
+    }
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            zipAlignEnabled true
+            signingConfig signingConfigs.release
+        }
+        debug {
+            zipAlignEnabled true
         }
     }
     lintOptions {

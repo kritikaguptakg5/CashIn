@@ -24,8 +24,8 @@ android {
         applicationId "com.mantralabsglobal.cashin"
         minSdkVersion 16
         targetSdkVersion 21
-        versionCode 1
-        versionName "1.0"
+        versionCode System.getenv("BUILD_NUMBER") as Integer ?: 9999
+        versionName System.getenv("VERSION_NAME") as String ?: "1.0"
         multiDexEnabled true
     }
     dexOptions {

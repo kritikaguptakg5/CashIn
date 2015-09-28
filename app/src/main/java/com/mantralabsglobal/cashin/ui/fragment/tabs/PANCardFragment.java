@@ -16,7 +16,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.mantralabsglobal.cashin.R;
-import com.mantralabsglobal.cashin.event.PanDateUpdateEvent;
 import com.mantralabsglobal.cashin.service.AadhaarService;
 import com.mantralabsglobal.cashin.service.OCRServiceProvider;
 import com.mantralabsglobal.cashin.service.PanCardService;
@@ -41,7 +40,6 @@ import java.io.File;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
-import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;

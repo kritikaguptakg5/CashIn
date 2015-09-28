@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.mantralabsglobal.cashin.BuildConfig;
 import com.mantralabsglobal.cashin.R;
+import com.mantralabsglobal.cashin.event.InternetChangeListenerEvent;
 import com.mantralabsglobal.cashin.event.ProfileUpdateEvent;
 import com.mantralabsglobal.cashin.service.ProfileService;
 import com.mantralabsglobal.cashin.service.RestClient;
@@ -38,7 +39,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class MainActivity extends BaseActivity  {
+public class MainActivity extends BaseActivity {
 
     private static final String SELECTED_TAB_INDEX = "MAINACTIVITY_SELECTED_TAB_INDEX";
 
@@ -62,7 +63,6 @@ public class MainActivity extends BaseActivity  {
     public TextView applyText;
 
 
-
     private MainFragmentAdapter mainFragmentAdapter;
     private Toolbar toolbar;
 
@@ -72,7 +72,7 @@ public class MainActivity extends BaseActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(isUserLoggedIn()) {
+        if (isUserLoggedIn()) {
             setContentView(R.layout.activity_main);
             setTitle(R.string.title_activity_main);
             toolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
@@ -80,53 +80,29 @@ public class MainActivity extends BaseActivity  {
 
             ButterKnife.inject(this);
 
-            EventBus.getDefault().register(this);
             buttonList.add(yourPhotoButton);
             buttonList.add(yourIdentityButton);
             buttonList.add(workButton);
             buttonList.add(financialButton);
             buttonList.add(socialButton);
 
-            checkNetworkAvailability(new SimpleNetworkResultHandler() {
-                @Override
-                protected void onNetworkAvailable() {
-                    viewPager.addOnPageChangeListener(pageChangeListener);
-                    mainFragmentAdapter = new MainFragmentAdapter(getSupportFragmentManager(), MainActivity.this);
-                    viewPager.setAdapter(mainFragmentAdapter);
-                    viewPager.setCurrentItem(0, false);
-                    pageChangeListener.onPageSelected(0);
-                    //To check for the first time app is loading
-                    EventBus.getDefault().post(new ProfileUpdateEvent());
-                }
+            checkInternetConnectionDialog();
 
-                @Override
-                protected void onNetworkUnavailable() {
-                    final SimpleNetworkResultHandler handler = this;
-                    new AlertDialog.Builder(MainActivity.this)
-                            .setTitle(R.string.error_title)
-                            .setMessage(R.string.no_internet_connection_error_message)
-                            .setPositiveButton(R.string.retry_button, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    checkNetworkAvailability(handler);
-                                }
-                            })
-                            .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    finish();
-                                }
-                            })
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .setCancelable(false)
-                            .show();
-                }
-            });
+            viewPager.addOnPageChangeListener(pageChangeListener);
+            mainFragmentAdapter = new MainFragmentAdapter(getSupportFragmentManager(), MainActivity.this);
+            viewPager.setAdapter(mainFragmentAdapter);
+            viewPager.setCurrentItem(0, false);
+            pageChangeListener.onPageSelected(0);
+            //To check for the first time app is loading
+            EventBus.getDefault().post(new ProfileUpdateEvent());
+
         }
 
     }
 
     @OnClick(R.id.submit_button)
-    public void submitButton(){
-        Intent intent = new Intent(MainActivity.this ,SubmitDetailsActivity.class);
+    public void submitButton() {
+        Intent intent = new Intent(MainActivity.this, SubmitDetailsActivity.class);
         startActivity(intent);
     }
 
@@ -174,8 +150,8 @@ public class MainActivity extends BaseActivity  {
 
         @Override
         public void onPageScrollStateChanged(int state) {
-            if(state == ViewPager.SCROLL_STATE_IDLE) {
-               InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (state == ViewPager.SCROLL_STATE_IDLE) {
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (inputMethodManager != null) {
                     inputMethodManager.hideSoftInputFromWindow(viewPager.getWindowToken(), 0);
                 }
@@ -183,12 +159,10 @@ public class MainActivity extends BaseActivity  {
         }
     };
 
-    public void nextTab()
-    {
+    public void nextTab() {
         int currentIndex = viewPager.getCurrentItem();
         AbstractPager currentPager = (AbstractPager) mainFragmentAdapter.getItem(currentIndex);
-        if(!currentPager.nextTab() && mainFragmentAdapter.getCount()-1>currentIndex)
-        {
+        if (!currentPager.nextTab() && mainFragmentAdapter.getCount() - 1 > currentIndex) {
             currentIndex++;
             viewPager.setCurrentItem(currentIndex, true);
             currentPager = (AbstractPager) mainFragmentAdapter.getItem(currentIndex);
@@ -196,12 +170,10 @@ public class MainActivity extends BaseActivity  {
         }
     }
 
-    public void previousTab()
-    {
+    public void previousTab() {
         int currentIndex = viewPager.getCurrentItem();
         AbstractPager currentPager = (AbstractPager) mainFragmentAdapter.getItem(currentIndex);
-        if(!currentPager.previousTab() && currentIndex > 0)
-        {
+        if (!currentPager.previousTab() && currentIndex > 0) {
             currentIndex--;
             viewPager.setCurrentItem(currentIndex, true);
             currentPager = (AbstractPager) mainFragmentAdapter.getItem(currentIndex);
@@ -212,7 +184,7 @@ public class MainActivity extends BaseActivity  {
     @OnClick({R.id.yourPhotoButton, R.id.yourIdentityButton, R.id.workButton, R.id.financialButton, R.id.socialButton})
     public void onClick(final View v) {
 
-        final ViewPager viewPager = ((ViewPager)findViewById(R.id.main_frame));
+        final ViewPager viewPager = ((ViewPager) findViewById(R.id.main_frame));
 
         final int newIndex = buttonList.indexOf(v);
 
@@ -227,11 +199,9 @@ public class MainActivity extends BaseActivity  {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if(BuildConfig.DEBUG)
-        {
+        if (BuildConfig.DEBUG) {
             getMenuInflater().inflate(R.menu.menu_main_debug, menu);
-        }
-        else {
+        } else {
             getMenuInflater().inflate(R.menu.menu_main, menu);
         }
         return true;
@@ -255,8 +225,7 @@ public class MainActivity extends BaseActivity  {
             startActivity(intent);
             finish();
             return true;
-        }
-        else if (id == R.id.perfios) {
+        } else if (id == R.id.perfios) {
             Intent intent = new Intent(getBaseContext(), PerfiosActivity.class);
             startActivityForResult(intent, 15000);
             return true;
@@ -264,8 +233,7 @@ public class MainActivity extends BaseActivity  {
         return super.onOptionsItemSelected(item);
     }
 
-    protected boolean isUserLoggedIn()
-    {
+    protected boolean isUserLoggedIn() {
         String userName = getCashInApplication().getAppUser();
         if ("".equals(userName)) {
 
@@ -280,7 +248,7 @@ public class MainActivity extends BaseActivity  {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        mainFragmentAdapter.getItem(viewPager.getCurrentItem()).onActivityResult(requestCode,resultCode,data);
+        mainFragmentAdapter.getItem(viewPager.getCurrentItem()).onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -309,9 +277,8 @@ public class MainActivity extends BaseActivity  {
                     submitButton.setVisibility(View.VISIBLE);
                     userProfileDataProgress.setVisibility(View.GONE);
                     applyText.setVisibility(View.GONE);
-                }
-                else if(userDataComplete != null){
-                    userProfileDataProgress.setProgress((int)userDataComplete.getCompletePercent());
+                } else if (userDataComplete != null) {
+                    userProfileDataProgress.setProgress((int) userDataComplete.getCompletePercent());
                 }
                 invalidateOptionsMenu();
             }
@@ -322,10 +289,4 @@ public class MainActivity extends BaseActivity  {
             }
         });
     }
-    @Override
-    protected void onDestroy() {
-        EventBus.getDefault().unregister(this);
-        super.onDestroy();
-    }
-
 }

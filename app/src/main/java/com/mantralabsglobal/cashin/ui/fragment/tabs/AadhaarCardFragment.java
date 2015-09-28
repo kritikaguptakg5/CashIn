@@ -17,8 +17,6 @@ import android.widget.ImageButton;
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.google.zxing.BarcodeFormat;
 import com.mantralabsglobal.cashin.R;
-import com.mantralabsglobal.cashin.event.PanDateUpdateEvent;
-import com.mantralabsglobal.cashin.service.BusinessCardService;
 import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.activity.app.BaseActivity;
 import com.mantralabsglobal.cashin.ui.activity.app.MainActivity;

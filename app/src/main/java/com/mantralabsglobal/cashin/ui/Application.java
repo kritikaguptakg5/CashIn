@@ -8,6 +8,7 @@ import android.support.multidex.MultiDexApplication;
 import android.util.Base64;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.google.gson.Gson;
@@ -21,6 +22,7 @@ import com.mantralabsglobal.cashin.utils.RetrofitUtils;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.Request;
 
+import io.fabric.sdk.android.Fabric;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -53,6 +55,7 @@ public class Application extends MultiDexApplication{
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
        // SharedObjects.context = this;
 
         appPreference = getSharedPreferences(APP_PREFERENCE, 0);

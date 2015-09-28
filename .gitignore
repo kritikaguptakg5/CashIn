@@ -4,3 +4,6 @@ linkedin-sdk/build/
 .gradle
 app/app-release.apk
 local.properties
+app/fabric.properties
+
+app/app-staging-release.apk

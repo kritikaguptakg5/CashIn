@@ -2,56 +2,6 @@ package com.mantralabsglobal.cashin.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-import android.util.Log;
-
-import org.ejml.data.DenseMatrix64F;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeSet;
-import java.util.concurrent.ExecutionException;
-
-import boofcv.abst.feature.detect.line.DetectLineSegmentsGridRansac;
-import boofcv.abst.geo.Estimate1ofEpipolar;
-import boofcv.alg.distort.DistortImageOps;
-import boofcv.alg.distort.PointToPixelTransform_F32;
-import boofcv.alg.distort.PointTransformHomography_F32;
-import boofcv.alg.enhance.EnhanceImageOps;
-import boofcv.alg.feature.detect.edge.CannyEdge;
-import boofcv.alg.feature.detect.edge.EdgeContour;
-import boofcv.alg.feature.detect.edge.EdgeSegment;
-import boofcv.alg.feature.detect.quadblob.FindQuadCorners;
-import boofcv.alg.feature.shapes.ShapeFittingOps;
-import boofcv.alg.filter.binary.BinaryImageOps;
-import boofcv.alg.filter.binary.Contour;
-import boofcv.alg.filter.binary.GThresholdImageOps;
-import boofcv.alg.filter.binary.ThresholdImageOps;
-import boofcv.alg.interpolate.TypeInterpolate;
-import boofcv.android.ConvertBitmap;
-import boofcv.android.VisualizeImageData;
-import boofcv.core.image.ConvertBufferedImage;
-import boofcv.factory.feature.detect.edge.FactoryEdgeDetectors;
-import boofcv.factory.feature.detect.line.FactoryDetectLineAlgs;
-import boofcv.factory.geo.FactoryMultiView;
-import boofcv.struct.ConnectRule;
-import boofcv.struct.PointIndex_I32;
-import boofcv.struct.distort.PixelTransform_F32;
-import boofcv.struct.geo.AssociatedPair;
-import boofcv.struct.image.ImageFloat32;
-import boofcv.struct.image.ImageSInt16;
-import boofcv.struct.image.ImageSingleBand;
-import boofcv.struct.image.ImageUInt8;
-import boofcv.struct.image.MultiSpectral;
-import georegression.struct.line.LineSegment2D_F32;
-import georegression.struct.point.Point2D_F32;
-import georegression.struct.point.Point2D_F64;
-import georegression.struct.point.Point2D_I32;
 
 /**
  * Created by pk on 7/15/2015.
@@ -67,7 +17,7 @@ public class ImageUtils {
 
     public Bitmap binarize(Bitmap source)
     {
-        ImageUInt8 gray = ConvertBitmap.bitmapToGray(source, (ImageUInt8) null, null);
+        /*ImageUInt8 gray = ConvertBitmap.bitmapToGray(source, (ImageUInt8) null, null);
 
         ImageUInt8 binary = new ImageUInt8(gray.width,gray.height);
 
@@ -94,11 +44,12 @@ public class ImageUtils {
         Bitmap  result = Bitmap.createBitmap(source.getWidth(), source.getHeight(), Bitmap.Config.ARGB_8888);
 
         VisualizeImageData.binaryToBitmap(filtered, result, null );
-        return result;
+        return result;*/
+        return source;
     }
 
     public Bitmap processImage(final Bitmap source, Context context) {
-        AsyncTask<Bitmap, Void, Bitmap> asyncTask = new AsyncTask<Bitmap, Void, Bitmap>() {
+        /*AsyncTask<Bitmap, Void, Bitmap> asyncTask = new AsyncTask<Bitmap, Void, Bitmap>() {
             @Override
             protected Bitmap doInBackground(Bitmap... params) {
                 return detectLineSegments(params[0]);
@@ -112,9 +63,10 @@ public class ImageUtils {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+        */
         return source;
     }
-
+/*
     private Bitmap canny(Bitmap source)
     {
         ImageUInt8 gray = ConvertBitmap.bitmapToGray(source, (ImageUInt8) null, null);
@@ -273,7 +225,7 @@ public class ImageUtils {
 
         return bmp;
     }
-
+*/
     /*public Bitmap processImage2(Bitmap srcBitmap, Context context)
     {
         Mat imgSource = new Mat();

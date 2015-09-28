@@ -190,8 +190,9 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
 
                             @Override
                             public void onError() {
-
-                                showToastOnUIThread(getString(R.string.failed_to_load_image));
+                                camera_capture.setVisibility(View.VISIBLE);
+                                success_capture.setVisibility(View.GONE);
+                                //showToastOnUIThread(getString(R.string.failed_to_load_image));
                             }
                         });
             }

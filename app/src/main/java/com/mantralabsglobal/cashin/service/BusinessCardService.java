@@ -36,6 +36,9 @@ public interface BusinessCardService {
         @SerializedName("BusinessCardDetail")
         private List<String> contentArr;
 
+        @SerializedName("employeeID")
+        private String employeeID;
+
         @SerializedName("Address")
         private List<String> addressLines;
 
@@ -63,6 +66,14 @@ public interface BusinessCardService {
 
         @SerializedName("cardImageUrl")
         private String businessCardUrl;
+
+        public String getEmployeeID() {
+            return employeeID;
+        }
+
+        public void setEmployeeID(String employeeID) {
+            this.employeeID = employeeID;
+        }
 
         public String getJoiningDate() {
             return joiningDate;

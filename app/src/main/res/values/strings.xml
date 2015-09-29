@@ -43,6 +43,7 @@
     <string name="same_as_aadhaar_address">Same as Aadhaar Addresss</string>
     <string name="take_busininess_card_snap">Take a snap of your business card</string>
     <string name="business_card_not_ready">Don\'t have a business card ready?</string>
+    <string name="employee_id">Employee ID</string>
     <string name="enter_work_details"><![CDATA[Enter work details  >]]></string>
     <string name="linkedIn">LinkedIn</string>
     <string name="linkedIn_connect">Connect</string>
@@ -261,7 +262,12 @@ s
     <string name="money_tranferred_account_number">Money will be tranferred to A/C No. ending</string>
     <string name="convert_to_emi">Convert to EMI</string>
     <string name="access_funds">Access Funds</string>
-
+    <string name="enter_aadhar_address">Please first enter your aadhaar address</string>
+    <string name="failed_to_query_server">Failed to query CashIn Server</string>
+    <string name="failed_to_save_data">Failed to save data in CashIn Server</string>
+    <string name="failed_to_process_image">Failed to process Image</string>
+    <string name="failed_to_load_image">Failed to load image</string>
+    <string name="failed_to_load_avtar">Failed to load avtar</string>
 
     <string name="tranfer_to_my_account">Transfer to my account</string>
 
@@ -300,8 +306,8 @@ s
     <string name="error_title">Connection Error</string>
     <string name="retry_button">Retry</string>
     <string name="no_internet_connection_error_message">We could not establish a connection with our servers. Try again when you are connected to the internet.</string>
-    <string name="failed_to_load_image">Failed to load image</string>
     <string name="title_activity_alert_dialog_create">AlertDialogCreateActivity</string>
+    <string name="haha">haha</string>
 
     <!--Validation strings-->
 

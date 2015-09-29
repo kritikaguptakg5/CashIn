@@ -201,7 +201,8 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
             hideProgressDialog();
             if (getCurrentView() != null) {
                 Snackbar snackbar = Snackbar
-                        .make(getCurrentView(), "Failed to save data in CashIn Server", Snackbar.LENGTH_INDEFINITE)
+                        .make(getCurrentView(),  getActivity().getResources()
+                                .getString(R.string.failed_to_save_data), Snackbar.LENGTH_INDEFINITE)
                         .setAction("Retry", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -245,7 +246,8 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
             } else {
                 if (getCurrentView() != null) {
                     Snackbar snackbar = Snackbar
-                            .make(getCurrentView(), "Failed to query CashIn Server", Snackbar.LENGTH_INDEFINITE)
+                            .make(getCurrentView(), getActivity().getResources()
+                                    .getString(R.string.failed_to_query_server), Snackbar.LENGTH_INDEFINITE)
                             .setAction("Retry", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -287,7 +289,7 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
                         hideProgressDialog();
                         if (getCurrentView() != null) {
                             Snackbar snackbar = Snackbar
-                                    .make(getCurrentView(), "Failed to process Image", Snackbar.LENGTH_INDEFINITE)
+                                    .make(getCurrentView(), getActivity().getResources().getString(R.string.failed_to_process_image), Snackbar.LENGTH_INDEFINITE)
                                     .setAction("Retry", new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {

@@ -2,6 +2,7 @@ package com.mantralabsglobal.cashin.ui.fragment.tabs;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +23,9 @@ import com.mantralabsglobal.cashin.service.RestClient;
 import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
 import com.mantralabsglobal.cashin.utils.LocationAddress;
+import com.mobsandgeeks.saripaar.annotation.Checked;
+import com.mobsandgeeks.saripaar.annotation.Digits;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -33,15 +38,20 @@ import retrofit.client.Response;
  */
 public abstract class AddressFragment extends BaseBindableFragment<AddressService.Address> {
 
+    @NotEmpty(trim = true, message = "Street cannot be empty")
     @InjectView(R.id.cc_street)
     CustomEditText cc_street;
 
+    @NotEmpty(trim = true, message = "Pincode cannot be empty")
+    @Digits(integer = 6)
     @InjectView(R.id.cc_pincode)
     CustomEditText cc_pincode;
 
+    @NotEmpty(trim = true, message = "City cannot be empty")
     @InjectView(R.id.cc_city)
     CustomEditText cc_city;
 
+    @NotEmpty(trim = true, message = "State cannot be empty")
     @InjectView(R.id.cc_state)
     CustomEditText cc_state;
 
@@ -56,11 +66,15 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
     @InjectView(R.id.ib_get_gps_location)
     ImageButton ib_get_gps_location;
 
-    @InjectView(R.id.rb_rent)
+    @Checked
+    @InjectView(R.id.ownOrRentedRadioGroup)
+    RadioGroup houseRentedorOwn;
+
+   /* @InjectView(R.id.rb_rent)
     RadioButton rb_rented;
 
     @InjectView(R.id.rb_own)
-    RadioButton rb_own;
+    RadioButton rb_own;*/
 
     /*@InjectView(R.id.fab_get_loc_from_gps)
     FloatingActionButton btnGetLocationFromGPS;*/
@@ -113,14 +127,24 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
         RestClient.getInstance().getAadhaarService().getAadhaarDetail(new Callback<AadhaarService.AadhaarDetail>() {
             @Override
             public void success(AadhaarService.AadhaarDetail aadhaarDetail, Response response) {
-                if (aadhaarDetail != null)
+                if (aadhaarDetail != null && aadhaarDetail.getAddress() != null)
                     aadhaar_address_text.setText(aadhaarDetail.getAddress());
-                else
-                    showToastOnUIThread("Please first enter your aadhaar detail");
+                else {
+                    showSnackBarOnUIWithoutAction(R.string.enter_aadhar_address);
+                }
             }
 
             @Override
             public void failure(RetrofitError error) {
+                Snackbar snackbar = Snackbar
+                        .make(getCurrentView(),getActivity().getResources().getString(R.string.failed_to_query_server) , Snackbar.LENGTH_INDEFINITE)
+                        .setAction("Retry", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                getAadhaarAddressFromAadhaar();
+                            }
+                        });
+                snackbar.show();
                 //   showToastOnUIThread("Please first enter your aadhaar detail");
             }
         });
@@ -243,8 +267,12 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
             if (address.isSameAsAadhaar()) {
                 addrSameAsAadhaar.setChecked(true);
                 setVisibleChildView(vg_aadhaar_address_layout);
-                if (aadhaar_address_text.getText() == null || aadhaar_address_text.getText().toString().trim().length() < 1) {
-                    getAadhaarAddressFromAadhaar();
+                if (aadhaar_address_text.getText() == null ||
+                        aadhaar_address_text.getText().toString().trim().length() < 1) {
+                    if (address.getAadhaarAddress() == null)
+                        getAadhaarAddressFromAadhaar();
+                    else
+                        aadhaar_address_text.setText(address.getAadhaarAddress());
                 }
 
             } else {
@@ -262,9 +290,12 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
                             cc_state.setText(address.getState());
                             cc_pincode.setText(address.getPincode());
                             cc_street.setText(address.getStreet());
-                            rb_rented.setChecked(address.isHouseRented());
-                            rb_own.setChecked(!address.isHouseRented());
+                            houseRentedorOwn.check(address.isHouseRented() ? R.id.rb_rent : R.id.rb_own);
+
                             // cs_own.getSpinner().setSelection(((ArrayAdapter<String>) cs_own.getAdapter()).getPosition(address.getOwn()));
+                        } else {
+                            houseRentedorOwn.check(address.isHouseRented() ? R.id.rb_rent : R.id.rb_own);
+
                         }
                     }
                 });
@@ -282,10 +313,13 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
             address.setPincode(cc_pincode.getText().toString());
             address.setCity(cc_city.getText().toString());
             address.setState(cc_state.getText().toString());
-            address.setIsHouseRented(rb_rented.isChecked());
+            address.setIsHouseRented(houseRentedorOwn.getCheckedRadioButtonId() == R.id.rb_rent);
             //address.setOwn(cs_own.getSpinner().getSelectedItem().toString());
         } else {
             address.setSameAsAadhaar(true);
+            address.setIsHouseRented(houseRentedorOwn.getCheckedRadioButtonId() == R.id.rb_rent);
+            if (aadhaar_address_text.getText() != null)
+                address.setAadhaarAddress(aadhaar_address_text.getText().toString());
             //address.setAddress(aadhaar_address_text.getText().toString());
         }
         return address;
@@ -294,20 +328,18 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
     @Override
     public boolean isFormValid() {
         AddressService.Address addressDetail = getDataFromForm(null);
-        if( addressDetail.isSameAsAadhaar() ||
-                (
-                        !TextUtils.isEmpty(addressDetail.getStreet())
-                                && !TextUtils.isEmpty(addressDetail.getCity())
-                                && !TextUtils.isEmpty(addressDetail.getState())
-                                && !TextUtils.isEmpty(addressDetail.getPincode())
-                                && TextUtils.isDigitsOnly(addressDetail.getPincode()))){
-            return true;
+        if (!addressDetail.isSameAsAadhaar()) {
+            return super.isFormValid();
+        } else {
+            if (aadhaar_address_text.getText() != null
+                    && aadhaar_address_text.getText().toString().trim().length() > 0
+                    && houseRentedorOwn.getCheckedRadioButtonId() != -1) {
+                return true;
+            } else {
+                showSnackBarOnUIWithoutAction(R.string.enter_aadhar_address);
+            }
         }
-        else {
-            showToastOnUIThread("Please enter valid address information");
-            return false;
-        }
-
+        return false;
     }
 
 }

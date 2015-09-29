@@ -35,7 +35,7 @@ import retrofit.Callback;
 /**
  * Created by pk on 13/06/2015.
  */
-public class FacebookFragment extends BaseBindableFragment<FacebookService.FacebookProfile>  {
+public class FacebookFragment extends BaseBindableFragment<FacebookService.FacebookProfile> {
 
     private EditText dobEditText;
 
@@ -126,13 +126,11 @@ public class FacebookFragment extends BaseBindableFragment<FacebookService.Faceb
 
     @Override
     protected void handleDataNotPresentOnServer() {
-        String accessToken = ((Application)getActivity().getApplication()).getAppPreference().getString("facebook_access_token", null);
-        String accessSecret = ((Application)getActivity().getApplication()).getAppPreference().getString("facebook_access_secret", null);
-        if(accessToken!= null && accessSecret != null)
-        {
-            new AsyncFacebookProfileTask ().execute(accessToken, accessSecret);
-        }
-        else {
+        String accessToken = ((Application) getActivity().getApplication()).getAppPreference().getString("facebook_access_token", null);
+        String accessSecret = ((Application) getActivity().getApplication()).getAppPreference().getString("facebook_access_secret", null);
+        if (accessToken != null && accessSecret != null) {
+            new AsyncFacebookProfileTask().execute(accessToken, accessSecret);
+        } else {
             showFacebookConnect();
         }
 
@@ -144,7 +142,7 @@ public class FacebookFragment extends BaseBindableFragment<FacebookService.Faceb
             try {
                 Facebook facebook = SocialFactory.getSocialHelper(SocialFactory.FACEBOOK, Facebook.class);
                 Token token = facebook.getAccessToken(params[0], params[1]);
-                final FacebookService.FacebookProfile facebookProfile= facebook.getSocialProfile(getActivity(), token );
+                final FacebookService.FacebookProfile facebookProfile = facebook.getSocialProfile(getActivity(), token);
                 hideProgressDialog();
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
@@ -153,9 +151,7 @@ public class FacebookFragment extends BaseBindableFragment<FacebookService.Faceb
                     }
                 });
 
-            }
-            catch(Exception e)
-            {
+            } catch (Exception e) {
                 showToastOnUIThread(e.getMessage());
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
@@ -164,14 +160,15 @@ public class FacebookFragment extends BaseBindableFragment<FacebookService.Faceb
                     }
                 });
 
-            }
-            finally {
+            } finally {
 
                 hideProgressDialog();
             }
             return null;
         }
-    };
+    }
+
+    ;
 
     private void showFacebookConnect() {
         setVisibleChildView(vg_facebookConnect);
@@ -180,13 +177,13 @@ public class FacebookFragment extends BaseBindableFragment<FacebookService.Faceb
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if ( resultCode == Activity.RESULT_OK && requestCode == BaseActivity.FACEBOOK_SIGNIN) {
+        if (resultCode == Activity.RESULT_OK && requestCode == BaseActivity.FACEBOOK_SIGNIN) {
 
             String access_token = data.getStringExtra("access_token");
             String access_secret = data.getStringExtra("access_secret");
 
-            ((Application)getActivity().getApplication()).putInAppPreference("facebook_access_token", access_token);
-            ((Application)getActivity().getApplication()).putInAppPreference("facebook_access_secret", access_secret);
+            ((Application) getActivity().getApplication()).putInAppPreference("facebook_access_token", access_token);
+            ((Application) getActivity().getApplication()).putInAppPreference("facebook_access_secret", access_secret);
 
             handleDataNotPresentOnServer();
         }
@@ -206,21 +203,25 @@ public class FacebookFragment extends BaseBindableFragment<FacebookService.Faceb
     public void bindDataToForm(FacebookService.FacebookProfile value) {
 
         setVisibleChildView(vg_facebookForm);
-        if(value != null)
-        {
-
-            workplace.setText(value.getWorkspace());
-            city.setText(value.getCity());
-            dob.setText(value.getDob());
-            relationshipStatus.setText(value.getRelationshipStatus());
-            hometown.setText(value.getHometown());
-            connectedAs.setText(value.getConnectedAs());
+        if (value != null) {
+            if (value.getWorkspace() != null)
+                workplace.setText(value.getWorkspace());
+            if (value.getCity() != null)
+                city.setText(value.getCity());
+            if (value.getDob() != null)
+                dob.setText(value.getDob());
+            if (value.getRelationshipStatus() != null)
+                relationshipStatus.setText(value.getRelationshipStatus());
+            if (value.getHometown() != null)
+                hometown.setText(value.getHometown());
+            if (value.getConnectedAs() != null)
+                connectedAs.setText(value.getConnectedAs());
         }
     }
 
     @Override
     public FacebookService.FacebookProfile getDataFromForm(FacebookService.FacebookProfile base) {
-        if(base == null)
+        if (base == null)
             base = new FacebookService.FacebookProfile();
 
         base.setHometown(hometown.getText().toString());

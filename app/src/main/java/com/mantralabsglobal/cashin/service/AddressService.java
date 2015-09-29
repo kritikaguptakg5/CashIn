@@ -44,6 +44,15 @@ public interface AddressService {
         private String pincode;
         private boolean isHouseRented;
         private String type;
+        private String aadhaarAddress;
+
+        public String getAadhaarAddress() {
+            return aadhaarAddress;
+        }
+
+        public void setAadhaarAddress(String aadhaarAddress) {
+            this.aadhaarAddress = aadhaarAddress;
+        }
 
         public String getStreet() {
             return street;

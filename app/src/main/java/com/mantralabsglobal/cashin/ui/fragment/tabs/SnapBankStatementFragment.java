@@ -239,7 +239,7 @@ public class SnapBankStatementFragment extends BaseBindableFragment<BankSnapServ
 
                         @Override
                         public void onError() {
-                            showToastOnUIThread("Failed to load image.");
+                            showSnackBarOnUIWithoutAction(R.string.failed_to_load_image);
                         }
                     });
         }

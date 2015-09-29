@@ -98,9 +98,9 @@
 
                     <com.mantralabsglobal.cashin.ui.view.CustomEditText
                         android:id="@+id/cc_street"
-                        android:layout_marginTop="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
                         app:field_icon="@drawable/ic_identity"
                         app:field_label="@string/street" />
 
@@ -134,47 +134,51 @@
 
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/ownOrRentedTextView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/seperatorView"
-                            android:layout_marginTop="10dp"
-                            android:text="@string/house_own_or_rented" />
-
-                        <RadioGroup
-                            android:id="@+id/ownOrRentedRadioGroup"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="20dp"
-                            android:orientation="horizontal">
-
-                            <RadioButton
-                                android:id="@+id/rb_rent"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/rent" />
-
-                            <RadioButton
-                                android:id="@+id/rb_own"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/owned" />
-
-                        </RadioGroup>
-                    </LinearLayout>
                     <!--<com.mantralabsglobal.cashin.ui.view.CustomSpinner
                         android:id="@+id/cs_owned_by"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" app:field_label="@string/owned_by" app:field_icon="@drawable/ic_identity"/>-->
 
                 </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/ownOrRentedTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/seperatorView"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/house_own_or_rented" />
+
+                    <RadioGroup
+                        android:id="@+id/ownOrRentedRadioGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="20dp"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rb_rent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/rent" />
+
+                        <RadioButton
+                            android:id="@+id/rb_own"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/owned" />
+
+                    </RadioGroup>
+                </LinearLayout>
+
+
             </LinearLayout>
         </ScrollView>
 

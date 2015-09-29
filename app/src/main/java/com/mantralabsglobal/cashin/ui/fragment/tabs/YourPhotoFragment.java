@@ -206,7 +206,7 @@ public class YourPhotoFragment extends BaseBindableFragment<AvtarService.AvtarIm
 
                         @Override
                         public void onError() {
-                            showToastOnUIThread("Failed to load avtar.");
+                            showSnackBarOnUIWithoutAction(R.string.failed_to_load_avtar);
                         }
                     });
         }

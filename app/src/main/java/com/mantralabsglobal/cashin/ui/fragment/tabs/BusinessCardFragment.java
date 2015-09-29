@@ -47,7 +47,7 @@ import retrofit.client.Response;
 /**
  * Created by pk on 13/06/2015.
  */
-public class BusinessCardFragment extends BaseBindableFragment<BusinessCardService.BusinessCardDetail>implements OCRServiceProvider<BusinessCardService.BusinessCardDetail> {
+public class BusinessCardFragment extends BaseBindableFragment<BusinessCardService.BusinessCardDetail> implements OCRServiceProvider<BusinessCardService.BusinessCardDetail> {
 
     private static final String TAG = "BusinessCardFragment";
     private static final String BUSINESS_CARD_IMAGE_PATH = "BUSINESS_CARD_IMAGE_PATH";
@@ -71,8 +71,8 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
     @InjectView(R.id.ib_launch_camera)
     public ImageButton camera_capture;
 
-    @Pattern(regex =  BaseActivity.NAME_VALIDATION, message = "Enter valid name")
-    @NotEmpty(trim = true, message="Employer name cannot be empty")
+    @Pattern(regex = BaseActivity.NAME_VALIDATION, message = "Enter valid name")
+    @NotEmpty(trim = true, message = "Employer name cannot be empty")
     @InjectView(R.id.cc_employer_name)
     public CustomEditText employerName;
 
@@ -81,18 +81,20 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
     @InjectView(R.id.cc_work_email_id)
     public CustomEditText emailId;
 
-    @NotEmpty(trim = true, message= "Experience cannot be empty")
+    @NotEmpty(trim = true, message = "Employee ID cannot be empty")
+    @InjectView(R.id.cc_employee_id)
+    public CustomEditText employeeID;
+
+    @NotEmpty(trim = true, message = "Experience cannot be empty")
     @InjectView(R.id.total_work_experience)
     public CustomEditText total_work_experience;
 
     @InjectView(R.id.photo_viewer)
     ImageView photoViewer;
 
-    @NotEmpty(trim = true, message= "Joining date cannot be empty")
+    @NotEmpty(trim = true, message = "Joining date cannot be empty")
     @InjectView(R.id.joining_date)
     public BirthDayView joining_date;
-
-    String experience,employer, emailID, joiningDate;
 
   /*  @InjectView(R.id.fab_launch_camera)
     public FloatingActionButton fab_launchCamera;*/
@@ -117,24 +119,27 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
 
         super.onViewCreated(view, savedInstanceState);
 
-        businessCardService = ((Application)getActivity().getApplication()).getRestClient().getBusinessCardService();
+        businessCardService = ((Application) getActivity().getApplication()).getRestClient().getBusinessCardService();
 
         registerChildView(vg_snap, View.GONE);
         registerChildView(vg_form, View.VISIBLE);
-       // registerFloatingActionButton(fab_launchCamera, vg_form);
+        // registerFloatingActionButton(fab_launchCamera, vg_form);
         //joining_date.et_amount.setVisibility(View.GONE);
-        employement_type.check( R.id.full_time );
+        employement_type.check(R.id.full_time);
 
-        if(imageButtonClicked) {
-        camera_capture.setVisibility(View.GONE);
-        success_capture.setVisibility(View.VISIBLE); }
+        if (imageButtonClicked) {
+            camera_capture.setVisibility(View.GONE);
+            success_capture.setVisibility(View.VISIBLE);
+        }
 
         reset(false);
     }
+
     @Override
     protected View getFormView() {
         return vg_form;
     }
+
     @Override
     protected void onUpdate(BusinessCardService.BusinessCardDetail updatedData, Callback<BusinessCardService.BusinessCardDetail> saveCallback) {
         businessCardService.updateBusinessCardDetail(updatedData, saveCallback);
@@ -165,19 +170,15 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
     @Override
     public void bindDataToForm(BusinessCardService.BusinessCardDetail value) {
         setVisibleChildView(vg_form);
-        if(value != null)
-        {
+        if (value != null) {
             camera_capture.setVisibility(View.GONE);
             success_capture.setVisibility(View.VISIBLE);
 
             String path = Application.getInstance().getAppPreference().getString(BUSINESS_CARD_IMAGE_PATH, null);
-            if(!TextUtils.isEmpty(path))
-            {
+            if (!TextUtils.isEmpty(path)) {
                 Bitmap colouredBinary = BitmapFactory.decodeFile(path);
                 photoViewer.setImageBitmap(colouredBinary);
-            }
-            else
-            {
+            } else {
                 Picasso.with(getActivity())
                         .load(value.getBusinessCardUrl())
                         .fit()
@@ -197,18 +198,19 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
                         });
             }
 
-            if(value.getEmployerName() != null)
-            employerName.setText(value.getEmployerName());
+            if (value.getEmployerName() != null)
+                employerName.setText(value.getEmployerName());
             String concatAddress = StringUtils.join(value.getaddressLines(), ",");
-          //  workAddress.setText(concatAddress);
-            if(value.getEmail() != null)
-            emailId.setText(value.getEmail());
-            if(value.getWorkExperience() != null)
-            total_work_experience.setText(value.getWorkExperience());
-         //   joining_date.setText(value.getMonth());
-          //  joining_date.setYear(value.getYear());
-
-            if(value.getJoiningDate() != null)
+            //  workAddress.setText(concatAddress);
+            if (value.getEmail() != null)
+                emailId.setText(value.getEmail());
+            if (value.getWorkExperience() != null)
+                total_work_experience.setText(value.getWorkExperience());
+            //   joining_date.setText(value.getMonth());
+            //  joining_date.setYear(value.getYear());
+            if (value.getEmployeeID() != null)
+                employeeID.setText(value.getEmployeeID());
+            if (value.getJoiningDate() != null)
                 joining_date.setText(value.getJoiningDate());
 
             employement_type.check(value.isEmployementType() ? R.id.contract_basis : R.id.full_time);
@@ -217,28 +219,24 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
 
     @Override
     public BusinessCardService.BusinessCardDetail getDataFromForm(BusinessCardService.BusinessCardDetail base) {
-        if(base == null)
+        if (base == null)
             base = new BusinessCardService.BusinessCardDetail();
 
         base.setEmployerName(employerName.getText().toString());
-      // base.setAddress(Arrays.asList(workAddress.getText().toString()));
+        // base.setAddress(Arrays.asList(workAddress.getText().toString()));
         base.setEmail(emailId.getText().toString());
         base.setEmployementType(employement_type.getCheckedRadioButtonId() == R.id.contract_basis);
-       // base.setYear(joining_date.getYear());
+        // base.setYear(joining_date.getYear());
         //base.setMonth(joining_date.getMonth());
         base.setWorkExperience(total_work_experience.getText().toString());
         base.setJoiningDate(joining_date.getText().toString());
-
-        experience = total_work_experience.getText().toString();
-        employer =  employerName.getText().toString();
-        emailID = emailId.getText().toString();
-        joiningDate = joining_date.getText().toString();
+        base.setEmployeeID(employeeID.getText().toString());
 
         return base;
     }
 
     /*@OnClick( {R.id.ib_launch_camera, R.id.fab_launch_camera})*/
-    @OnClick( {R.id.ib_launch_camera, R.id.edit_button })
+    @OnClick({R.id.ib_launch_camera, R.id.edit_button})
     public void launchCamera() {
         Intent intent = new Intent(getActivity(), CwacCameraActivity.class);
         intent.putExtra(CwacCameraActivity.SHOW_CAMERA_SWITCH, false);
@@ -265,13 +263,11 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
                 Crop.of(Uri.fromFile(new File(data.getStringExtra("file_path")))
                         , destination).asSquare().withAspect(2, 1).withMaxSize(600, 300).start(getActivity(), BaseActivity.IMAGE_CROP_BUSINESS_CARD);
 
-                Log.d(TAG, "onActivityResult, resultCode " + resultCode + " filepath = " +data.getStringExtra("file_path"));
-            }
-            else if(resultCode == Activity.RESULT_CANCELED)
-            {
+                Log.d(TAG, "onActivityResult, resultCode " + resultCode + " filepath = " + data.getStringExtra("file_path"));
+            } else if (resultCode == Activity.RESULT_CANCELED) {
                 reset(false);
             }
-        }  else if (requestCode == BaseActivity.IMAGE_CROP_BUSINESS_CARD) {
+        } else if (requestCode == BaseActivity.IMAGE_CROP_BUSINESS_CARD) {
             handleCrop(resultCode, data);
         }
     }
@@ -302,7 +298,7 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
         }
     }
 
-    protected void uploadBusinessCardImage(Bitmap bmp){
+    protected void uploadBusinessCardImage(Bitmap bmp) {
         CardImage cardImage = new CardImage();
         cardImage.setBase64encodedImage(base64(bmp));
         businessCardService.updateBusinessCardImage(cardImage, new Callback<RetrofitUtils.ServerMessage>() {

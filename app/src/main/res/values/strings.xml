@@ -1,10 +1,10 @@
 <resources>
-    <string name="app_name">CashIn</string>
+    <string name="app_name">Cashin</string>
     <string name="title_activity_main">Your Profile</string>
 
-    <string name="cash_in">CashIn</string>
+    <string name="cash_in">Cashin</string>
     <string name="action_settings">Settings</string>
-    <string name="login_header">CashIn</string>
+    <string name="login_header">Cashin</string>
     <string name="title_activity_authenticated">AuthenticatedActivity</string>
 
     <string name="username_hint">someone@example.com</string>
@@ -12,7 +12,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="your_photo">Your Photo</string>
     <string name="joining_date">Joining Date</string>
-    <string name="confirm_on_close">Exit CashIn</string>
+    <string name="confirm_on_close">Exit Cashin</string>
     <string name="default_dateof_birth">01-Jan-1990</string>
     <string name="pan_number">PAN Number</string>
     <string name="bank_statement_info">Pick one of the below option to fetch your last 3 months bank statement</string>
@@ -262,9 +262,9 @@ s
     <string name="money_tranferred_account_number">Money will be tranferred to A/C No. ending</string>
     <string name="convert_to_emi">Convert to EMI</string>
     <string name="access_funds">Access Funds</string>
-    <string name="enter_aadhar_address">Please first enter your aadhaar address</string>
-    <string name="failed_to_query_server">Failed to query CashIn Server</string>
-    <string name="failed_to_save_data">Failed to save data in CashIn Server</string>
+    <string name="enter_aadhar_address">No aadhaar address present</string>
+    <string name="failed_to_query_server">Failed to query Cashin Server</string>
+    <string name="failed_to_save_data">Failed to save data in Cashin Server</string>
     <string name="failed_to_process_image">Failed to process Image</string>
     <string name="failed_to_load_image">Failed to load image</string>
     <string name="failed_to_load_avtar">Failed to load avtar</string>
@@ -275,14 +275,14 @@ s
     <string name="default_referral_message_content">
         <![CDATA[
             <p>Hello Friends,</p>
-            <p>I am applying for a loan on the CashIn app. I need references to qualify me. Please help me to get the loan by qualifying me.</p>
+            <p>I am applying for a loan on the Cashin app. I need references to qualify me. Please help me to get the loan by qualifying me.</p>
             <p>Thank you</p>
             <p>My referral link: cashinapp.slack.com/@user</p>
         ]]>
     </string>
     <string name="default_referral_message_content_new">
         <![CDATA[
-            Hello Friends,\nI am applying for a loan on the CashIn app. I need references to qualify me. Please help me to get the loan by qualifying me.\nThank you\nMy referral link: cashinapp.slack.com/%s
+            Hello Friends,\nI am applying for a loan on the Cashin app. I need references to qualify me. Please help me to get the loan by qualifying me.\nThank you\nMy referral link: cashinapp.slack.com/%s
         ]]>
     </string>
     <string name="existing_emis">Existing EMIs</string>

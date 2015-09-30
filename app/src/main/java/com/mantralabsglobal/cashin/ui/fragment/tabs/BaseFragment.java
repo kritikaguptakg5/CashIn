@@ -65,10 +65,28 @@ public abstract class BaseFragment extends Fragment {
 
     }
 
-    public void showSnackBarOnUIWithoutAction(int stringId) {
+    public void showErrorOnUIWithoutAction(int stringId) {
+
+            Snackbar snackbar = Snackbar
+                    .make(getCurrentView(),
+                            Application.getInstance().getResources().getString(stringId), Snackbar.LENGTH_LONG);
+            snackbar.show();
+
+    }
+
+    public interface OnActionListener{
+        void performAction();
+    }
+
+    public void showErrorWithAction(int resourceId, int actionName, final OnActionListener listener){
         Snackbar snackbar = Snackbar
-                .make(getCurrentView(),
-                        getActivity().getResources().getString(stringId), Snackbar.LENGTH_INDEFINITE);
+                .make(getCurrentView(), Application.getInstance().getResources().getString(resourceId), Snackbar.LENGTH_INDEFINITE)
+                .setAction(Application.getInstance().getString(actionName), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.performAction();
+                    }
+                });
         snackbar.show();
     }
 

@@ -9,20 +9,13 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mantralabsglobal.cashin.R;
-import com.mantralabsglobal.cashin.service.AvtarService;
 import com.mantralabsglobal.cashin.service.BankSnapService;
 import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.activity.app.BaseActivity;
@@ -239,7 +232,7 @@ public class SnapBankStatementFragment extends BaseBindableFragment<BankSnapServ
 
                         @Override
                         public void onError() {
-                            showSnackBarOnUIWithoutAction(R.string.failed_to_load_image);
+                            showErrorOnUIWithoutAction(R.string.failed_to_load_image);
                         }
                     });
         }

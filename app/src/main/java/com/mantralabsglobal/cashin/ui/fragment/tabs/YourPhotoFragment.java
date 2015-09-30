@@ -19,7 +19,6 @@ import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.service.AvtarService;
 import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.activity.app.BaseActivity;
-import com.mantralabsglobal.cashin.ui.activity.app.MainActivity;
 import com.mantralabsglobal.cashin.ui.activity.camera.CwacCameraActivity;
 import com.soundcloud.android.crop.Crop;
 import com.squareup.picasso.Picasso;
@@ -31,7 +30,6 @@ import java.io.InputStream;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import retrofit.Callback;
-import retrofit.client.Response;
 import retrofit.mime.TypedFile;
 
 /**
@@ -206,7 +204,7 @@ public class YourPhotoFragment extends BaseBindableFragment<AvtarService.AvtarIm
 
                         @Override
                         public void onError() {
-                            showSnackBarOnUIWithoutAction(R.string.failed_to_load_avtar);
+                            showErrorOnUIWithoutAction(R.string.failed_to_load_avtar);
                         }
                     });
         }

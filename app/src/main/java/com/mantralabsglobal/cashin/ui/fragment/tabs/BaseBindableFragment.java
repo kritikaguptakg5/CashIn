@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.event.ProfileUpdateEvent;
 import com.mantralabsglobal.cashin.service.OCRServiceProvider;
+import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.view.BirthDayView;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
 import com.mantralabsglobal.cashin.ui.view.CustomSpinner;
@@ -200,16 +201,12 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
         public void failure(RetrofitError error) {
             hideProgressDialog();
             if (getCurrentView() != null) {
-                Snackbar snackbar = Snackbar
-                        .make(getCurrentView(),  getActivity().getResources()
-                                .getString(R.string.failed_to_save_data), Snackbar.LENGTH_INDEFINITE)
-                        .setAction("Retry", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                save();
-                            }
-                        });
-                snackbar.show();
+                showErrorWithAction(R.string.failed_to_save_data, R.string.retry_button, new OnActionListener() {
+                    @Override
+                    public void performAction() {
+                        save();
+                    }
+                });
             }
             //showToastOnUIThread(error.getMessage());
         }
@@ -245,16 +242,13 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
                 handleDataNotPresentOnServer();
             } else {
                 if (getCurrentView() != null) {
-                    Snackbar snackbar = Snackbar
-                            .make(getCurrentView(), getActivity().getResources()
-                                    .getString(R.string.failed_to_query_server), Snackbar.LENGTH_INDEFINITE)
-                            .setAction("Retry", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    reset(true);
-                                }
-                            });
-                    snackbar.show();
+
+                    showErrorWithAction(R.string.failed_to_query_server, R.string.retry_button, new OnActionListener() {
+                        @Override
+                        public void performAction() {
+                            reset(true);
+                        }
+                    });
                 }
             }
         }
@@ -288,16 +282,14 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
                     public void failure(RetrofitError error) {
                         hideProgressDialog();
                         if (getCurrentView() != null) {
-                            Snackbar snackbar = Snackbar
-                                    .make(getCurrentView(), getActivity().getResources().getString(R.string.failed_to_process_image), Snackbar.LENGTH_INDEFINITE)
-                                    .setAction("Retry", new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            showProgressDialog(getString(R.string.processing_image));
-                                            uploadImageToServerForOCR(bmp, service);
-                                        }
-                                    });
-                            snackbar.show();
+
+                            showErrorWithAction(R.string.failed_to_process_image, R.string.retry_button, new OnActionListener() {
+                                @Override
+                                public void performAction() {
+                                    showProgressDialog(getString(R.string.processing_image));
+                                    uploadImageToServerForOCR(bmp, service);
+                                }
+                            });
                         }
                     }
                 });

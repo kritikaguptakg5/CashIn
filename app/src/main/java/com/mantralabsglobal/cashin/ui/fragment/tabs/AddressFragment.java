@@ -2,19 +2,15 @@ package com.mantralabsglobal.cashin.ui.fragment.tabs;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.service.AadhaarService;
@@ -60,8 +56,8 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
     @InjectView(R.id.btn_edit_address)
     Button btn_editAddress;
 
-    @InjectView(R.id.aadhaar_address_text)
-    EditText aadhaar_address_text;
+    @InjectView(R.id.cc_aadhaar_address)
+    CustomEditText aadhaar_address_text;
 
     @InjectView(R.id.ib_get_gps_location)
     ImageButton ib_get_gps_location;
@@ -87,7 +83,9 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
 
 //    @InjectView(R.id.vg_gps_launcher)
 //    ViewGroup vg_gpsLauncher;
+//    ViewGroup vg_gpsLauncher;
 
+    @InjectView(R.id.chkAadhaar)
     CheckBox addrSameAsAadhaar;
 
     private AddressService mAddressService;
@@ -98,21 +96,6 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_address, container, false);
-
-        addrSameAsAadhaar = (CheckBox) view.findViewById(R.id.chkAadhaar);
-        addrSameAsAadhaar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (((CheckBox) v).isChecked()) {
-                    setVisibleChildView(vg_aadhaar_address_layout);
-                    getAadhaarAddressFromAadhaar();
-                } else {
-                    setVisibleChildView(vg_addressForm);
-                    getLocationFromGPS();
-                }
-            }
-        });
 
         String addressLabel = getAddressLabel();
         if (!TextUtils.isEmpty(addressLabel)) {
@@ -130,22 +113,22 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
                 if (aadhaarDetail != null && aadhaarDetail.getAddress() != null)
                     aadhaar_address_text.setText(aadhaarDetail.getAddress());
                 else {
-                    showSnackBarOnUIWithoutAction(R.string.enter_aadhar_address);
+                    if(getActivity() != null) {
+                        String error = getActivity().getResources().getString(R.string.enter_aadhar_address);
+                        aadhaar_address_text.getEditText().setError(error);
+                    }
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
-                Snackbar snackbar = Snackbar
-                        .make(getCurrentView(),getActivity().getResources().getString(R.string.failed_to_query_server) , Snackbar.LENGTH_INDEFINITE)
-                        .setAction("Retry", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                getAadhaarAddressFromAadhaar();
-                            }
-                        });
-                snackbar.show();
-                //   showToastOnUIThread("Please first enter your aadhaar detail");
+
+                showErrorWithAction(R.string.failed_to_query_server, R.string.retry_button, new OnActionListener() {
+                    @Override
+                    public void performAction() {
+                        getAadhaarAddressFromAadhaar();
+                    }
+                });
             }
         });
     }
@@ -162,6 +145,21 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(view.getContext(), R.array.own_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter); */
+
+        addrSameAsAadhaar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (((CheckBox) v).isChecked()) {
+                    setVisibleChildView(vg_aadhaar_address_layout);
+                    getAadhaarAddressFromAadhaar();
+                } else {
+                    setVisibleChildView(vg_addressForm);
+                    getLocationFromGPS();
+                }
+            }
+        });
+
 
         if (addrSameAsAadhaar.isChecked()) {
             registerChildView(vg_aadhaar_address_layout, View.VISIBLE);
@@ -232,7 +230,7 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        showToastOnUIThread(getString(R.string.gps_failed) + error.getMessage());
+                        showErrorOnUIWithoutAction(R.string.gps_failed);
                         hideProgressDialog();
                     }
                 });
@@ -269,10 +267,7 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
                 setVisibleChildView(vg_aadhaar_address_layout);
                 if (aadhaar_address_text.getText() == null ||
                         aadhaar_address_text.getText().toString().trim().length() < 1) {
-                    if (address.getAadhaarAddress() == null)
-                        getAadhaarAddressFromAadhaar();
-                    else
-                        aadhaar_address_text.setText(address.getAadhaarAddress());
+                    getAadhaarAddressFromAadhaar();
                 }
 
             } else {
@@ -336,7 +331,7 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
                     && houseRentedorOwn.getCheckedRadioButtonId() != -1) {
                 return true;
             } else {
-                showSnackBarOnUIWithoutAction(R.string.enter_aadhar_address);
+                //aadhaar_address_text.setError(getActivity().getResources().getString(R.string.enter_aadhar_address));
             }
         }
         return false;

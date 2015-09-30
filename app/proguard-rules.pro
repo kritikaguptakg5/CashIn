@@ -24,3 +24,6 @@
 
 #Specifies to write out some more information during processing. If the program terminates with an exception, this option will print out the entire stack trace, instead of just the exception message.
 -verbose
+
+-keep class com.mobsandgeeks.saripaar.** {*;}
+-keep @com.mobsandgeeks.saripaar.annotation.ValidateUsing class * {*;}

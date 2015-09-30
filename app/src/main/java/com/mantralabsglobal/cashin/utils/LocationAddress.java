@@ -7,12 +7,15 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Message;
+import android.text.TextUtils;
 
 import com.mantralabsglobal.cashin.service.AddressService;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -26,6 +29,7 @@ public class LocationAddress {
     public static final String STATE = "STATE";
     public static final String PINCODE = "PINCODE";
     public static final String ERROR = "ERROR";
+    public static final String POSTAL_CODE_PATTERN = "([0-9]{6}|[0-9]{3}\\s[0-9]{3})";
 
 
     public void getCurrentAddress(final Context context, final AddressListener listener) {
@@ -53,21 +57,37 @@ public class LocationAddress {
                 }
 
                 AddressService.Address myAddress = new AddressService.Address();
-                myAddress.setCity(address.getSubAdminArea());
+
+                String city="unknown";
+                if (address.getLocality() != null)
+                    city=address.getLocality();
+                else if (address.getSubAdminArea() != null)
+                    city=address.getSubAdminArea();
+                myAddress.setCity(city);
+
                 myAddress.setState(address.getAdminArea());
-                myAddress.setPincode(address.getPostalCode());
+
 
                 StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
+                int i = 0;
+                for (i = 0; i < address.getMaxAddressLineIndex(); i++) {
 
                     String addressLne =  address.getAddressLine(i);
-                    if( addressLne != null && addressLne.length()>0 && myAddress.getCity() != null && addressLne.indexOf(myAddress.getCity())>=0)
+                    if( addressLne != null && addressLne.length()>0 && myAddress.getCity() != null && addressLne.indexOf(myAddress.getCity())>=0) {
                         break;
+                    }
                     else {
                         if(sb.length()>0)
                             sb.append(", ");
                         sb.append(addressLne);
                     }
+                }
+
+                if(!TextUtils.isEmpty(address.getPostalCode()))
+                    myAddress.setPincode(address.getPostalCode());
+                else
+                {
+                    myAddress.setPincode(findPostalCode(address.getAddressLine(i)));
                 }
 
                 myAddress.setStreet(sb.toString());
@@ -78,6 +98,18 @@ public class LocationAddress {
 
         t.start();
 
+    }
+
+    private String findPostalCode(String... lines){
+        // Create a Pattern object
+        final Pattern postalCodePattern = Pattern.compile(POSTAL_CODE_PATTERN);
+        for(String line: lines) {
+            Matcher matcher = postalCodePattern.matcher(line);
+            if (matcher.find()) {
+                return matcher.group();
+            }
+        }
+        return null;
     }
 
     private Location getLocation(AppLocationService appLocationService)

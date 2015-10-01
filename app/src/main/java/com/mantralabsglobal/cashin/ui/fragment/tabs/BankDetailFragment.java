@@ -388,11 +388,12 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
             String accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
             Log.d(TAG, "Account Name=" + accountName);
             //Uncomment below line to remember the gmail account
-            ((Application)getActivity().getApplication()).setGmailAccount(accountName);
+            Application.getInstance().setGmailAccount(accountName);
             requestForGmailToken(accountName);
         }
         else if (requestCode == BaseActivity.REQ_SIGN_IN_REQUIRED && resultCode == Activity.RESULT_OK) {
-            scanGmailForBankStatements();
+            requestForGmailToken(Application.getInstance().getGmailAccount());
+            //scanGmailForBankStatements();
         }
     }
 

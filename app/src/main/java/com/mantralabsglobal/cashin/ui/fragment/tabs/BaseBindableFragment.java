@@ -44,6 +44,8 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
     private boolean isFormValid;
     private Validator validator;
     protected T serverCopy;
+    protected static final String AADHAR_ADDRESS = "AADHAR_ADDRESS";
+
 
     protected boolean isDataPresentOnServer = true;
 
@@ -112,7 +114,7 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
         try {
             validator.validate(false);
         } catch (Exception e) {
-            Log.w(TAG, e.getMessage());
+            Log.w(TAG, e);
         }
         return isFormValid;
     }

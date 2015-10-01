@@ -44,6 +44,7 @@ public interface AddressService {
         private String pincode;
         private boolean isHouseRented;
         private String type;
+        @SerializedName(value = "address")
         private String aadhaarAddress;
 
         public String getAadhaarAddress() {

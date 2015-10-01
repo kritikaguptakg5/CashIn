@@ -50,7 +50,7 @@ public class AadhaarCardFragment extends BaseBindableFragment<AadhaarService.Aad
 
     @NotEmpty(trim = true, message= "Name cannot be empty")
     @InjectView(R.id.cc_name)
-    @Pattern(regex =  BaseActivity.NAME_VALIDATION, message = "Enter valid name")
+    //@Pattern(regex =  BaseActivity.NAME_VALIDATION, message = "Enter valid name")
     CustomEditText name;
 
     @NotEmpty(trim = true, message= "Address cannot be empty")
@@ -66,7 +66,7 @@ public class AadhaarCardFragment extends BaseBindableFragment<AadhaarService.Aad
     CustomSpinner gender;
 
     @NotEmpty(trim = true, message= "Father/Spouse name cannot be empty")
-    @Pattern(regex =  BaseActivity.NAME_VALIDATION, message = "Enter valid name")
+    //@Pattern(regex =  BaseActivity.NAME_VALIDATION, message = "Enter valid name")
     @InjectView(R.id.cc_father_name)
     CustomEditText fatherName;
 
@@ -110,6 +110,17 @@ public class AadhaarCardFragment extends BaseBindableFragment<AadhaarService.Aad
         aadhaarService = ((Application) getActivity().getApplication()).getRestClient().getAadhaarService();
         gender.setAdapter(getGenderAdapter());
 
+        address.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    if( !TextUtils.isEmpty(address.getText())){
+                        Application.getInstance().putInAppPreference(AADHAR_ADDRESS, address.getText().toString());
+                    }
+                }
+            }
+        });
         //sonOfSpinner.setAdapter(sonOfSpinner.getAdapter());
 
         registerChildView(vg_camera, View.VISIBLE);

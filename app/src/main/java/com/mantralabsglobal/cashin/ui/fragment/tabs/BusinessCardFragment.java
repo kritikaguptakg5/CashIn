@@ -71,7 +71,7 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
     @InjectView(R.id.ib_launch_camera)
     public ImageButton camera_capture;
 
-    @Pattern(regex = BaseActivity.NAME_VALIDATION, message = "Enter valid name")
+    //@Pattern(regex = BaseActivity.NAME_VALIDATION, message = "Enter valid name")
     @NotEmpty(trim = true, message = "Employer name cannot be empty")
     @InjectView(R.id.cc_employer_name)
     public CustomEditText employerName;

@@ -107,30 +107,38 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
     }
 
     public void getAadhaarAddressFromAadhaar() {
-        RestClient.getInstance().getAadhaarService().getAadhaarDetail(new Callback<AadhaarService.AadhaarDetail>() {
-            @Override
-            public void success(AadhaarService.AadhaarDetail aadhaarDetail, Response response) {
-                if (aadhaarDetail != null && aadhaarDetail.getAddress() != null)
-                    aadhaar_address_text.setText(aadhaarDetail.getAddress());
-                else {
-                    if(getActivity() != null) {
-                        String error = getActivity().getResources().getString(R.string.enter_aadhar_address);
-                        aadhaar_address_text.getEditText().setError(error);
+
+        String aadhaarAddress = Application.getInstance().getAppPreference().getString(AADHAR_ADDRESS, null);
+        if(!TextUtils.isEmpty(aadhaarAddress)){
+            aadhaar_address_text.setText(aadhaarAddress);
+        }
+        else {
+            RestClient.getInstance().getAadhaarService().getAadhaarDetail(new Callback<AadhaarService.AadhaarDetail>() {
+                @Override
+                public void success(AadhaarService.AadhaarDetail aadhaarDetail, Response response) {
+                    if (aadhaarDetail != null && aadhaarDetail.getAddress() != null)
+                        aadhaar_address_text.setText(aadhaarDetail.getAddress());
+                    else {
+                        if (getActivity() != null) {
+                            String error = getActivity().getResources().getString(R.string.enter_aadhar_address);
+                            aadhaar_address_text.getEditText().setError(error);
+                        }
                     }
                 }
-            }
 
-            @Override
-            public void failure(RetrofitError error) {
+                @Override
+                public void failure(RetrofitError error) {
 
-                showErrorWithAction(R.string.failed_to_query_server, R.string.retry_button, new OnActionListener() {
-                    @Override
-                    public void performAction() {
-                        getAadhaarAddressFromAadhaar();
-                    }
-                });
-            }
-        });
+                    showErrorWithAction(R.string.failed_to_query_server, R.string.retry_button, new OnActionListener() {
+                        @Override
+                        public void performAction() {
+                            getAadhaarAddressFromAadhaar();
+                        }
+                    });
+                }
+            });
+        }
+
     }
 
     protected String getAddressLabel() {
@@ -168,12 +176,14 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
             registerChildView(vg_aadhaar_address_layout, View.GONE);
             registerChildView(vg_addressForm, View.VISIBLE);
         }
-        // registerChildView(vg_gpsLauncher, View.VISIBLE);
-        //registerFloatingActionButton(btnGetLocationFromGPS, vg_addressForm);
+
+    }
 
 
+    @Override
+    public void onStart (){
+        super.onStart();
         reset(false);
-
     }
 
     @Override

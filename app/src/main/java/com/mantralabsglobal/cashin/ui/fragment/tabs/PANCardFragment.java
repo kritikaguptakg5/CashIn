@@ -63,7 +63,7 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
     ImageView photoViewer;
 
     @NotEmpty(trim = true, message = "PAN number cannot be empty")
-    @Pattern(regex =  BaseActivity.PAN_NUMBER_VALIDATION,  message = "Invalid PAN number")
+    //@Pattern(regex =  BaseActivity.PAN_NUMBER_VALIDATION,  message = "Invalid PAN number")
     @InjectView(R.id.cc_pan)
     public CustomEditText panNumber;
 
@@ -295,6 +295,7 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
 
             if (value.getDob() != null)
                 dob.setText(DateUtils.getDateString(value.getDob()));
+
         }
     }
 

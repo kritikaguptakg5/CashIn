@@ -101,7 +101,7 @@ public class EStatementFragment extends BaseBindableFragment<EStatementService.E
            // scanGmailForBankStatements();
        // }
 
-        reset(false);
+        //reset(false);
     }
 
     @Override
@@ -139,7 +139,7 @@ public class EStatementFragment extends BaseBindableFragment<EStatementService.E
 
     @Override
     protected void loadDataFromServer(Callback<EStatementService.EStatement> dataCallback) {
-       // eStatementService.getEStatement(dataCallback);
+        eStatementService.getEStatement(dataCallback);
     }
 
 

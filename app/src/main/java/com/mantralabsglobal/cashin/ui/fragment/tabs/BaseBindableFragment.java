@@ -190,13 +190,14 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
     private Callback<T> saveCallback = new Callback<T>() {
         @Override
         public void success(T value, Response response) {
+            hideProgressDialog();
             serverCopy = value;
             if (beforeBindDataToForm(value, response)) {
                 bindDataToForm(value);
                 EventBus.getDefault().post(new ProfileUpdateEvent());
             }
             //showToastOnUIThread(getString(R.string.save_sucess));
-            hideProgressDialog();
+
         }
 
         @Override

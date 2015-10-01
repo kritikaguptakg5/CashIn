@@ -362,8 +362,8 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (mTabManager.getCurrentFragment() != null)
-            mTabManager.getCurrentFragment().onActivityResult(requestCode, resultCode, data);
+      //  if (mTabManager.getCurrentFragment() != null)
+      //      mTabManager.getCurrentFragment().onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == BaseActivity.PERFIOS_NET_BANKING && resultCode == Activity.RESULT_OK) {
             PerfiosService.PerfiosStatusUploadTask task = new PerfiosService.PerfiosStatusUploadTask(getActivity()) {

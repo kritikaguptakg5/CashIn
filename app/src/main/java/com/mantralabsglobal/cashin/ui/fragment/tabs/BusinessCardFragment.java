@@ -51,6 +51,8 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
 
     private static final String TAG = "BusinessCardFragment";
     private static final String BUSINESS_CARD_IMAGE_PATH = "BUSINESS_CARD_IMAGE_PATH";
+    private static final String CONTRACT = "contract";
+    private static final String PERMANENT = "permanent";
     @InjectView(R.id.ll_business_card_snap)
     public ViewGroup vg_snap;
 
@@ -213,7 +215,7 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
             if (value.getJoiningDate() != null)
                 joining_date.setText(value.getJoiningDate());
 
-            employement_type.check(value.isEmployementType() ? R.id.contract_basis : R.id.full_time);
+            employement_type.check( CONTRACT.equals(value.getEmployementType()) ? R.id.contract_basis : R.id.full_time);
         }
     }
 
@@ -225,7 +227,7 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
         base.setEmployerName(employerName.getText().toString());
         // base.setAddress(Arrays.asList(workAddress.getText().toString()));
         base.setEmail(emailId.getText().toString());
-        base.setEmployementType(employement_type.getCheckedRadioButtonId() == R.id.contract_basis);
+        base.setEmployementType(employement_type.getCheckedRadioButtonId() == R.id.contract_basis?CONTRACT:PERMANENT);
         // base.setYear(joining_date.getYear());
         //base.setMonth(joining_date.getMonth());
         base.setWorkExperience(total_work_experience.getText().toString());

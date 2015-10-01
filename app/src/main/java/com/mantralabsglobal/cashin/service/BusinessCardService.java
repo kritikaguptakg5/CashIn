@@ -55,7 +55,7 @@ public interface BusinessCardService {
         private String workExperience;
 
         @SerializedName("TypeofEmployement")
-        private boolean employementType;
+        private String employementType;
 
         @SerializedName("Year")
         private int year;
@@ -91,12 +91,12 @@ public interface BusinessCardService {
             this.month = month;
         }
 
-        public boolean isEmployementType() {
+        public String getEmployementType() {
 
             return employementType;
         }
 
-        public void setEmployementType(boolean employementType) {
+        public void setEmployementType(String employementType) {
             this.employementType = employementType;
         }
 

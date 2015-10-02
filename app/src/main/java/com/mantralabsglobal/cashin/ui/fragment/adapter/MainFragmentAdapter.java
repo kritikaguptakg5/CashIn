@@ -7,6 +7,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.mantralabsglobal.cashin.ui.fragment.AbstractPager;
+import com.mantralabsglobal.cashin.ui.fragment.tabs.FinanceFragment;
+import com.mantralabsglobal.cashin.ui.fragment.tabs.IdentityFragment;
+import com.mantralabsglobal.cashin.ui.fragment.tabs.PhotoFragment;
+import com.mantralabsglobal.cashin.ui.fragment.tabs.SocialFragment;
+import com.mantralabsglobal.cashin.ui.fragment.tabs.WorkFragment;
 
 import butterknife.OnEditorAction;
 
@@ -16,105 +21,20 @@ import butterknife.OnEditorAction;
 public class MainFragmentAdapter extends FragmentPagerAdapter {
 
     private FragmentManager fragmentManager;
-    private Context context;
 
-    public Fragment financePager = new AbstractPager(){
+    public Fragment financePager = new FinanceFragment();
 
-        FinancePagerAdapter adapter;
-        @Override
-        protected FragmentPagerAdapter getPagerAdapter(FragmentManager fragmentManager) {
-            if(adapter == null || fragmentManager != adapter.getFragmentManager())
-                adapter = new FinancePagerAdapter(fragmentManager);
-            return adapter;
-        }
+    public Fragment identityPager = new IdentityFragment();
 
-        @Override
-        protected void setTabLayoutMode(FragmentPagerAdapter fragmentPagerAdapter, TabLayout tabLayout)
-        {
-            tabLayout.setTabMode(TabLayout.MODE_FIXED);
-            tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        }
-        @Override
-        protected Context getContext()
-        {
-            return context;
-        }
-    };
+    public Fragment workPager = new WorkFragment();
 
-    public Fragment identityPager = new AbstractPager(){
+   public Fragment socialPager = new SocialFragment();
 
-        IdentityPagerAdapter adapter;
-        @Override
-        protected IdentityPagerAdapter getPagerAdapter(FragmentManager fragmentManager) {
-            if(adapter == null || fragmentManager != adapter.getFragmentManager())
-                adapter = new IdentityPagerAdapter(fragmentManager);
-            return adapter;
-        }
-        @Override
-        protected void setTabLayoutMode(FragmentPagerAdapter fragmentPagerAdapter, TabLayout tabLayout)
-        {
-            tabLayout.setTabMode(TabLayout.MODE_FIXED);
-            tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        }
-        @Override
-        protected Context getContext()
-        {
-            return context;
-        }
-    };
-
-    public Fragment workPager = new AbstractPager(){
-
-        WorkPagerAdapter adapter;
-        @Override
-        protected WorkPagerAdapter getPagerAdapter(FragmentManager fragmentManager) {
-            if(adapter == null || fragmentManager != adapter.getFragmentManager())
-                adapter = new WorkPagerAdapter(fragmentManager);
-            return adapter;
-        }
-        @Override
-        protected Context getContext()
-        {
-            return context;
-        }
-    };
-
-   public Fragment socialPager = new AbstractPager(){
-
-        SocialPagerAdapter adapter;
-        @Override
-        protected SocialPagerAdapter getPagerAdapter(FragmentManager fragmentManager) {
-            if(adapter == null || fragmentManager != adapter.getFragmentManager())
-                adapter = new SocialPagerAdapter(fragmentManager);
-            return adapter;
-        }
-        @Override
-        protected Context getContext()
-        {
-            return context;
-        }
-    };
-
-    public Fragment photoPager = new AbstractPager(){
-
-        YourPhotoPagerAdapter adapter;
-        @Override
-        protected YourPhotoPagerAdapter getPagerAdapter(FragmentManager fragmentManager) {
-            if(adapter == null || fragmentManager != adapter.getFragmentManager())
-                adapter = new YourPhotoPagerAdapter(fragmentManager);
-            return adapter;
-        }
-        @Override
-        protected Context getContext()
-        {
-            return context;
-        }
-    };
+    public Fragment photoPager = new PhotoFragment();
 
     public MainFragmentAdapter(FragmentManager fm, Context context) {
         super(fm);
         this.fragmentManager = fm;
-        this.context = context;
     }
     @Override
     public Fragment getItem(int position) {

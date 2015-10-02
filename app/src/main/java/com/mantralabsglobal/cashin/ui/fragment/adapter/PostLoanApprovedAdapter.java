@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.mantralabsglobal.cashin.ui.fragment.AbstractPager;
+import com.mantralabsglobal.cashin.ui.fragment.tabs.LoanApprovedIMPSFragment;
 
 /**
  * Created by pk on 6/27/2015.
@@ -14,36 +15,12 @@ import com.mantralabsglobal.cashin.ui.fragment.AbstractPager;
 public class PostLoanApprovedAdapter extends FragmentPagerAdapter {
 
     private FragmentManager fragmentManager;
-    private Context context;
 
-    public Fragment loanApprovedIMPSPager = new AbstractPager(){
-
-        LoanApprovedIMPSAdapter adapter;
-        @Override
-        protected FragmentPagerAdapter getPagerAdapter(FragmentManager fragmentManager) {
-            if(adapter == null || fragmentManager != adapter.getFragmentManager())
-                adapter = new LoanApprovedIMPSAdapter(fragmentManager);
-            return adapter;
-        }
-
-        @Override
-        protected void setTabLayoutMode(FragmentPagerAdapter fragmentPagerAdapter, TabLayout tabLayout)
-        {
-            tabLayout.setTabMode(TabLayout.MODE_FIXED);
-            tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        }
-        @Override
-        protected Context getContext()
-        {
-            return context;
-        }
-    };
-
+    public Fragment loanApprovedIMPSPager = new LoanApprovedIMPSFragment();
 
     public PostLoanApprovedAdapter(FragmentManager fm, Context context) {
         super(fm);
         this.fragmentManager = fm;
-        this.context = context;
     }
     @Override
     public Fragment getItem(int position) {

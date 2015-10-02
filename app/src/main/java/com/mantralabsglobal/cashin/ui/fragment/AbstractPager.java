@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
 import com.mantralabsglobal.cashin.R;
+import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.fragment.tabs.BaseBindableFragment;
 
 import butterknife.ButterKnife;
@@ -55,8 +56,8 @@ public abstract class AbstractPager extends Fragment {
         viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
             @Override
             public void onPageScrollStateChanged(int state) {
-                if(state == ViewPager.SCROLL_STATE_IDLE && getContext() != null) {
-                    InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                if(state == ViewPager.SCROLL_STATE_IDLE) {
+                    InputMethodManager inputMethodManager = (InputMethodManager) Application.getInstance().getSystemService(Context.INPUT_METHOD_SERVICE);
                     if (inputMethodManager != null) {
                         inputMethodManager.hideSoftInputFromWindow(viewPager.getWindowToken(), 0);
                     }
@@ -141,8 +142,6 @@ public abstract class AbstractPager extends Fragment {
         }
         return false;
     }
-
-    protected abstract Context getContext();
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {

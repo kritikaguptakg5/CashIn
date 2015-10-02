@@ -204,6 +204,7 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
         public void failure(RetrofitError error) {
             hideProgressDialog();
             if (getCurrentView() != null) {
+                Log.w(TAG, error);
                 showErrorWithAction(R.string.failed_to_save_data, R.string.retry_button, new OnActionListener() {
                     @Override
                     public void performAction() {

@@ -155,7 +155,9 @@ public abstract class AbstractPager extends Fragment {
 
                 for(int i=0; i < adapter.getCount();i++){
                     if(adapter.getItem(i) instanceof BaseBindableFragment<?>){
-                        ((BaseBindableFragment<?>) adapter.getItem(i)).save(false);
+                        BaseBindableFragment<?> fragment = ((BaseBindableFragment<?>) adapter.getItem(i));
+                        if(fragment.isResumed())
+                            fragment.save(false);
                     }
                 }
             }

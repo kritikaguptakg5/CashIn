@@ -144,7 +144,10 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
 
     @Override
     protected void onUpdate(BusinessCardService.BusinessCardDetail updatedData, Callback<BusinessCardService.BusinessCardDetail> saveCallback) {
-        businessCardService.updateBusinessCardDetail(updatedData, saveCallback);
+        if(!TextUtils.isEmpty(updatedData.getBusinessCardId()))
+            businessCardService.updateBusinessCardDetail(updatedData, saveCallback);
+        else
+            businessCardService.createBusinessCardDetail(updatedData, saveCallback);
     }
 
     @Override

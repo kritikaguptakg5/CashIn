@@ -61,6 +61,8 @@ public interface BusinessCardService {
         private int year;
         @SerializedName("Month")
         private int month;
+        @SerializedName("id")
+        private String businessCardId;
 
         String joiningDate;
 
@@ -162,6 +164,14 @@ public interface BusinessCardService {
 
         public void setBusinessCardUrl(String businessCardUrl) {
             this.businessCardUrl = businessCardUrl;
+        }
+
+        public String getBusinessCardId() {
+            return businessCardId;
+        }
+
+        public void setBusinessCardId(String businessCardId) {
+            this.businessCardId = businessCardId;
         }
     }
 

@@ -3,6 +3,7 @@ package com.mantralabsglobal.cashin.ui.fragment.tabs;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,7 @@ import retrofit.Callback;
  */
 public class GetCreditLineBankFragment extends BaseBindableFragment<GetCreditLineBankService.GetCreditLineBank> {
 
+    private static final String TAG = GetCreditLineBankFragment.class.getSimpleName();
     GetCreditLineBankService getCreditLineBankService;
     int totalApprovedAmount;
     int loanStatus = -1;
@@ -166,8 +168,15 @@ public class GetCreditLineBankFragment extends BaseBindableFragment<GetCreditLin
         if(base == null)
             base = new GetCreditLineBankService.GetCreditLineBank();
 
-        if(userSelectedAmount.getText() != null)
-            base.setLoanAmountActuallyAsked(Integer.parseInt(userSelectedAmount.getText().toString()));
+        if(!TextUtils.isEmpty(userSelectedAmount.getText())) {
+            try {
+                base.setLoanAmountActuallyAsked(Integer.parseInt(userSelectedAmount.getText().toString()));
+            }
+            catch(NumberFormatException ex)
+            {
+                Log.w(TAG, ex);
+            }
+        }
 
         return base;
     }

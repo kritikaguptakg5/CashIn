@@ -309,4 +309,18 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
     protected abstract void handleDataNotPresentOnServer();
 
     protected abstract View getFormView();
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        // Make sure that we are currently visible
+        if (this.isVisible()) {
+            // If we are becoming invisible, then...
+            if (!isVisibleToUser) {
+                Log.d(TAG, "Not visible anymore. Try saving form after validation");
+                save(false);
+            }
+        }
+    }
 }

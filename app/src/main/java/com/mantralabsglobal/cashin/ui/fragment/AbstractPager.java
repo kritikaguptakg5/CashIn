@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
 import com.mantralabsglobal.cashin.R;
+import com.mantralabsglobal.cashin.ui.fragment.tabs.BaseBindableFragment;
 
 import butterknife.ButterKnife;
 
@@ -25,6 +26,7 @@ import butterknife.ButterKnife;
  */
 public abstract class AbstractPager extends Fragment {
 
+    private static final String TAG = AbstractPager.class.getSimpleName();
     ViewPager viewPager;
 
     @Override
@@ -141,4 +143,23 @@ public abstract class AbstractPager extends Fragment {
     }
 
     protected abstract Context getContext();
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        // Make sure that we are currently visible
+        if (this.isVisible()) {
+            // If we are becoming invisible, then...
+            if (!isVisibleToUser) {
+                FragmentPagerAdapter adapter = (FragmentPagerAdapter)viewPager.getAdapter();
+
+                for(int i=0; i < adapter.getCount();i++){
+                    if(adapter.getItem(i) instanceof BaseBindableFragment<?>){
+                        ((BaseBindableFragment<?>) adapter.getItem(i)).save(false);
+                    }
+                }
+            }
+        }
+    }
 }

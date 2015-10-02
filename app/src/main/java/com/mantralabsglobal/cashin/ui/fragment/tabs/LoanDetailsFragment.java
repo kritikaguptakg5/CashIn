@@ -220,7 +220,7 @@ public class LoanDetailsFragment extends BaseBindableFragment<LoanDetailService.
             credit_line_amount_access_funds.setText(String.valueOf(value.getCreditAmount()));
             maximumActualLoanAmount.setText(String.valueOf(value.getCreditAmount()));
             seekTransferAmount.setMax(value.getCreditAmount());
-            accountNo.setText(value.getAccount_no().substring(value.getAccount_no().length()-4,value.getAccount_no().length()));
+            accountNo.setText(value.getAccount_no());
             BankProvider.Bank bank = BankProvider.getInstance().getBanks().getByCodeOrName(value.getBankName());
             if (bank != null && bank.getLogo() != null) {
                 bankLogo.setImageResource(getActivity().getResources().getIdentifier(bank.getLogo(), "drawable", getActivity().getPackageName()));

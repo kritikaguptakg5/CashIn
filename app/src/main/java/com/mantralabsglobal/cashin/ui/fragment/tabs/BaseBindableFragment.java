@@ -9,6 +9,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.event.ProfileUpdateEvent;
@@ -205,6 +206,7 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
             hideProgressDialog();
             if (getCurrentView() != null) {
                 Log.w(TAG, error);
+                Crashlytics.logException(error);
                 showErrorWithAction(R.string.failed_to_save_data, R.string.retry_button, new OnActionListener() {
                     @Override
                     public void performAction() {
@@ -245,6 +247,7 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
                 isDataPresentOnServer = false;
                 handleDataNotPresentOnServer();
             } else {
+                Crashlytics.logException(error);
                 if (getCurrentView() != null) {
 
                     showErrorWithAction(R.string.failed_to_query_server, R.string.retry_button, new OnActionListener() {

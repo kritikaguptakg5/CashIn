@@ -64,6 +64,7 @@ public class CwacCameraFragment extends CameraFragment /*implements
     boolean showBounds =false;
     double aspectRatio = 1;
     ScanBorderView scanView;
+    private CwacCameraHost cameraHost;
 
 
     public static CwacCameraFragment newInstance(boolean useFFC) {
@@ -80,9 +81,9 @@ public class CwacCameraFragment extends CameraFragment /*implements
     public void onCreate(Bundle state) {
         super.onCreate(state);
         setHasOptionsMenu(true);
-
+        cameraHost = new CwacCameraHost(getActivity());
         SimpleCameraHost.Builder builder=
-                new SimpleCameraHost.Builder(new CwacCameraHost(getActivity()));
+                new SimpleCameraHost.Builder(cameraHost);
 
         setHost(builder.useFullBleedPreview(true).build());
     }
@@ -160,28 +161,6 @@ public class CwacCameraFragment extends CameraFragment /*implements
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//        inflater.inflate(R.menu.cwac_camera, menu);
-        //singleShotItem=menu.findItem(R.id.single_shot);
-        //singleShotItem.setChecked(getContract().isSingleShotMode());
-  //      autoFocusItem=menu.findItem(R.id.autofocus);
-    //    flashItem=menu.findItem(R.id.flash);
-        //recordItem=menu.findItem(R.id.record);
-        //stopRecordItem=menu.findItem(R.id.stop);
-       // mirrorFFC=menu.findItem(R.id.mirror_ffc);
-        /*MenuItem showZoom = menu.findItem(R.id.show_zoom);
-        zoom.setVisibility(showZoom.isChecked() ? View.VISIBLE : View.GONE);*/
-
-      /*  if (isRecording()) {
-            recordItem.setVisible(false);
-            stopRecordItem.setVisible(true);
-        }
-*/
-        //     setRecordingItemVisibility();
-    }
-
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.camera:
@@ -192,18 +171,6 @@ public class CwacCameraFragment extends CameraFragment /*implements
             case R.id.autofocus:
                 autoFocus();
                 return(true);
-
-            /*case R.id.single_shot:
-                item.setChecked(!item.isChecked());
-                getContract().setSingleShotMode(item.isChecked());
-
-                return(true);
-*/
-           /* case R.id.show_zoom:
-                item.setChecked(!item.isChecked());
-                zoom.setVisibility(item.isChecked() ? View.VISIBLE : View.GONE);
-
-                return(true);*/
 
             case R.id.flash:
             case R.id.mirror_ffc:
@@ -219,56 +186,31 @@ public class CwacCameraFragment extends CameraFragment /*implements
         return(singleShotProcessing);
     }
 
-   /* @Override
-    public void onProgressChanged(SeekBar seekBar, int progress,
-                                  boolean fromUser) {
-        if (fromUser) {
-            zoom.setEnabled(false);
-            zoomTo(zoom.getProgress()).onComplete(new Runnable() {
-                @Override
-                public void run() {
-                    zoom.setEnabled(true);
-                }
-            }).go();
-        }
-    }
-
-    @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-        // ignore
-    }
-
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-        // ignore
-    }*/
-
-  /*  void setRecordingItemVisibility() {
-        if (zoom != null && recordItem != null) {
-            if (getDisplayOrientation() != 0
-                    && getDisplayOrientation() != 180) {
-                recordItem.setVisible(false);
-            }
-        }
-    }*/
-
     Contract getContract() {
         return((Contract)getActivity());
     }
 
     public void takeSimplePicture() {
-        if (singleShotItem!=null && singleShotItem.isChecked()) {
-            singleShotProcessing=true;
+
+        if(cameraHost != null && cameraHost.isPreviewReady()) {
+
+            if (singleShotItem != null && singleShotItem.isChecked()) {
+                singleShotProcessing = true;
 //            takePictureItem.setEnabled(false);
+            }
+
+            PictureTransaction xact = new PictureTransaction(getHost());
+
+            if (CwacCameraActivity.flashOn) {
+                xact.flashMode(flashMode);
+            }
+
+            takePicture(xact);
         }
-
-        PictureTransaction xact=new PictureTransaction(getHost());
-
-        if (CwacCameraActivity.flashOn) {
-            xact.flashMode(flashMode);
+        else
+        {
+            Toast.makeText(getActivity(), getString(R.string.camera_preview_not_ready), Toast.LENGTH_SHORT).show();
         }
-
-        takePicture(xact);
     }
 
 
@@ -281,7 +223,7 @@ public class CwacCameraFragment extends CameraFragment /*implements
     class CwacCameraHost extends SimpleCameraHost implements
             Camera.FaceDetectionListener {
         boolean supportsFaces=false;
-
+        private boolean previewReady = false;
         String filePath;
 
         public CwacCameraHost(Context _ctxt) {
@@ -348,6 +290,7 @@ public class CwacCameraFragment extends CameraFragment /*implements
                 if (supportsFaces)
                     startFaceDetection();
             }
+            previewReady = true;
         }
 
         @Override
@@ -416,6 +359,9 @@ public class CwacCameraFragment extends CameraFragment /*implements
             super.onAutoFocus(success, camera);
         }
 
+        public boolean isPreviewReady() {
+            return previewReady;
+        }
     }
 
 }

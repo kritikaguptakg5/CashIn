@@ -310,6 +310,7 @@ s
     <string name="haha">haha</string>
     <string name="google_authentication_exception">Google Authentication Failure</string>
     <string name="io_exception">Unexpected Error. Please try again in some time.</string>
+    <string name="camera_preview_not_ready">Camera not ready. Please try again.</string>
 
     <!--Validation strings-->
 

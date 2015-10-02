@@ -158,38 +158,39 @@ public class LoanDetailsFragment extends BaseBindableFragment<LoanDetailService.
 
         emiTable.addView(tr_head,0);
 
+        if(EMITable != null) {
+            // TableRow tr=null;
+            for (int row_no = 0; row_no < EMITable.size(); row_no++) {
+                //     tr_head.removeAllViews();
+                tr_head = new TableRow(getActivity());
+                checkBox = new CheckBox(getActivity());
+                tr_head.setLayoutParams(new TableRow.LayoutParams(
+                        TableRow.LayoutParams.FILL_PARENT,
+                        TableRow.LayoutParams.WRAP_CONTENT, 3));
+                tr_head.setGravity(Gravity.CENTER);
 
-       // TableRow tr=null;
-        for (int row_no=0; row_no < EMITable.size(); row_no++) {
-       //     tr_head.removeAllViews();
-            tr_head = new TableRow(getActivity());
-            checkBox = new CheckBox(getActivity());
-            tr_head.setLayoutParams(new TableRow.LayoutParams(
-                    TableRow.LayoutParams.FILL_PARENT,
-                    TableRow.LayoutParams.WRAP_CONTENT, 3));
-            tr_head.setGravity(Gravity.CENTER);
+                tenureText = new TextView(getActivity());
+                interestText = new TextView(getActivity());
+                emiText = new TextView(getActivity());
 
-            tenureText = new TextView(getActivity());
-            interestText = new TextView(getActivity());
-            emiText = new TextView(getActivity());
+                tenureText.setText(EMITable.get(row_no).getTenure());
+                interestText.setText(String.valueOf(EMITable.get(row_no).getInterest()));
+                emiText.setText(String.valueOf(EMITable.get(row_no).getEMI()));
 
-            tenureText.setText(EMITable.get(row_no).getTenure());
-            interestText.setText(String.valueOf(EMITable.get(row_no).getInterest()));
-            emiText.setText(String.valueOf(EMITable.get(row_no).getEMI()));
+                checkBox.setChecked(false);
+                tr_head.addView(checkBox, 0);
+                tr_head.addView(tenureText, 1);
+                tr_head.addView(interestText, 2);
+                tr_head.addView(emiText, 3);
 
-            checkBox.setChecked(false);
-            tr_head.addView(checkBox,0);
-            tr_head.addView(tenureText, 1);
-            tr_head.addView(interestText, 2);
-            tr_head.addView(emiText, 3);
-
-            emiTable.addView(tr_head,row_no+1);
+                emiTable.addView(tr_head, row_no + 1);
 
 
-            //);
-       //     tr_head.removeAllViews();
+                //);
+                //     tr_head.removeAllViews();
 
-       }
+            }
+        }
 
        /* TableRow tr=null;
         for (int row_size=0; row_size < EMITable.size(); row_size++) {

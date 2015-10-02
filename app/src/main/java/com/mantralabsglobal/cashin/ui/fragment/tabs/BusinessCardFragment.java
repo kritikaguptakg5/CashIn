@@ -185,7 +185,7 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
                 photoViewer.setImageBitmap(colouredBinary);
             } else {
                 Picasso.with(getActivity())
-                        .load(value.getBusinessCardUrl())
+                        .load(getString(R.string.server_url) + value.getBusinessCardUrl())
                         .fit()
                         .centerCrop()
                         .into(photoViewer, new com.squareup.picasso.Callback() {

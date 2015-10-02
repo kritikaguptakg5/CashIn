@@ -268,7 +268,7 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
                 photoViewer.setImageBitmap(colouredBinary);
             } else {
                 Picasso.with(getActivity())
-                        .load(value.getPanUrl())
+                        .load(getString(R.string.server_url) + value.getPanUrl())
                         .fit()
                         .centerCrop()
                         .into(photoViewer, new com.squareup.picasso.Callback() {

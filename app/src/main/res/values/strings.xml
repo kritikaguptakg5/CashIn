@@ -311,7 +311,8 @@ s
     <string name="google_authentication_exception">Google Authentication Failure</string>
     <string name="io_exception">Unexpected Error. Please try again in some time.</string>
     <string name="camera_preview_not_ready">Camera not ready. Please try again.</string>
-
+    <string name="credit_line_pre_approved">A credit line of up to Rs %1$d has been preapproved to you by %2$s</string>
+    <string name="acme_bank">ACME Bank</string>
     <!--Validation strings-->
 
 

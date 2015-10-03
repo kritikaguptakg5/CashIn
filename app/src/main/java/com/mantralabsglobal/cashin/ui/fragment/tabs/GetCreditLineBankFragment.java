@@ -143,8 +143,8 @@ public class GetCreditLineBankFragment extends BaseBindableFragment<GetCreditLin
             three_interest_two.setText(String.valueOf(value.getInterestSlabs().get(2).getTwentyfour_month_interest()));
             three_interest_three.setText(String.valueOf(value.getInterestSlabs().get(2).getThirtysix_month_interest()));
 
-            loan_amount.setText("A credit line of up to Rs " + totalApprovedAmount + " has been preapproved to you by RBL Bank");
-            seekBar.setMax(totalApprovedAmount);
+            loan_amount.setText(String.format(getString(R.string.credit_line_pre_approved),totalApprovedAmount,"ACME Bank"));
+            seekBar.setMax((int)totalApprovedAmount);
 
         } else if (value.getStatus() == LOAN_STATUS_REJECTED) {
             loan_rejected_view.setVisibility(View.VISIBLE);

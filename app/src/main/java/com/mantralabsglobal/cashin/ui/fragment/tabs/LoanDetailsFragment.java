@@ -1,34 +1,23 @@
 package com.mantralabsglobal.cashin.ui.fragment.tabs;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.businessobjects.BankProvider;
-import com.mantralabsglobal.cashin.service.GetUserLoanService;
 import com.mantralabsglobal.cashin.service.LoanDetailService;
 import com.mantralabsglobal.cashin.ui.Application;
-import com.mantralabsglobal.cashin.ui.view.CustomEditText;
 
 import java.util.List;
 
@@ -58,17 +47,20 @@ public class LoanDetailsFragment extends BaseBindableFragment<LoanDetailService.
     @InjectView(R.id.credit_line_amount)
     TextView creditAmount;
 
+    @InjectView(R.id.remaining_amount)
+    TextView remainingAmount;
+
 
     @InjectView(R.id.account_number)
     TextView accountNo;
 
     Button accessFundsButton;
 
-    @InjectView(R.id.bank_logo)
-    ImageView bankLogo;
+    //@InjectView(R.id.bank_logo)
+    //ImageView bankLogo;
 
-    @InjectView(R.id.bank_logo_access_funds)
-    ImageView bankLogoAccessFunds;
+    //@InjectView(R.id.bank_logo_access_funds)
+    //ImageView bankLogoAccessFunds;
 
     @InjectView(R.id.credit_line_amount_access_funds)
     TextView credit_line_amount_access_funds;
@@ -206,6 +198,7 @@ public class LoanDetailsFragment extends BaseBindableFragment<LoanDetailService.
                 public void onClick(View view) {
                         *//* add your code here *//*
                 }
+                }
             });
             check.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
             tr.addView(check);
@@ -218,15 +211,16 @@ public class LoanDetailsFragment extends BaseBindableFragment<LoanDetailService.
     public void bindDataToForm(final LoanDetailService.LoanDetail value) {
         if (value != null) {
             creditAmount.setText(String.valueOf(value.getCreditAmount()));
+            remainingAmount.setText(String.valueOf(value.getCreditAmount()));
             credit_line_amount_access_funds.setText(String.valueOf(value.getCreditAmount()));
             maximumActualLoanAmount.setText(String.valueOf(value.getCreditAmount()));
             seekTransferAmount.setMax(value.getCreditAmount());
             accountNo.setText(value.getAccount_no());
             BankProvider.Bank bank = BankProvider.getInstance().getBanks().getByCodeOrName(value.getBankName());
-            if (bank != null && bank.getLogo() != null) {
+            /*if (bank != null && bank.getLogo() != null) {
                 bankLogo.setImageResource(getActivity().getResources().getIdentifier(bank.getLogo(), "drawable", getActivity().getPackageName()));
                 bankLogoAccessFunds.setImageResource(getActivity().getResources().getIdentifier(bank.getLogo(), "drawable", getActivity().getPackageName()));
-            }
+            }*/
             createTable(value.getEMITable());
         }
     }

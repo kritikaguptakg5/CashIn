@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Objects;
 
 /**
  * Created by pk on 6/20/2015.
@@ -54,9 +53,9 @@ public class AadhaarDAO {
                             aadhaarDetail.setDob(sdf.format(c.getTime()));
 
                             String gender = aadhaarparser.getAttributeValue(null, "gender");
-                            if(Objects.equals(gender, "M") || Objects.equals(gender, "MALE"))
+                            if("M".equals(gender) || "MALE".equals(gender))
                                 gender = "Male";
-                            else if (Objects.equals(gender, "F") || Objects.equals(gender, "FEMALE"))
+                            else if ("F".equals(gender) || "FEMALE".equals(gender))
                                 gender = "Female";
 
                             aadhaarDetail.setGender(gender);

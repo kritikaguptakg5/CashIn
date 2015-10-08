@@ -24,8 +24,8 @@ public class LoanApprovedIMPSFragment extends AbstractPager {
     @Override
     protected void setTabLayoutMode(FragmentPagerAdapter fragmentPagerAdapter, TabLayout tabLayout)
     {
-        tabLayout.setTabMode(TabLayout.MODE_FIXED);
-        tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
+        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        //tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
     }
     
 }

@@ -23,25 +23,35 @@ public interface LoanDetailService {
 
     public static class LoanDetail {
 
-        int creditAmount;
+        double creditAmount;
+        double remainingAmount;
         List<LoanTenure> EMITable;
         String bankName;
         String account_no;
-        int amountToBeTransferred;
+        double amountToBeTransferred;
 
-        public int getAmountToBeTransferred() {
+
+        public double getRemainingAmount() {
+            return remainingAmount;
+        }
+
+        public void setRemainingAmount(double remainingAmount) {
+            this.remainingAmount = remainingAmount;
+        }
+
+        public double getAmountToBeTransferred() {
             return amountToBeTransferred;
         }
 
-        public void setAmountToBeTransferred(int amountToBeTransferred) {
+        public void setAmountToBeTransferred(double amountToBeTransferred) {
             this.amountToBeTransferred = amountToBeTransferred;
         }
 
-        public int getCreditAmount() {
+        public double getCreditAmount() {
             return creditAmount;
         }
 
-        public void setCreditAmount(int creditAmount) {
+        public void setCreditAmount(double creditAmount) {
             this.creditAmount = creditAmount;
         }
 
@@ -71,23 +81,23 @@ public interface LoanDetailService {
     }
 
     public class LoanTenure{
-        String Tenure;
-        int Interest;
+        int Tenure;
+        double Interest;
         double EMI;
 
-        public String getTenure() {
+        public int getTenure() {
             return Tenure;
         }
 
-        public void setTenure(String tenure) {
+        public void setTenure(int tenure) {
             Tenure = tenure;
         }
 
-        public int getInterest() {
+        public double getInterest() {
             return Interest;
         }
 
-        public void setInterest(int interest) {
+        public void setInterest(double interest) {
             Interest = interest;
         }
 

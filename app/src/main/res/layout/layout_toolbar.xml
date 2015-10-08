@@ -34,7 +34,8 @@
         android:layout_height="30dip"
         android:progressDrawable="@drawable/user_profile_detail_progress"
         android:id="@+id/user_profile_data_progress_bar"
-        android:layout_gravity="right" />
+        android:layout_gravity="right"
+        android:indeterminate="false" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -42,7 +43,7 @@
             android:layout_gravity="center"
             android:id="@+id/apply_text_view"
             android:textColor="@color/white"
-            android:text="Apply" />
+            android:text="@string/apply" />
     </FrameLayout>
 
    <!-- <com.github.lzyzsd.circleprogress.DonutProgress

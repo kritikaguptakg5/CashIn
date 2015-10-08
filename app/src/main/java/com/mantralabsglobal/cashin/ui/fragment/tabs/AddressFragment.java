@@ -154,6 +154,8 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter); */
 
+        //aadhaar_address_text.getEditText().setClickable(false);
+        aadhaar_address_text.getEditText().setKeyListener(null);
         addrSameAsAadhaar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -341,7 +343,7 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
                     && houseRentedorOwn.getCheckedRadioButtonId() != -1) {
                 return true;
             } else {
-                //aadhaar_address_text.setError(getActivity().getResources().getString(R.string.enter_aadhar_address));
+                aadhaar_address_text.getEditText().setError(Application.getInstance().getResources().getString(R.string.enter_aadhar_address));
             }
         }
         return false;

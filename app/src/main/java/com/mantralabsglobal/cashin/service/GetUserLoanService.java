@@ -24,13 +24,13 @@ public interface GetUserLoanService {
 
     public static class GetUserLoan {
 
-        int userAsk;
+        double userAsk;
 
-        public int getUserAsk() {
+        public double getUserAsk() {
             return userAsk;
         }
 
-        public void setUserAsk(int userAsk) {
+        public void setUserAsk(double userAsk) {
             this.userAsk = userAsk;
         }
     }

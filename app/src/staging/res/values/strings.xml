@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="server_url">http://52.10.22.1:1400</string>
-    <string name="server_url_ocr">http://52.10.22.1:1400</string>
+    <string name="server_url">http://52.76.25.150:1400</string>
+    <string name="server_url_ocr">http://52.76.25.150:1400</string>
     <string name="avatar_base_url">https://s3-ap-southeast-2.amazonaws.com/cashin-dev/avatars/</string>
     <string name="linkedin_key">754dods2c70xsz</string>
     <string name="linkedin_secret">EfnEG97mqeDpXxCW</string>

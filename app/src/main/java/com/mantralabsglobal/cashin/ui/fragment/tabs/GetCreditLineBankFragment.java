@@ -3,12 +3,16 @@ package com.mantralabsglobal.cashin.ui.fragment.tabs;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -17,6 +21,8 @@ import com.mantralabsglobal.cashin.service.GetCreditLineBankService;
 import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.activity.app.PostLoanApprovedActivity;
 
+import butterknife.InjectView;
+import butterknife.InjectViews;
 import retrofit.Callback;
 
 //import eu.livotov.zxscan.ScannerView;
@@ -28,17 +34,48 @@ public class GetCreditLineBankFragment extends BaseBindableFragment<GetCreditLin
 
     private static final String TAG = GetCreditLineBankFragment.class.getSimpleName();
     GetCreditLineBankService getCreditLineBankService;
-    int totalApprovedAmount;
+    double totalApprovedAmount;
     int loanStatus = -1;
     final int LOAN_STATUS_APPROVED = 1;
     final int LOAN_STATUS_REJECTED = 0;
 
-    ViewGroup   loan_rejected_view, transunion_view;
+    @InjectView(R.id.loan_rejected_view)
+    ViewGroup loan_rejected_view;
+    @InjectView(R.id.get_credit_line_view)
+    ViewGroup transunion_view;
+    @InjectView(R.id.seekBar)
     SeekBar seekBar;
-    static int status = -1;
-    TextView first_amount,first_interest_one, first_interest_two , first_interest_three,second_amount,second_interest_one, second_interest_two , second_interest_three,
-            three_amount,three_interest_one, three_interest_two , three_interest_three, loan_amount;
-    TextView userSelectedAmount, user_approved_limit;
+    @InjectView(R.id.first_amount)
+    TextView first_amount;
+    @InjectView(R.id.first_interest_one)
+    TextView first_interest_one;
+    @InjectView(R.id.first_interest_two)
+    TextView first_interest_two;
+    @InjectView(R.id.first_interest_three)
+    TextView first_interest_three;
+    @InjectView(R.id.second_amount)
+    TextView second_amount;
+    @InjectView(R.id.second_interest_one)
+    TextView second_interest_one;
+    @InjectView(R.id.second_interest_two)
+    TextView second_interest_two;
+    @InjectView(R.id.second_interest_three)
+    TextView second_interest_three;
+    @InjectView(R.id.three_amount)
+    TextView three_amount;
+    @InjectView(R.id.three_interest_one)
+    TextView three_interest_one;
+    @InjectView(R.id.three_interest_two)
+    TextView three_interest_two;
+    @InjectView(R.id.three_interest_three)
+    TextView three_interest_three;
+    @InjectView(R.id.loan_amount)
+    TextView loan_amount;
+    @InjectView(R.id.user_approved_limit)
+    TextView user_approved_limit;
+    @InjectView(R.id.user_selected_amount)
+    EditText userSelectedAmount;
+    @InjectView(R.id.get_loan_button)
     Button askForLoan;
 
     @Override
@@ -49,71 +86,6 @@ public class GetCreditLineBankFragment extends BaseBindableFragment<GetCreditLin
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_get_credit_line_bank, container, false);
-         loan_rejected_view = (ViewGroup)view.findViewById(R.id.loan_rejected_view);
-
-         transunion_view = (ViewGroup)view.findViewById(R.id.get_credit_line_view);
-        askForLoan = (Button)view.findViewById(R.id.get_loan_button);
-         userSelectedAmount= (TextView)view.findViewById(R.id.user_selected_amount);
-         user_approved_limit = (TextView)view.findViewById(R.id.user_approved_limit);
-
-         seekBar = (SeekBar)view.findViewById(R.id.seekBar);
-
-         seekBar.setOnSeekBarChangeListener(
-                new SeekBar.OnSeekBarChangeListener() {
-                    int progress = 0;
-
-                    @Override
-                    public void onProgressChanged(SeekBar seekBar,
-                                                  int progresValue, boolean fromUser) {
-                        progress = progresValue;
-                    }
-
-                    @Override
-                    public void onStartTrackingTouch(SeekBar seekBar) {
-                    }
-
-                    @Override
-                    public void onStopTrackingTouch(SeekBar seekBar) {
-                        Log.d("seek bar",String.valueOf(progress));
-                        userSelectedAmount.setText("" + progress);
-                        save();
-                    }
-                });
-
-        askForLoan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),PostLoanApprovedActivity.class);
-                startActivity(intent);
-            }
-        });
-
-         first_amount= (TextView)view.findViewById(R.id.first_amount);
-
-         first_interest_one= (TextView)view.findViewById(R.id.first_interest_one);
-
-         first_interest_two= (TextView)view.findViewById(R.id.first_interest_two);
-
-         first_interest_three= (TextView)view.findViewById(R.id.first_interest_three);
-
-         second_amount= (TextView)view.findViewById(R.id.second_amount);
-
-         second_interest_one= (TextView)view.findViewById(R.id.second_interest_one);
-
-         second_interest_two= (TextView)view.findViewById(R.id.second_interest_two);
-
-         second_interest_three= (TextView)view.findViewById(R.id.second_interest_three);
-
-         three_amount= (TextView)view.findViewById(R.id.three_amount);
-
-         three_interest_one= (TextView)view.findViewById(R.id.three_interest_one);
-
-         three_interest_two= (TextView)view.findViewById(R.id.three_interest_two);
-
-         three_interest_three= (TextView)view.findViewById(R.id.three_interest_three);
-
-         loan_amount = (TextView)view.findViewById(R.id.loan_amount);
-
         return view;
     }
 
@@ -143,8 +115,8 @@ public class GetCreditLineBankFragment extends BaseBindableFragment<GetCreditLin
             three_interest_two.setText(String.valueOf(value.getInterestSlabs().get(2).getTwentyfour_month_interest()));
             three_interest_three.setText(String.valueOf(value.getInterestSlabs().get(2).getThirtysix_month_interest()));
 
-            loan_amount.setText(String.format(getString(R.string.credit_line_pre_approved),totalApprovedAmount,"ACME Bank"));
-            seekBar.setMax((int)totalApprovedAmount);
+            loan_amount.setText(String.format(getString(R.string.credit_line_pre_approved), "" + totalApprovedAmount, "ACME Bank"));
+            seekBar.setMax((int) totalApprovedAmount);
 
         } else if (value.getStatus() == LOAN_STATUS_REJECTED) {
             loan_rejected_view.setVisibility(View.VISIBLE);
@@ -165,15 +137,13 @@ public class GetCreditLineBankFragment extends BaseBindableFragment<GetCreditLin
     @Override
     public GetCreditLineBankService.GetCreditLineBank getDataFromForm(GetCreditLineBankService.GetCreditLineBank base) {
 
-        if(base == null)
+        if (base == null)
             base = new GetCreditLineBankService.GetCreditLineBank();
 
-        if(!TextUtils.isEmpty(userSelectedAmount.getText())) {
+        if (!TextUtils.isEmpty(userSelectedAmount.getText())) {
             try {
-                base.setLoanAmountActuallyAsked(Integer.parseInt(userSelectedAmount.getText().toString()));
-            }
-            catch(NumberFormatException ex)
-            {
+                base.setLoanAmountActuallyAsked(Double.parseDouble(userSelectedAmount.getText().toString()));
+            } catch (NumberFormatException ex) {
                 Log.w(TAG, ex);
             }
         }
@@ -201,27 +171,56 @@ public class GetCreditLineBankFragment extends BaseBindableFragment<GetCreditLin
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getCreditLineBankService = ((Application) getActivity().getApplication()).getRestClient().getTransUnionService();
+
+        userSelectedAmount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s != null && s.toString().trim().length() > 0)
+                seekBar.setProgress((int)Double.parseDouble(s.toString()));
+            }
+        });
+
+        seekBar.setOnSeekBarChangeListener(
+                new SeekBar.OnSeekBarChangeListener() {
+                    int progress = 0;
+
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar,
+                                                  int progresValue, boolean fromUser) {
+                        progress = progresValue;
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+                        Log.d("seek bar", String.valueOf(progress));
+                        userSelectedAmount.setText("" + progress);
+                        save();
+                    }
+                });
+
+        askForLoan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), PostLoanApprovedActivity.class);
+                startActivity(intent);
+            }
+        });
+
         reset(false);
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
     @Override

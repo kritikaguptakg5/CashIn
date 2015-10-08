@@ -12,9 +12,8 @@
 
      <LinearLayout
          android:layout_width="match_parent"
-         android:layout_height="match_parent"
+         android:layout_height="wrap_content"
          android:orientation="vertical">
-
 
     <LinearLayout
         android:id="@+id/loan_approved_view_fragment"
@@ -24,20 +23,20 @@
         android:orientation="vertical">
 
 
-        <!--<ImageView
+        <ImageView
             android:id="@+id/bank_logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center_horizontal"
-            android:src="@drawable/ic_education" />-->
+            android:src="@drawable/ic_education" />
 
-        <TextView
+      <!--  <TextView
             android:id="@+id/bank_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
-            android:text="@string/acme_bank" />
+            android:text="@string/acme_bank" />-->
 
         <TextView
             android:id="@+id/credit_line"
@@ -91,13 +90,13 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <!--<ImageView
+            <ImageView
                 android:id="@+id/bank_logo_access_funds"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="2"
-                android:src="@drawable/ic_education" />-->
+                android:src="@drawable/ic_education" />
 
 
             <LinearLayout
@@ -183,8 +182,9 @@
 
         <TableLayout
             android:id="@+id/emi_table"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:layout_height="wrap_content"></TableLayout>
 
         <!-- <LinearLayout
@@ -221,7 +221,7 @@
     <LinearLayout
         android:id="@+id/footer_transfer_amount"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="bottom"
         android:visibility="gone"
         android:orientation="vertical">
@@ -230,19 +230,20 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:text="@string/money_tranferred_account_number" />
+                android:layout_marginLeft="20dp"
+                android:text="@string/money_transferred_account_number" />
 
             <TextView
                 android:id="@+id/account_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:gravity="left"
                 android:text="" />
 
@@ -252,9 +253,19 @@
             android:id="@+id/transfer_to_my_account_button"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
             android:text="@string/tranfer_to_my_account" />
     </LinearLayout>
 
     </LinearLayout>
     </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/progres_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_gravity="center" />
+
 </FrameLayout>

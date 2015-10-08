@@ -89,13 +89,21 @@ public class TransactionsView extends LinearLayout  {
 
     public void setTransactionDescMsg(TransactionsService.TransactionDescriptionMessage transactionDescMsg) {
         this.transactionDescMsg = transactionDescMsg;
+        updateUI();
     }
 
     public void updateUI()
     {
         if(transactionDescMsg != null) {
-            this.transactionDescription.setText(transactionDescMsg.getTransactionDescription());
 
+            if(transactionDescMsg.getTransactionMode() != null && transactionDescMsg.getTransactionMode().equals("CARD") )
+            this.transactionDescription.setText(transactionDescMsg.getAmountTransacted()+" swiped "+transactionDescMsg.getTransactionMode()
+           +" on "+transactionDescMsg.getTransactionDate() );
+
+            else {
+                this.transactionDescription.setText(transactionDescMsg.getAmountTransacted()+" transferred to your "+transactionDescMsg.getBankName()
+                        +" on "+transactionDescMsg.getTransactionDate() );
+            }
         }
     }
 

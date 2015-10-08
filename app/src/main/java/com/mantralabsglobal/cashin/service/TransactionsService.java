@@ -20,14 +20,14 @@ public interface TransactionsService {
 
     public static class Transactions {
 
-        String remainingAmount;
+        int remainingAmount;
         List<TransactionDescriptionMessage> transactionMessages;
 
-        public String getRemainingAmount() {
+        public int getRemainingAmount() {
             return remainingAmount;
         }
 
-        public void setRemainingAmount(String remainingAmount) {
+        public void setRemainingAmount(int remainingAmount) {
             this.remainingAmount = remainingAmount;
         }
 
@@ -41,14 +41,60 @@ public interface TransactionsService {
     }
 
     public class TransactionDescriptionMessage {
-        String transactionDescription;
 
-        public String getTransactionDescription() {
-            return transactionDescription;
+        double amountTransacted;
+        double remainingAmount;
+        String transactionMode;
+        String transactionType;
+        String transactionDate;
+        String bankName;
+
+        public String getTransactionMode() {
+            return transactionMode;
         }
 
-        public void setTransactionDescription(String transactionDescription) {
-            this.transactionDescription = transactionDescription;
+        public void setTransactionMode(String transactionMode) {
+            this.transactionMode = transactionMode;
+        }
+
+        public double getAmountTransacted() {
+            return amountTransacted;
+        }
+
+        public void setAmountTransacted(double amountTransacted) {
+            this.amountTransacted = amountTransacted;
+        }
+
+        public double getRemainingAmount() {
+            return remainingAmount;
+        }
+
+        public void setRemainingAmount(double remainingAmount) {
+            this.remainingAmount = remainingAmount;
+        }
+
+        public String getTransactionType() {
+            return transactionType;
+        }
+
+        public void setTransactionType(String transactionType) {
+            this.transactionType = transactionType;
+        }
+
+        public String getTransactionDate() {
+            return transactionDate;
+        }
+
+        public void setTransactionDate(String transactionDate) {
+            this.transactionDate = transactionDate;
+        }
+
+        public String getBankName() {
+            return bankName;
+        }
+
+        public void setBankName(String bankName) {
+            this.bankName = bankName;
         }
     }
 }

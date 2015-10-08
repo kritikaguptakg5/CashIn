@@ -6,63 +6,62 @@
     android:orientation="vertical"
     tools:context="com.mantralabsglobal.cashin.ui.fragment.tabs.GetUserLoanWantedFragment">
 
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/loan_approved_view_fragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
 
-        <LinearLayout
+    <LinearLayout
+        android:id="@+id/cc_ask_user_amount_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/enter_loan_amount_view" />
+
+        <com.mantralabsglobal.cashin.ui.view.CustomEditText
+            android:id="@+id/cc_loan_amount_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            app:field_icon="@drawable/ic_name"
+            app:field_label="@string/required_amount" />
+
+        <Button
+            android:id="@+id/apply_loan_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="60dp"
+            android:background="@drawable/bank_detail_statements"
+            android:text="@string/apply_for_loan"
+            android:textColor="@color/white" />
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="20dp"
+            android:gravity="bottom|center"
+            android:text="@string/take_permission_user" />
 
-            <LinearLayout
-                android:id="@+id/loan_approved_view_fragment"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:orientation="vertical" />
+    </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/cc_ask_user_amount_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:paddingBottom="@dimen/activity_vertical_margin"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin">
+    <ProgressBar
+        android:id="@+id/progres_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_gravity="center" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/enter_loan_amount_view" />
-
-                <com.mantralabsglobal.cashin.ui.view.CustomEditText
-                    android:id="@+id/cc_loan_amount_user"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    app:field_icon="@drawable/ic_name"
-                    app:field_label="@string/required_amount" />
-
-                <Button
-                    android:id="@+id/apply_loan_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="60dp"
-                    android:background="@drawable/bank_detail_statements"
-                    android:text="@string/apply_for_loan"
-                    android:textColor="@color/white" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="bottom"
-                    android:gravity="bottom|center"
-                    android:text="@string/take_permission_user" />
-
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
 </FrameLayout>

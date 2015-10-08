@@ -58,9 +58,7 @@ public class BaseActivity extends AppCompatActivity {
     public static final int SEND_REFERRAL_MESSAGE = 12000;
     public static final int PICK_ACCOUNT_REQUEST = 13000;
     public static final int PERFIOS_NET_BANKING = 14000;
-    public static final int AADHAR_NUMBER_LENGTH = 12;
-    public static final int PAN_NUMBER_LENGTH = 10;
-    public static final String NAME_VALIDATION = "[a-zA-Z]+";
+    public static final String NAME_VALIDATION = "[a-zA-Z]+([ '-][a-zA-Z]+)*";
     public static final String PAN_NUMBER_VALIDATION = "[A-Z]{5}[0-9]{4}[A-Z]{1}";
 
     protected void putInAppPreference(String key, String value) {

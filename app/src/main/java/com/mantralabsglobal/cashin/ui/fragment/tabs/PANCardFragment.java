@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -63,7 +64,7 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
     ImageView photoViewer;
 
     @NotEmpty(trim = true, message = "PAN number cannot be empty")
-    //@Pattern(regex =  BaseActivity.PAN_NUMBER_VALIDATION,  message = "Invalid PAN number")
+    @Pattern(regex =  BaseActivity.PAN_NUMBER_VALIDATION,  message = "Invalid PAN number")
     @InjectView(R.id.cc_pan)
     public CustomEditText panNumber;
 
@@ -114,6 +115,8 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
 
 //        registerFloatingActionButton((FloatingActionButton) getCurrentView().findViewById(R.id.fab_launch_camera), getCurrentView().findViewById(R.id.vg_pan_card_form));
   //      giveEditTextLength(panNumber.getEditText(), BaseActivity.PAN_NUMBER_LENGTH);
+
+        panNumber.getEditText().setInputType(InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
 
         if (cameraClicked) {
             camera_capture.setVisibility(View.GONE);

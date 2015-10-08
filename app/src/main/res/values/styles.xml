@@ -12,6 +12,12 @@
 
     <style name="AppTheme.Form"></style>
 
+    <style name="CustomTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
     <style name="AppTheme.Form.Header" parent="android:TextAppearance.DeviceDefault.Large"/>
 
     <style name="AppTheme.Form.Fragment.Top" parent="AppTheme.Form.Header">

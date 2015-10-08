@@ -82,7 +82,7 @@
     <string name="back">Back</string>
     <string name="next">Next</string>
     <string name="submit">Submit</string>
-    <string name="apply">Apply</string>
+    <string name="apply">APPLY</string>
     <string name="gps_failed">Failed to get location from GPS</string>
     <string name="save_sucess">Data saved sucessfully</string>
     <string name="waiting_for_server">Waiting for server</string>
@@ -92,6 +92,9 @@
     <string name="description_info">Info</string>
     <string name="apply_for_loan">Apply for Loan</string>
     <string name="take_permission_user">By applying, you allow us to access your bank statement and CIBIL score</string>
+    <string name="empty_loan_amount">Loan amount cannot be empty</string>
+
+
 
     <string name="intro_message">
         <![CDATA[
@@ -148,7 +151,7 @@ s
     <string name="contract_basis">Contract Basis</string>
     <string name="credit_line_text">Your Approved Credit Line is</string>
     <string name="full_time">Full time employement</string>
-    <string name="remaining_funds_text">Remaining Funds</string>
+    <string name="remaining_funds_text">Remaining Credit Line</string>
     <string name="type_of_employement">Type of Employement</string>
     <string name="read_transactional_sms">Read transactional SMS</string>
     <string name="ever_taken_a_loan">Have you ever taken a loan?</string>
@@ -259,7 +262,7 @@ s
     <string name="send_message">Send Message</string>
     <string name="select_amount_to_be_transferred">Please decide the amount you want now(IMPS)</string>
     <string name="please_pick_one_of_the_below">Pick one of the below terms</string>
-    <string name="money_tranferred_account_number">Money will be tranferred to A/C No. ending</string>
+    <string name="money_transferred_account_number">Money will be transferred to A/C No. ending </string>
     <string name="convert_to_emi">Convert to EMI</string>
     <string name="access_funds">Access Funds</string>
     <string name="enter_aadhar_address">No aadhaar address present</string>
@@ -307,12 +310,14 @@ s
     <string name="retry_button">Retry</string>
     <string name="no_internet_connection_error_message">We could not establish a connection with our servers. Try again when you are connected to the internet.</string>
     <string name="title_activity_alert_dialog_create">AlertDialogCreateActivity</string>
-    <string name="haha">haha</string>
     <string name="google_authentication_exception">Google Authentication Failure</string>
     <string name="io_exception">Unexpected Error. Please try again in some time.</string>
     <string name="camera_preview_not_ready">Camera not ready. Please try again.</string>
-    <string name="credit_line_pre_approved">A credit line of up to Rs %1$d has been preapproved to you by %2$s</string>
+    <string name="credit_line_pre_approved">A credit line of up to Rs %1$s has been preapproved to you by %2$s</string>
     <string name="acme_bank">ACME Bank</string>
+
+    <string name="loan_amount_special_char">Special characters are not allowed</string>
+
     <!--Validation strings-->
 
 

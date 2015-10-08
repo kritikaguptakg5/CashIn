@@ -23,17 +23,17 @@ public interface GetCreditLineBankService {
 
     public static class GetCreditLineBank {
 
-        int LoanApproves;
+        double LoanApproves;
         int status = -1;
         List<InterestSlabs> InterestSlabs;
         String message;
-        int loanAmountActuallyAsked;
+        double loanAmountActuallyAsked;
 
-        public int getLoanAmountActuallyAsked() {
+        public double getLoanAmountActuallyAsked() {
             return loanAmountActuallyAsked;
         }
 
-        public void setLoanAmountActuallyAsked(int loanAmountActuallyAsked) {
+        public void setLoanAmountActuallyAsked(double loanAmountActuallyAsked) {
             this.loanAmountActuallyAsked = loanAmountActuallyAsked;
         }
 
@@ -53,11 +53,11 @@ public interface GetCreditLineBankService {
             this.status = status;
         }
 
-        public int getLoanApproves() {
+        public double getLoanApproves() {
             return LoanApproves;
         }
 
-        public void setLoanApproves(int loanApproves) {
+        public void setLoanApproves(double loanApproves) {
             LoanApproves = loanApproves;
         }
 

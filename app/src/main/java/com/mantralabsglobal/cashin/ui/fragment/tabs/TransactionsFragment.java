@@ -43,6 +43,8 @@ public class TransactionsFragment extends BaseBindableFragment<TransactionsServi
     @InjectView(R.id.remaining_amount_tobe_transferred)
     TextView remainingFundsToBeTransferred;
 
+    List<TransactionsService.Transactions> transactionList;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,15 +53,13 @@ public class TransactionsFragment extends BaseBindableFragment<TransactionsServi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
        final View view = inflater.inflate(R.layout.fragment_transactions, container, false);
-
-
         return view;
     }
 
     @Override
     public void bindDataToForm(final TransactionsService.Transactions value) {
         if (value != null ) {
-
+            transactionList = new ArrayList<TransactionsService.Transactions>();
             remainingFundsToBeTransferred.setText(value.getRemainingAmount());
             for (final TransactionsService.TransactionDescriptionMessage transactionDescMsg : value.getTransactionMessages()) {
                 TransactionsView transactionView = new TransactionsView(getActivity());
@@ -106,26 +106,6 @@ public class TransactionsFragment extends BaseBindableFragment<TransactionsServi
         super.onViewCreated(view, savedInstanceState);
         transactionService = ((Application) getActivity().getApplication()).getRestClient().getTransactionsService();
         reset(false);
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
     @Override

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.text.InputFilter;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -50,7 +51,7 @@ public class AadhaarCardFragment extends BaseBindableFragment<AadhaarService.Aad
 
     @NotEmpty(trim = true, message= "Name cannot be empty")
     @InjectView(R.id.cc_name)
-    //@Pattern(regex =  BaseActivity.NAME_VALIDATION, message = "Enter valid name")
+    @Pattern(regex =  BaseActivity.NAME_VALIDATION, message = "Enter valid name")
     CustomEditText name;
 
     @NotEmpty(trim = true, message= "Address cannot be empty")
@@ -66,7 +67,7 @@ public class AadhaarCardFragment extends BaseBindableFragment<AadhaarService.Aad
     CustomSpinner gender;
 
     @NotEmpty(trim = true, message= "Father/Spouse name cannot be empty")
-    //@Pattern(regex =  BaseActivity.NAME_VALIDATION, message = "Enter valid name")
+    @Pattern(regex =  BaseActivity.NAME_VALIDATION, message = "Enter valid name")
     @InjectView(R.id.cc_father_name)
     CustomEditText fatherName;
 
@@ -109,7 +110,7 @@ public class AadhaarCardFragment extends BaseBindableFragment<AadhaarService.Aad
 
         aadhaarService = ((Application) getActivity().getApplication()).getRestClient().getAadhaarService();
         gender.setAdapter(getGenderAdapter());
-
+        aadhaarNumber.getEditText().setRawInputType(InputType.TYPE_CLASS_NUMBER);
         address.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
             @Override
